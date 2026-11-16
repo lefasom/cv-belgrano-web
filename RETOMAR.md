@@ -1,6 +1,6 @@
 # Retomar: CV Belgrano Web
 
-Nota para volver a empezar después de una pausa. Última actualización: **15/11/2026**.
+Nota para volver a empezar después de una pausa. Última actualización: **16/11/2026**.
 
 ---
 
@@ -55,99 +55,76 @@ Tienen que aparecer las 4 migraciones como `Ran` (users, cache, jobs y cvs).
 
 ---
 
-## 3. Dónde quedamos
+## 3. Dónde quedamos (16/11/2026)
 
 ### Hecho
 - Entorno: Herd (PHP 8.5, Composer, Laravel), MySQL 26.10 local, Node.
-- Proyecto Laravel 13 + starter kit de Livewire, conectado a MySQL (`cv_belgrano_web`).
-- Registro y login funcionando.
-- Repo público: https://github.com/lefasom/cv-belgrano-web (2 commits).
-- Tabla **`cvs`** creada, con clave foránea `user_id` → `users` (cascada).
-- **Decisión de diseño:** un "CV" es un **perfil** (un juego de datos). Un usuario tiene muchos perfiles; el diseño vive en el código (ver `Manual.md` §0).
-- `Manual.md` con todo lo aprendido (secciones 0 a 12).
+- Proyecto Laravel 13 + starter kit de Livewire, conectado a MySQL (`cv_belgrano_web`). Registro y login andando.
+- Repo público: https://github.com/lefasom/cv-belgrano-web.
+- Tabla **`cvs`** con clave foránea `user_id` → `users` (cascada). Un "CV" es un **perfil** (Manual §0).
+- Entendido: Herd contra `php artisan serve`, qué es Artisan, Composer contra npm, `APP_URL`, `migrate` (Manual §3 y §13).
+- **Relaciones escritas por Leo**: `$fillable` y `user()` en `Cv.php`, `cvs()` en `User.php`. Probadas con Tinker (`all`, `first`, `find`, `where`, `get`, `create`). Hay 1 CV de prueba en la base.
 
-### Pendiente antes de seguir
-- [ ] **Commit del `Manual.md`** (tiene cambios sin guardar en Git) y de este archivo:
-  ```powershell
-  git add .
-  git commit -m "Manual: relaciones, SQL contra NoSQL, decisión de perfiles y nota para retomar"
-  git push
-  ```
-
-### ❓ Primera pregunta de mañana (no quedó clara)
-
-**"¿Cuál es el frontend y cuál el backend? ¿Por qué `cv-belgrano-web.test` funciona y `localhost:8000` da `ERR_CONNECTION_REFUSED`? ¿Por qué `npm run dev` muestra `APP_URL: http://localhost:8000`? ¿Cómo se lanza el frontend?"**
-
-Explicarlo **despacio y con un ejemplo práctico en la PC**, no solo con tablas. Por ejemplo:
-1. Abrir `cv-belgrano-web.test` con `npm run dev` corriendo y después sin él, para ver qué cambia.
-2. Correr `php artisan serve` para ver que `localhost:8000` abre **la misma** web.
-3. Ver una página Blade (por ejemplo `welcome.blade.php`) y cómo el servidor la manda ya armada, comparado con React.
-
-Pendiente de esa charla: cambiar en el `.env` `APP_URL=http://localhost:8000` por `APP_URL=http://cv-belgrano-web.test`.
-La explicación escrita está en `Manual.md` §3, "Levantar la web".
-
-### Próximo paso: el ejercicio de las relaciones (Manual §11)
-
-Todavía **no está escrito**. Lo escribe Leo:
-
-1. **`app/Models/Cv.php`**, debajo de `use HasFactory;`:
-   - `protected $fillable = [...]` con: `title`, `full_name`, `headline`, `email`, `phone`, `location`, `summary`, `template` (sin `id`, `user_id` ni fechas).
-   - Método `user()` que devuelve `$this->belongsTo(User::class);` (con `use Illuminate\Database\Eloquent\Relations\BelongsTo;` arriba).
-2. **`app/Models/User.php`** (no borrar nada, solo agregar): método `cvs()` que devuelve `$this->hasMany(Cv::class);` (con `use Illuminate\Database\Eloquent\Relations\HasMany;` arriba).
-3. **Probar con Tinker:**
+### ⚠️ Arreglar primero (revisión del 16/11)
+1. **`Cv.php` no compila la relación**: falta arriba `use Illuminate\Database\Eloquent\Relations\BelongsTo;`.
+   Hoy `App\Models\Cv::first()->user` da `TypeError ... must be of type App\Models\BelongsTo`. `$user->cvs` sí anda.
+2. **Sacar `user_id` de `$fillable`** y crear siempre con `$user->cvs()->create([...])` (Manual §11 y §13).
+3. **`.env`**: se deja `APP_URL=http://localhost:8000` porque Leo trabaja con `php artisan serve` desde VS Code. Si pasa a usar Herd, cambiarlo a `http://cv-belgrano-web.test`. Tiene que coincidir con la puerta que se usa.
+4. `comandos.tinker.md` (nuevo, sin commit): decidir si se completa o se borra; lo mismo ya está en Manual §13.
+5. Probar en Tinker las dos direcciones y hacer **commit + push**:
    ```powershell
-   php artisan tinker
-   ```
-   ```php
-   $user = App\Models\User::first();
-   $user->cvs()->create(['title' => 'Perfil prueba', 'full_name' => 'Leo', 'email' => 'leo@test.com']);
-   $user->cvs;
-   App\Models\Cv::first()->user->name;
-   exit
+   git add .
+   git commit -m "Relaciones User-Cv, fillable y Manual de la sesión"
+   git push
    ```
 
-### Después
-- Tablas `experiences`, `education` y `skills` (con índice en `skills.name`).
-- `CvController`, Form Requests y `CvPolicy` → pantalla "Mis perfiles".
-- Ver el 1+N en vivo en esa pantalla.
+### Próximos pasos, en orden
+1. **Factory y seeder**: completar `CvFactory::definition()` con `fake()`, y en `DatabaseSeeder` crear un usuario con 3 perfiles: `User::factory()->has(Cv::factory()->count(3))->create()`. Correr `php artisan migrate:fresh --seed` (entender que **borra todo** y vuelve a crear).
+2. **Tablas hijas del perfil**: `experiences`, `education`, `skills` (FK a `cvs` con `cascadeOnDelete`, `sort_order`, índice en `skills.name`) y sus relaciones `hasMany` en `Cv`.
+3. **Primera pantalla: "Mis perfiles"**: ruta protegida con `auth`, componente Livewire (o controlador + Blade) que lista `auth()->user()->cvs`. Ver el N+1 y arreglarlo con `with()`.
+4. **Crear / editar / borrar perfil** (CRUD): validación de formularios y **Policy** para que nadie edite perfiles ajenos.
+5. **Plantilla ATS en Blade + PDF con dompdf**.
+6. **Tests con Pest** de lo anterior (ya vienen instalados).
+7. **Landing** que empuja a bajar la app, y **subir a un hosting**.
 
 ---
 
-## 4. Mensaje para empezar una sesión nueva con Claude
+## 4. Mensaje para empezar una sesión nueva (con Claude o con otra IA)
 
 Copiar y pegar:
 
 ```text
-Retomo CV Belgrano Web (Laravel). El proyecto está en C:\Users\leo\Herd\cv-belgrano-web.
-Leé RETOMAR.md y Manual.md de esa carpeta, y el plan en
-C:\Users\leo\Desktop\App-de-cv\CV_BELGRANO_WEB_LARAVEL\.
-Primero verificá que MySQL y la web andan (sección 2 de RETOMAR.md).
-Empezá por la "Primera pregunta de mañana" de RETOMAR.md (frontend, backend, localhost:8000
-y APP_URL), con un ejemplo práctico en la PC porque ayer no la entendí.
-Después seguimos con el ejercicio de las relaciones (Manual §11): yo escribo el código y vos me
-explicás y revisás. Explicame cada concepto antes de usarlo y sumá lo nuevo al Manual.md.
+Estoy aprendiendo Laravel con un proyecto real: CV Belgrano Web, la versión web de mi app de CV
+(React Native). Es para postular a un puesto Junior PHP/Laravel/MySQL (Blade + Livewire) que
+cierra el 02/01/2027. Proyecto: Laravel 13 + starter kit Livewire 4 + Flux, Pest, MySQL local,
+Herd en Windows. Carpeta: C:\Users\leo\Herd\cv-belgrano-web.
+
+Cómo quiero trabajar:
+- YO escribo todo el código y hago los commits. Vos explicás y revisás. No me des archivos
+  completos para copiar: decime qué va, dónde y por qué, y después revisás lo que escribí.
+- Antes de cada concepto nuevo, explicámelo simple (analogía o tabla, comparando con
+  JavaScript/React/Firebase, que ya conozco). Me gusta entender el entorno y las herramientas.
+- Todo en español.
+
+Dónde estoy (16/11/2026):
+- Hecho: login/registro, tabla cvs (un "CV" = un perfil de datos; un usuario tiene muchos)
+  con user_id → users en cascada. Modelos: Cv tiene $fillable y user() (belongsTo);
+  User tiene cvs() (hasMany). Probé Tinker: all, first, find, where, get, create.
+- Entendí: Artisan, Composer vs npm, migrate, APP_URL, Herd vs php artisan serve.
+- Para arreglar primero:
+  1) En Cv.php falta "use Illuminate\Database\Eloquent\Relations\BelongsTo;" ($cv->user da TypeError).
+  2) Sacar user_id de $fillable y crear con $user->cvs()->create([...]) (explicame por qué).
+  3) APP_URL queda en http://localhost:8000: trabajo con php artisan serve (no con Herd).
+  4) Commit y push.
+
+Qué sigue, en este orden (enseñame paso a paso):
+1) CvFactory con fake() + DatabaseSeeder + migrate:fresh --seed.
+2) Tablas experiences, education, skills con FK a cvs, cascada, sort_order; relaciones hasMany.
+3) Pantalla "Mis perfiles" con Livewire, ruta con middleware auth; ver el problema N+1 y with().
+4) CRUD de perfiles con validación y Policy (que nadie toque perfiles ajenos).
+5) Plantilla ATS en Blade y PDF con dompdf.
+6) Tests con Pest.
+7) Deploy en un hosting barato que no se duerma.
+
+Al terminar cada tema, dame un resumen corto para agregar a mi Manual.md.
 ```
-Mañana
-
-Para empezar una sesión nueva, pegá esto:
-
-Retomo CV Belgrano Web (Laravel). El proyecto está en C:\Users\leo\Herd\cv-belgrano-web.
-Leé RETOMAR.md y Manual.md de esa carpeta, y el plan en
-C:\Users\leo\Desktop\App-de-cv\CV_BELGRANO_WEB_LARAVEL\.
-Primero verificá que MySQL y la web andan (sección 2 de RETOMAR.md).
-Seguimos con el ejercicio de las relaciones (Manual §11): yo escribo el código y vos me explicás
-y revisás. Explicame cada concepto antes de usarlo y sumá lo nuevo al Manual.md.
-
-Para levantar el proyecto (está en la sección 2 de RETOMAR.md):
-1. Get-Service MySQL2610 → tiene que decir Running.
-2. Abrir Herd.
-3. cd C:\Users\leo\Herd\cv-belgrano-web y code .
-4. npm run dev, y dejar esa terminal abierta.
-5. Abrir http://cv-belgrano-web.test
-
-Dónde quedamos: el ejercicio de las relaciones todavía no está escrito. Lo escribís vos:
-- En Cv.php: $fillable y el método user().
-- En User.php: el método cvs().
-- Después lo probamos con Tinker.
-
-Buen trabajo hoy: pasaste de no tener nada instalado a tener Laravel + MySQL andando, tu primera tabla con clave foránea, y un diseño de base pensado con criterio propio. ¡Hasta mañana! 👋

@@ -444,6 +444,8 @@ Esto muestra cómo se agrega algo a una tabla que ya existe: **no se edita la mi
 | `¿Desea terminar el trabajo por lotes (S/N)?` | Mensaje de Windows después de Ctrl+C | Responder `S` o abrir otra terminal |
 | Se borraron `User.php` y las migraciones de Laravel | Se pensó que sobraban | `git restore ...`. **Los archivos de Laravel no se borran: los tuyos se suman al lado** |
 | Dos migraciones de `cvs` | Se corrió `make:model` dos veces | Borrar una. Si corren las dos, la segunda falla con "la tabla ya existe" |
+| `Field 'email' doesn't have a default value` (16/11) | En la migración, `email` no tiene `->nullable()`: MySQL exige un valor. Llegó vacío porque el campo no estaba en `$fillable` o no se mandó | Mandar `email` y tenerlo en `$fillable`. **La migración manda qué es obligatorio; `$fillable` solo deja pasar** |
+| `TypeError ... Return value must be of type App\Models\BelongsTo` (16/11) | En `Cv.php` falta `use Illuminate\Database\Eloquent\Relations\BelongsTo;`. Sin el `use`, PHP busca la clase `BelongsTo` dentro de `App\Models` y no la encuentra | Agregar el `use` arriba, junto a los otros. En `User.php` el `use ...HasMany;` sí estaba |
 
 ---
 
@@ -894,3 +896,78 @@ Lo que se crea en Tinker **se guarda de verdad** en MySQL.
 | **Puerto** | "Número de puerta" por donde un servidor escucha (MySQL: 3306) |
 | **Local / producción** | Tu PC (para desarrollar) / el servidor online (lo que usa la gente) |
 | **localhost** | "Esta misma PC" (igual que `127.0.0.1`). El número después de `:` es el puerto: `:8000` Laravel con `serve`, `:5173` Vite, `:3306` MySQL |
+
+---
+
+## 13. Sesión 16/11/2026: Artisan, relaciones y Tinker
+
+### Artisan y Composer, comparados con la app (Expo)
+
+| Mundo JS (la app) | Mundo PHP (esta web) | Para qué |
+|---|---|---|
+| `npm` + `package.json` | `composer` + `composer.json` | Instalar librerías |
+| `npm run dev` (lee `"scripts"`) | `composer run dev` (lee `"scripts"`; ejecuta `php artisan dev`) | Atajos definidos en el JSON |
+| `npx expo start`, `npx expo install` | `php artisan serve`, `php artisan migrate` | La caja de herramientas del framework |
+
+**Artisan no es una librería ni una palabra del JSON**: es un **archivo** PHP llamado `artisan` en la raíz del proyecto. `php artisan serve` = "PHP, ejecutá el archivo `artisan` con la orden `serve`". Todas las órdenes: `php artisan list`.
+
+**`migrate` pasa la estructura, no los datos**: lee los archivos de `database/migrations` y crea o cambia las **tablas** en MySQL. Los datos se cargan después (formularios, Tinker, factories y seeders).
+
+### Herd y `php artisan serve`: dos puertas, misma casa
+
+- Herd abierto → `http://cv-belgrano-web.test` (no hace falta terminal).
+- Herd cerrado → `php artisan serve` → `http://localhost:8000` (la terminal queda abierta).
+- PHP sigue instalado aunque se cierre Herd (`C:\Users\leo\.config\herd\bin\php.bat`).
+- El botón **"Open"** de Herd abre el proyecto en un editor, no la web.
+
+### Prueba de `APP_URL`
+
+```powershell
+php artisan tinker --execute="echo url('/dashboard');"
+```
+
+En la terminal no hay navegador, así que Laravel arma el link con `APP_URL`: da `http://localhost:8000/dashboard`. Si se cambia el `.env` a `APP_URL=http://cv-belgrano-web.test`, el mismo comando da `http://cv-belgrano-web.test/dashboard`. Desde el navegador, Laravel usa la dirección por la que se entró.
+
+### Leer un método: `public function user(): BelongsTo`
+
+| Parte | Significado |
+|---|---|
+| `public` | Se puede usar desde fuera de la clase |
+| `function user()` | Declara el método `user` |
+| `: BelongsTo` | Tipo de lo que devuelve (necesita su `use` arriba, ver §6) |
+| `$this` | El objeto actual (este CV) |
+| `belongsTo(User::class)` | "Este CV pertenece a un User". **Devuelve un objeto relación, no verdadero/falso** |
+| `protected` | Visibilidad: solo la clase y sus hijas (por eso `protected $fillable`) |
+
+`$fillable` **no es palabra de PHP**: es una propiedad que lee Eloquent.
+
+### `user_id`, `user()` y `$cv->user`
+
+| Expresión | Qué es |
+|---|---|
+| `user_id` | La columna con el número del usuario |
+| `$cv->user()` | La relación (sirve para seguir armando la consulta) |
+| `$cv->user` | El usuario ya cargado |
+| `$cv->user->name` | Su nombre |
+
+**Ojo con `user_id` en `$fillable`** (ver §11): si está en la lista, un formulario podría mandar el `user_id` de otra persona. Lo seguro es sacarlo y crear siempre por la relación: `$user->cvs()->create([...])`, que completa `user_id` solo.
+
+### Métodos de Eloquent probados en Tinker
+
+| Método | Qué hace |
+|---|---|
+| `all()` | Trae todos los registros |
+| `first()` | Trae el primero |
+| `find(1)` | Busca por `id` |
+| `where('campo', 'valor')` | Agrega un filtro (todavía no consulta) |
+| `get()` | Ejecuta la consulta y trae los resultados |
+| `create([...])` | Crea y guarda un registro |
+| `update([...])` / `delete()` | Modifica / borra |
+
+### Otros conceptos vistos
+
+| Concepto | Qué es |
+|---|---|
+| **Controller** | Coordina un pedido: recibe, pide datos al modelo y devuelve la vista |
+| **Xdebug** | Extensión de PHP para depurar paso a paso (puntos de pausa) |
+| **Gherkin** | Forma de escribir escenarios con *Given / When / Then* (dado / cuando / entonces) |
