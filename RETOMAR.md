@@ -27,7 +27,7 @@ React, Vue o Inertia en esta web · Filament o paneles generados · API REST, Sa
 ## 1. Quién soy y para qué es esto
 
 - Leo, desarrollador de **React Native** (app CV Belgrano) y de **FULLMED** (sistema de brazaletes en 8 hospitales). UTN hasta 3.er año.
-- Aprendo Laravel desde cero con este proyecto para postularme a **Desarrollador/a Web Junior PHP/Laravel, remoto, en Nodo Austral Sistemas** (sistemas de gestión para pymes de salud). Usan **Blade + Livewire**. El aviso cierra el **02/01/2027**, pero **la meta es postularme alrededor del 28/11/2026**.
+- Aprendo Laravel desde cero con este proyecto para postularme a **Desarrollador/a Web Junior PHP/Laravel, remoto, en Nodo Austral Sistemas** (sistemas de gestión para pymes de salud). Usan **Blade + Livewire**. El aviso cierra el **02/01/2027**, pero **la meta es postularme alrededor del 03/12/2026**.
 - **CV Belgrano Web** es la versión web de mi app: login, varios perfiles de CV por usuario, una plantilla ATS y PDF. Tiene que valer sola como vidriera de la app: solo plantillas gratis, sin premium.
 - Proyecto: `C:\Users\leo\Herd\cv-belgrano-web` · Repo público: https://github.com/lefasom/cv-belgrano-web
 - Documentos de apoyo: `Manual.md` (lo que aprendí) y `comandos.tinker.md` (chuleta de Tinker y Artisan). El plan original está en `C:\Users\leo\Desktop\App-de-cv\CV_BELGRANO_WEB_LARAVEL\`.
@@ -61,25 +61,27 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 
 ---
 
-## 4. Plan por bloques (1 bloque = 1 día de 5 a 6 horas)
+## 4. Plan por bloques (por la mañana; la tarde va para la app de CV)
 
-Cada bloque termina con algo que funciona y **un commit**. Si un bloque se atrasa, se recorta (✂️), no se estira.
+Ritmo decidido el 16/11: **mañanas para Laravel (3 a 4 h), tardes para la app**. Un bloque lleva 1 o 2 mañanas, así que las fechas son aproximadas. Cada bloque termina con algo que funciona y **un commit**. Si un bloque se atrasa, se recorta (✂️), no se estira.
 
-| # | Día | Bloque | Conceptos a aprender | Termina cuando… |
+**Postulo cuando estén hechos los bloques 1 a 7** (CRUD con Policy, PDF, pruebas, JOIN y README). La landing y el deploy van **después de postular**, y el link se suma al README.
+
+| # | Mañanas (aprox.) | Bloque | Conceptos a aprender | Termina cuando… |
 |---|---|---|---|---|
-| 1 | 17/11 | **Datos de prueba + tablas hijas.** `CvFactory` con `fake()`. `DatabaseSeeder` con un usuario demo (`demo@cvbelgrano.test`) y 2 perfiles. Migraciones `experiences`, `education` y `skills` (FK a `cvs` con cascada, `sort_order`, **índice en `skills.name`**), sus modelos, factories y relaciones `hasMany` en `Cv` | Factory, seeder, `fake()`, `has()`/`for()`, índices, cascada | `php artisan migrate:fresh --seed` crea todo sin errores y en Tinker `Cv::first()->experiences` trae datos |
-| 2 | 18/11 | **Pantalla "Mis perfiles".** Ruta protegida con `auth`, componente Livewire que lista los perfiles del usuario, enlace en el menú del starter kit. Ver el **N+1** y arreglarlo con `with()`/`withCount()` | `routes/web.php`, middleware, componente Livewire (clase + vista Blade), layout del kit, Flux | Logueado, veo mis perfiles; sin login me manda al login |
-| 3 | 19/11 | **Crear, editar y borrar perfil.** Formulario Livewire con **validación** y mensajes en español. **`CvPolicy`**: nadie ve ni toca perfiles ajenos (403) | `wire:model`, validación, Policy, `authorize` | Creo, edito y borro desde el navegador; con otro usuario recibo 403 |
-| 4 | 20/11 | **Secciones del perfil.** Agregar y borrar experiencias, estudios y habilidades dentro del editor (✂️ editar y reordenar con `sort_order`, si sobra tiempo) | Relaciones en formularios, componentes o arreglos en Livewire | El perfil demo se carga completo desde la web |
-| 5 | 21/11 | **Plantilla ATS + PDF.** Vista Blade `ats` (sin flexbox, porque dompdf no lo soporta bien), vista previa y botón "Descargar PDF" con `barryvdh/laravel-dompdf` | Vistas Blade, `@foreach`, `@if`, instalar un paquete con Composer, respuestas de descarga | Baja un PDF prolijo con los datos del perfil |
-| 6 | 22/11 | **Pruebas + calidad.** Pest: (1) sin login → login, (2) crear perfil guarda en la base, (3) la validación falla sin nombre, (4) **otro usuario recibe 403**, (5) borrar un perfil borra sus secciones, (6) el PDF responde `application/pdf`. Pint. GitHub Actions que corre Pint y los tests | Pest, `actingAs`, `assertDatabaseHas`, `assertForbidden`, CI | `php artisan test` en verde e insignia verde en GitHub |
-| — | 23/11 | **Descanso o colchón** para lo atrasado | | |
-| 7 | 24/11 | **JOIN + landing.** Página "Estadísticas" con **Query Builder**: las 10 habilidades más usadas (`skills` JOIN `cvs`, `groupBy`, `count`) + su prueba. Landing `/` en Blade: qué es CV Belgrano y botón "Crear mi CV gratis" | JOIN escrito a mano, `groupBy`, Eloquent contra Query Builder | Se ven el ranking y la landing |
-| 8 | 25/11 | **Publicar + README.** Subir a un hosting barato que no se duerma (✂️ plan B: GIF o video si no sale en 2 h). README con capturas, diagrama Mermaid de las tablas, instalación, usuario demo y decisiones | Deploy, `.env` de producción, `APP_URL` real | Hay un link público y un README que se entiende solo |
-| 9 | 26/11 | **Postulación.** Actualizar CV y LinkedIn solo con lo hecho (archivos 04 y 05 del plan), post en LinkedIn, postular en Qontrata. Practicar en voz alta cómo explicar el proyecto | Contar decisiones: perfiles, cascada, Policy, N+1, índices, JOIN | **Postulación enviada** |
-| — | 27-28/11 | Colchón | | |
+| 1 | 17-18/11 | **Datos de prueba + tablas hijas.** `CvFactory` con `fake()`. `DatabaseSeeder` con un usuario demo (`demo@cvbelgrano.test`) y 2 perfiles. Migraciones `experiences`, `education` y `skills` (FK a `cvs` con cascada, `sort_order`, **índice en `skills.name`**), sus modelos, factories y relaciones `hasMany` en `Cv` | Factory, seeder, `fake()`, `has()`/`for()`, índices, cascada | `php artisan migrate:fresh --seed` crea todo sin errores y en Tinker `Cv::first()->experiences` trae datos |
+| 2 | 19-20/11 | **Pantalla "Mis perfiles".** Ruta protegida con `auth`, componente Livewire que lista los perfiles del usuario, enlace en el menú del starter kit. Ver el **N+1** y arreglarlo con `with()`/`withCount()` | `routes/web.php`, middleware, componente Livewire (clase + vista Blade), layout del kit, Flux | Logueado, veo mis perfiles; sin login me manda al login |
+| 3 | 21-22/11 | **Crear, editar y borrar perfil.** Formulario Livewire con **validación** y mensajes en español. **`CvPolicy`**: nadie ve ni toca perfiles ajenos (403) | `wire:model`, validación, Policy, `authorize` | Creo, edito y borro desde el navegador; con otro usuario recibo 403 |
+| 4 | 24-25/11 | **Secciones del perfil.** Agregar y borrar experiencias, estudios y habilidades dentro del editor (✂️ editar y reordenar con `sort_order`, si sobra tiempo) | Relaciones en formularios, componentes o arreglos en Livewire | El perfil demo se carga completo desde la web |
+| 5 | 26-27/11 | **Plantilla ATS + PDF.** Vista Blade `ats` (sin flexbox, porque dompdf no lo soporta bien), vista previa y botón "Descargar PDF" con `barryvdh/laravel-dompdf` | Vistas Blade, `@foreach`, `@if`, instalar un paquete con Composer, respuestas de descarga | Baja un PDF prolijo con los datos del perfil |
+| 6 | 28-29/11 | **Pruebas + calidad.** Pest: (1) sin login → login, (2) crear perfil guarda en la base, (3) la validación falla sin nombre, (4) **otro usuario recibe 403**, (5) borrar un perfil borra sus secciones, (6) el PDF responde `application/pdf`. Pint. GitHub Actions que corre Pint y los tests | Pest, `actingAs`, `assertDatabaseHas`, `assertForbidden`, CI | `php artisan test` en verde e insignia verde en GitHub |
+| 7 | 01-02/12 | **JOIN + README.** Página "Estadísticas" con **Query Builder**: las 10 habilidades más usadas (`skills` JOIN `cvs`, `groupBy`, `count`) + su prueba. README con capturas o GIF, diagrama Mermaid de las tablas, instalación, usuario demo y decisiones | JOIN escrito a mano, `groupBy`, Eloquent contra Query Builder | Se ve el ranking y el README se entiende solo |
+| 8 | 03/12 | **Postulación.** Actualizar CV y LinkedIn solo con lo hecho (archivos 04 y 05 del plan), post en LinkedIn, postular en Qontrata. Practicar en voz alta cómo explicar el proyecto | Contar decisiones: perfiles, cascada, Policy, N+1, índices, JOIN | **Postulación enviada** |
+| 9 | después | **Landing + deploy.** Landing `/` en Blade (qué es CV Belgrano y "Crear mi CV gratis") y subir a un hosting barato que no se duerma. Sumar el link al README y a LinkedIn | Deploy, `.env` de producción, `APP_URL` real | Hay un link público |
 
-✂️ **Orden de recorte si me atraso:** reordenar secciones → editar filas (dejar agregar y borrar) → landing simple → GitHub Actions → deploy (pasa a GIF). **No se recorta:** CRUD con Policy, JOIN, pruebas y PDF.
+Domingos libres (23/11 y 30/11) o de colchón.
+
+✂️ **Orden de recorte si me atraso:** reordenar secciones → editar filas (dejar agregar y borrar) → GitHub Actions. **No se recorta:** CRUD con Policy, JOIN, pruebas, PDF y README.
 
 ---
 
