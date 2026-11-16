@@ -1,130 +1,98 @@
-# Retomar: CV Belgrano Web
+# RETOMAR: CV Belgrano Web
 
-Nota para volver a empezar después de una pausa. Última actualización: **16/11/2026**.
-
----
-
-## 1. Al terminar el día (apagar lo que está encendido)
-
-| Qué | ¿Hay que apagarlo? | Cómo |
-|---|---|---|
-| **Vite** (`composer run dev` o `npm run dev` en una terminal) | Sí, si quedó abierto | En esa terminal: **Ctrl + C** (si pregunta "¿terminar el trabajo por lotes?", responder `S`) |
-| **Tinker** (`php artisan tinker`) | Sí, si quedó abierto | Escribir `exit` |
-| **Herd** (sirve `cv-belgrano-web.test`) | No hace falta. Consume poco | Para cerrarlo: ícono de Herd junto al reloj → **Quit** |
-| **MySQL** (servicio `MySQL2610`) | No hace falta. Arranca solo con la PC y consume poco | Para apagarlo: tecla Windows → **"Servicios"** → `MySQL2610` → clic derecho → **Detener**. O en PowerShell **como administrador**: `Stop-Service MySQL2610` |
-
-Si se apaga la PC, se apaga todo solo. Al encenderla, **MySQL vuelve a arrancar solo** (está en modo Automático).
+> **Para la IA que me ayuda a estudiar:** leé este archivo entero antes de responder. Acá está quién soy, dónde quedé, qué toca hoy y qué reglas seguir.
+> Última actualización: **16/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
 
 ---
 
-## 2. Al empezar de nuevo (lanzar el proyecto)
+## 0. Reglas para la IA
 
-**1. Comprobar que MySQL está encendido:**
+1. **Yo (Leo) escribo todo el código y hago los commits.** Vos explicás, me guiás y revisás lo que escribí. No me des archivos completos para copiar: decime qué va, dónde y por qué.
+2. **Primero el concepto, después el código.** Antes de algo nuevo, explicámelo simple (analogía o tabla), comparando con lo que ya sé: JavaScript, React/React Native, Firebase.
+3. **Todo en español.** Respuestas cortas y por pasos.
+4. **Commits sin coautor de IA** (sin `Co-Authored-By`). El repo tiene que ser 100 % mío.
+5. **Versiones reales del proyecto:** Laravel 13, Livewire 4 + Flux (starter kit oficial), Pest, PHP 8.5, MySQL 26.10. Si no estás seguro de que algo existe en estas versiones, decilo y lo verificamos con `php artisan ...` o la documentación oficial. Ojo: en Laravel 13 el modelo `User` usa atributos como `#[Fillable([...])]`; en `Cv` uso `protected $fillable`. Las dos formas valen.
+6. **Antes de un comando que borra datos** (`migrate:fresh`, `migrate:refresh`, `migrate:rollback`, `truncate`), avisame qué se pierde.
+7. **No dejes que el autocompletado meta código que no entiendo.** Si VS Code sugiere algo, lo revisamos antes.
+8. **Al terminar cada bloque:** dame un resumen corto para mi `Manual.md` y el mensaje del commit.
 
-```powershell
-Get-Service MySQL2610
-```
+### Qué SÍ usar (lo que pide el aviso)
+PHP orientado a objetos · Laravel (MVC, rutas, middleware, Eloquent, **Query Builder con JOIN**) · MySQL (diseño de tablas, claves foráneas, **índices**) · **Blade + Livewire** + algo de JavaScript · **pruebas** (Pest) · Pint · **Git** diario · documentar.
 
-Tiene que decir `Running`. Si dice `Stopped`: Servicios → `MySQL2610` → **Iniciar**, o en PowerShell como administrador `Start-Service MySQL2610`.
-
-**2. Abrir Herd** (menú Inicio → Herd), si no está abierto.
-
-**3. Abrir el proyecto en VS Code:**
-
-```powershell
-cd C:\Users\leo\Herd\cv-belgrano-web
-code .
-```
-
-**4. Levantar Vite** (CSS y JS) en una terminal de VS Code, y dejarla abierta:
-
-```powershell
-npm run dev
-```
-
-**5. Abrir la web:** http://cv-belgrano-web.test
-(Alternativa sin Herd: `php artisan serve` en otra terminal → http://localhost:8000)
-
-**6. Comprobar que Laravel ve la base:**
-
-```powershell
-php artisan migrate:status
-```
-
-Tienen que aparecer las 4 migraciones como `Ran` (users, cache, jobs y cvs).
+### Qué NO usar (fuera del aviso; no perder tiempo)
+React, Vue o Inertia en esta web · Filament o paneles generados · API REST, Sanctum o JWT · Docker o Sail · Firebase o MongoDB · pagos, premium o anuncios · colas, websockets o microservicios · Xdebug y Gherkin solo como cultura general · diseño fino de CSS (usar Flux y Tailwind como vienen).
 
 ---
 
-## 3. Dónde quedamos (16/11/2026)
+## 1. Quién soy y para qué es esto
 
-### Hecho
-- Entorno: Herd (PHP 8.5, Composer, Laravel), MySQL 26.10 local, Node.
-- Proyecto Laravel 13 + starter kit de Livewire, conectado a MySQL (`cv_belgrano_web`). Registro y login andando.
-- Repo público: https://github.com/lefasom/cv-belgrano-web.
-- Tabla **`cvs`** con clave foránea `user_id` → `users` (cascada). Un "CV" es un **perfil** (Manual §0).
-- Entendido: Herd contra `php artisan serve`, qué es Artisan, Composer contra npm, `APP_URL`, `migrate` (Manual §3 y §13).
-- **Relaciones escritas por Leo**: `$fillable` y `user()` en `Cv.php`, `cvs()` en `User.php`. Probadas con Tinker (`all`, `first`, `find`, `where`, `get`, `create`). Hay 1 CV de prueba en la base.
-
-### ⚠️ Arreglar primero (revisión del 16/11)
-1. **`Cv.php` no compila la relación**: falta arriba `use Illuminate\Database\Eloquent\Relations\BelongsTo;`.
-   Hoy `App\Models\Cv::first()->user` da `TypeError ... must be of type App\Models\BelongsTo`. `$user->cvs` sí anda.
-2. **Sacar `user_id` de `$fillable`** y crear siempre con `$user->cvs()->create([...])` (Manual §11 y §13).
-3. **`.env`**: se deja `APP_URL=http://localhost:8000` porque Leo trabaja con `php artisan serve` desde VS Code. Si pasa a usar Herd, cambiarlo a `http://cv-belgrano-web.test`. Tiene que coincidir con la puerta que se usa.
-4. `comandos.tinker.md` (nuevo, sin commit): decidir si se completa o se borra; lo mismo ya está en Manual §13.
-5. Probar en Tinker las dos direcciones y hacer **commit + push**:
-   ```powershell
-   git add .
-   git commit -m "Relaciones User-Cv, fillable y Manual de la sesión"
-   git push
-   ```
-
-### Próximos pasos, en orden
-1. **Factory y seeder**: completar `CvFactory::definition()` con `fake()`, y en `DatabaseSeeder` crear un usuario con 3 perfiles: `User::factory()->has(Cv::factory()->count(3))->create()`. Correr `php artisan migrate:fresh --seed` (entender que **borra todo** y vuelve a crear).
-2. **Tablas hijas del perfil**: `experiences`, `education`, `skills` (FK a `cvs` con `cascadeOnDelete`, `sort_order`, índice en `skills.name`) y sus relaciones `hasMany` en `Cv`.
-3. **Primera pantalla: "Mis perfiles"**: ruta protegida con `auth`, componente Livewire (o controlador + Blade) que lista `auth()->user()->cvs`. Ver el N+1 y arreglarlo con `with()`.
-4. **Crear / editar / borrar perfil** (CRUD): validación de formularios y **Policy** para que nadie edite perfiles ajenos.
-5. **Plantilla ATS en Blade + PDF con dompdf**.
-6. **Tests con Pest** de lo anterior (ya vienen instalados).
-7. **Landing** que empuja a bajar la app, y **subir a un hosting**.
+- Leo, desarrollador de **React Native** (app CV Belgrano) y de **FULLMED** (sistema de brazaletes en 8 hospitales). UTN hasta 3.er año.
+- Aprendo Laravel desde cero con este proyecto para postularme a **Desarrollador/a Web Junior PHP/Laravel, remoto, en Nodo Austral Sistemas** (sistemas de gestión para pymes de salud). Usan **Blade + Livewire**. El aviso cierra el **02/01/2027**, pero **la meta es postularme alrededor del 28/11/2026**.
+- **CV Belgrano Web** es la versión web de mi app: login, varios perfiles de CV por usuario, una plantilla ATS y PDF. Tiene que valer sola como vidriera de la app: solo plantillas gratis, sin premium.
+- Proyecto: `C:\Users\leo\Herd\cv-belgrano-web` · Repo público: https://github.com/lefasom/cv-belgrano-web
+- Documentos de apoyo: `Manual.md` (lo que aprendí) y `comandos.tinker.md` (chuleta de Tinker y Artisan). El plan original está en `C:\Users\leo\Desktop\App-de-cv\CV_BELGRANO_WEB_LARAVEL\`.
 
 ---
 
-## 4. Mensaje para empezar una sesión nueva (con Claude o con otra IA)
+## 2. Encender y apagar
 
-Copiar y pegar:
+**Al empezar:**
+1. `Get-Service MySQL2610` → tiene que decir `Running` (arranca solo con la PC).
+2. En VS Code, una terminal: `php artisan serve` → http://localhost:8000
+3. Otra terminal: `npm run dev` (Vite: CSS y JS).
+4. `php artisan migrate:status` → todo en `Ran`.
 
-```text
-Estoy aprendiendo Laravel con un proyecto real: CV Belgrano Web, la versión web de mi app de CV
-(React Native). Es para postular a un puesto Junior PHP/Laravel/MySQL (Blade + Livewire) que
-cierra el 02/01/2027. Proyecto: Laravel 13 + starter kit Livewire 4 + Flux, Pest, MySQL local,
-Herd en Windows. Carpeta: C:\Users\leo\Herd\cv-belgrano-web.
+**Al terminar:** Ctrl + C en las dos terminales, y `exit` si Tinker quedó abierto. MySQL puede quedar encendido.
 
-Cómo quiero trabajar:
-- YO escribo todo el código y hago los commits. Vos explicás y revisás. No me des archivos
-  completos para copiar: decime qué va, dónde y por qué, y después revisás lo que escribí.
-- Antes de cada concepto nuevo, explicámelo simple (analogía o tabla, comparando con
-  JavaScript/React/Firebase, que ya conozco). Me gusta entender el entorno y las herramientas.
-- Todo en español.
+El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan serve`, no con Herd. Si cambio de forma, cambio esa línea.
 
-Dónde estoy (16/11/2026):
-- Hecho: login/registro, tabla cvs (un "CV" = un perfil de datos; un usuario tiene muchos)
-  con user_id → users en cascada. Modelos: Cv tiene $fillable y user() (belongsTo);
-  User tiene cvs() (hasMany). Probé Tinker: all, first, find, where, get, create.
-- Entendí: Artisan, Composer vs npm, migrate, APP_URL, Herd vs php artisan serve.
-- Para arreglar primero:
-  1) En Cv.php falta "use Illuminate\Database\Eloquent\Relations\BelongsTo;" ($cv->user da TypeError).
-  2) Sacar user_id de $fillable y crear con $user->cvs()->create([...]) (explicame por qué).
-  3) APP_URL queda en http://localhost:8000: trabajo con php artisan serve (no con Herd).
-  4) Commit y push.
+---
 
-Qué sigue, en este orden (enseñame paso a paso):
-1) CvFactory con fake() + DatabaseSeeder + migrate:fresh --seed.
-2) Tablas experiences, education, skills con FK a cvs, cascada, sort_order; relaciones hasMany.
-3) Pantalla "Mis perfiles" con Livewire, ruta con middleware auth; ver el problema N+1 y with().
-4) CRUD de perfiles con validación y Policy (que nadie toque perfiles ajenos).
-5) Plantilla ATS en Blade y PDF con dompdf.
-6) Tests con Pest.
-7) Deploy en un hosting barato que no se duerma.
+## 3. Dónde estoy (16/11/2026)
 
-Al terminar cada tema, dame un resumen corto para agregar a mi Manual.md.
-```
+**Hecho:**
+- Entorno, Laravel 13 + Livewire, MySQL conectado, registro y login.
+- Tabla `cvs` (un "CV" = **un perfil de datos**; un usuario tiene muchos; el diseño vive en el código), con `user_id` → `users` en cascada.
+- Relaciones escritas por mí: `Cv::user()` (`belongsTo`) y `User::cvs()` (`hasMany`). `$fillable` sin `user_id`: se crea con `$user->cvs()->create([...])`.
+- Probado en Tinker. Hay 1 usuario y 1 CV de prueba.
+- Entiendo: Artisan, Composer contra npm, `migrate` (pasa la estructura, no los datos), `up()`/`down()`, `APP_URL`, Herd contra `serve`.
+
+**Lo próximo:** el Bloque 1.
+
+---
+
+## 4. Plan por bloques (1 bloque = 1 día de 5 a 6 horas)
+
+Cada bloque termina con algo que funciona y **un commit**. Si un bloque se atrasa, se recorta (✂️), no se estira.
+
+| # | Día | Bloque | Conceptos a aprender | Termina cuando… |
+|---|---|---|---|---|
+| 1 | 17/11 | **Datos de prueba + tablas hijas.** `CvFactory` con `fake()`. `DatabaseSeeder` con un usuario demo (`demo@cvbelgrano.test`) y 2 perfiles. Migraciones `experiences`, `education` y `skills` (FK a `cvs` con cascada, `sort_order`, **índice en `skills.name`**), sus modelos, factories y relaciones `hasMany` en `Cv` | Factory, seeder, `fake()`, `has()`/`for()`, índices, cascada | `php artisan migrate:fresh --seed` crea todo sin errores y en Tinker `Cv::first()->experiences` trae datos |
+| 2 | 18/11 | **Pantalla "Mis perfiles".** Ruta protegida con `auth`, componente Livewire que lista los perfiles del usuario, enlace en el menú del starter kit. Ver el **N+1** y arreglarlo con `with()`/`withCount()` | `routes/web.php`, middleware, componente Livewire (clase + vista Blade), layout del kit, Flux | Logueado, veo mis perfiles; sin login me manda al login |
+| 3 | 19/11 | **Crear, editar y borrar perfil.** Formulario Livewire con **validación** y mensajes en español. **`CvPolicy`**: nadie ve ni toca perfiles ajenos (403) | `wire:model`, validación, Policy, `authorize` | Creo, edito y borro desde el navegador; con otro usuario recibo 403 |
+| 4 | 20/11 | **Secciones del perfil.** Agregar y borrar experiencias, estudios y habilidades dentro del editor (✂️ editar y reordenar con `sort_order`, si sobra tiempo) | Relaciones en formularios, componentes o arreglos en Livewire | El perfil demo se carga completo desde la web |
+| 5 | 21/11 | **Plantilla ATS + PDF.** Vista Blade `ats` (sin flexbox, porque dompdf no lo soporta bien), vista previa y botón "Descargar PDF" con `barryvdh/laravel-dompdf` | Vistas Blade, `@foreach`, `@if`, instalar un paquete con Composer, respuestas de descarga | Baja un PDF prolijo con los datos del perfil |
+| 6 | 22/11 | **Pruebas + calidad.** Pest: (1) sin login → login, (2) crear perfil guarda en la base, (3) la validación falla sin nombre, (4) **otro usuario recibe 403**, (5) borrar un perfil borra sus secciones, (6) el PDF responde `application/pdf`. Pint. GitHub Actions que corre Pint y los tests | Pest, `actingAs`, `assertDatabaseHas`, `assertForbidden`, CI | `php artisan test` en verde e insignia verde en GitHub |
+| — | 23/11 | **Descanso o colchón** para lo atrasado | | |
+| 7 | 24/11 | **JOIN + landing.** Página "Estadísticas" con **Query Builder**: las 10 habilidades más usadas (`skills` JOIN `cvs`, `groupBy`, `count`) + su prueba. Landing `/` en Blade: qué es CV Belgrano y botón "Crear mi CV gratis" | JOIN escrito a mano, `groupBy`, Eloquent contra Query Builder | Se ven el ranking y la landing |
+| 8 | 25/11 | **Publicar + README.** Subir a un hosting barato que no se duerma (✂️ plan B: GIF o video si no sale en 2 h). README con capturas, diagrama Mermaid de las tablas, instalación, usuario demo y decisiones | Deploy, `.env` de producción, `APP_URL` real | Hay un link público y un README que se entiende solo |
+| 9 | 26/11 | **Postulación.** Actualizar CV y LinkedIn solo con lo hecho (archivos 04 y 05 del plan), post en LinkedIn, postular en Qontrata. Practicar en voz alta cómo explicar el proyecto | Contar decisiones: perfiles, cascada, Policy, N+1, índices, JOIN | **Postulación enviada** |
+| — | 27-28/11 | Colchón | | |
+
+✂️ **Orden de recorte si me atraso:** reordenar secciones → editar filas (dejar agregar y borrar) → landing simple → GitHub Actions → deploy (pasa a GIF). **No se recorta:** CRUD con Policy, JOIN, pruebas y PDF.
+
+---
+
+## 5. Registro de avance
+
+| Fecha | Qué hice |
+|---|---|
+| 14/11 | Plan y estrategia de la postulación |
+| 15/11 | Entorno, Laravel + Livewire, MySQL, tabla `cvs`, `Manual.md` |
+| 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
+
+---
+
+## 6. Cómo se actualiza este archivo
+
+Al terminar el día le cuento a Claude qué hice ("terminé el bloque N", "me trabé en X"). Claude revisa el repo, actualiza las secciones 3 a 5 y hace el commit. La IA de estudio no edita este archivo: sigue lo que dice.
