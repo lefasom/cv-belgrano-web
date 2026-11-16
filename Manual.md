@@ -214,11 +214,54 @@ php artisan db:table cvs     # columnas, tipos, índices y claves foráneas de u
 - `template` → valor por defecto `ats`
 - Motor **InnoDB**: el motor de MySQL que soporta claves foráneas y transacciones
 
-### Levantar la web
+### Levantar la web: dos servidores, uno para cada parte
 
-Con Herd no hace falta: entrar a http://cv-belgrano-web.test.
-Alternativa sin Herd: `php artisan serve` → http://localhost:8000.
-Para que el CSS y el JS se actualicen solos mientras programás: `composer run dev` (o `npm run dev`).
+Mientras programás funcionan **dos servidores distintos**:
+
+| Servidor | Parte | Qué hace | Cómo se enciende | Dirección |
+|---|---|---|---|---|
+| **Herd** (o `php artisan serve`) | **Backend** | Ejecuta PHP/Laravel: rutas, base de datos, login. **Arma y entrega las páginas** | Herd: solo con tenerlo abierto. `serve`: con el comando, mientras la terminal esté abierta | Herd: **http://cv-belgrano-web.test**. `serve`: http://localhost:8000 |
+| **Vite** (`npm run dev`) | **Frontend** | Compila el **CSS y el JavaScript** y los actualiza al instante cuando guardás un cambio | Con el comando, mientras la terminal esté abierta | http://localhost:5173 (no se abre en el navegador: lo usa la página por dentro) |
+
+**La web se abre siempre por el backend** (`cv-belgrano-web.test`). Vite trabaja "por detrás", entregándole a la página el CSS y el JS.
+
+| Síntoma | Causa | Solución |
+|---|---|---|
+| `localhost:8000` → **ERR_CONNECTION_REFUSED** | `php artisan serve` no está corriendo | Normal si usás Herd: abrir `cv-belgrano-web.test`. O correr `php artisan serve` |
+| La página carga **sin estilos** o no responde a los clics | Vite no está corriendo, pero quedó el archivo `public/hot` que le dice a Laravel que lo use | Correr `npm run dev`. O, si no vas a programar el frontend, `npm run build` (compila una vez y no necesita Vite encendido) |
+| `cv-belgrano-web.test` no abre | Herd cerrado | Abrir Herd |
+
+`composer run dev` enciende **juntos** `php artisan serve`, Vite y otros procesos. Con Herd alcanza con `npm run dev`.
+
+#### ¿Y cómo se "lanza el frontend"? Diferencia con React
+
+| | **React** (lo conocido) | **Laravel con Blade/Livewire** (este proyecto) |
+|---|---|---|
+| ¿Quién arma el HTML? | El **navegador**, con JavaScript | El **servidor** (PHP), y lo manda ya armado |
+| ¿Hay un sitio de frontend aparte? | Sí: `npm start` abre `localhost:3000` y es la app | **No.** La web es una sola y la entrega el backend |
+| ¿Qué hace `npm run dev`? | Levanta la app entera | **Solo prepara el CSS y el JS** que usan las páginas |
+
+Por eso en Laravel **no se lanza el frontend por separado**: se abre la web del backend (`cv-belgrano-web.test`) y esa página ya trae el frontend adentro (HTML de Blade + CSS y JS de Vite).
+
+#### Dos puertas a la misma casa
+
+`http://cv-belgrano-web.test` y `http://localhost:8000` muestran **la misma web, el mismo backend**. Son dos puertas distintas:
+- La puerta **`.test`** la abre **Herd**, y está abierta mientras Herd esté abierto.
+- La puerta **`:8000`** la abre **`php artisan serve`**, y solo está abierta mientras ese comando corre. Si no corre: `ERR_CONNECTION_REFUSED`.
+
+Con Herd se usa siempre `.test`; la otra queda cerrada y no pasa nada.
+
+#### `APP_URL` en el `.env`
+
+`APP_URL` **no enciende nada**: es solo un **dato** que le dice a Laravel "esta es mi dirección", para armar links completos (por ejemplo en un mail de "recuperar contraseña"). Vite lo muestra en la terminal al arrancar, por eso aparece `localhost:8000` aunque esa puerta esté cerrada.
+
+Con Herd conviene poner la dirección real:
+
+```env
+APP_URL=http://cv-belgrano-web.test
+```
+
+En el servidor online va la dirección pública (por ejemplo `https://app.cvbelgrano.com.ar`).
 
 ### Git
 
@@ -850,3 +893,4 @@ Lo que se crea en Tinker **se guarda de verdad** en MySQL.
 | **Servicio de Windows** | Programa que corre en segundo plano y arranca con la PC (así corre MySQL) |
 | **Puerto** | "Número de puerta" por donde un servidor escucha (MySQL: 3306) |
 | **Local / producción** | Tu PC (para desarrollar) / el servidor online (lo que usa la gente) |
+| **localhost** | "Esta misma PC" (igual que `127.0.0.1`). El número después de `:` es el puerto: `:8000` Laravel con `serve`, `:5173` Vite, `:3306` MySQL |

@@ -74,6 +74,18 @@ Tienen que aparecer las 4 migraciones como `Ran` (users, cache, jobs y cvs).
   git push
   ```
 
+### ❓ Primera pregunta de mañana (no quedó clara)
+
+**"¿Cuál es el frontend y cuál el backend? ¿Por qué `cv-belgrano-web.test` funciona y `localhost:8000` da `ERR_CONNECTION_REFUSED`? ¿Por qué `npm run dev` muestra `APP_URL: http://localhost:8000`? ¿Cómo se lanza el frontend?"**
+
+Explicarlo **despacio y con un ejemplo práctico en la PC**, no solo con tablas. Por ejemplo:
+1. Abrir `cv-belgrano-web.test` con `npm run dev` corriendo y después sin él, para ver qué cambia.
+2. Correr `php artisan serve` para ver que `localhost:8000` abre **la misma** web.
+3. Ver una página Blade (por ejemplo `welcome.blade.php`) y cómo el servidor la manda ya armada, comparado con React.
+
+Pendiente de esa charla: cambiar en el `.env` `APP_URL=http://localhost:8000` por `APP_URL=http://cv-belgrano-web.test`.
+La explicación escrita está en `Manual.md` §3, "Levantar la web".
+
 ### Próximo paso: el ejercicio de las relaciones (Manual §11)
 
 Todavía **no está escrito**. Lo escribe Leo:
@@ -110,6 +122,32 @@ Retomo CV Belgrano Web (Laravel). El proyecto está en C:\Users\leo\Herd\cv-belg
 Leé RETOMAR.md y Manual.md de esa carpeta, y el plan en
 C:\Users\leo\Desktop\App-de-cv\CV_BELGRANO_WEB_LARAVEL\.
 Primero verificá que MySQL y la web andan (sección 2 de RETOMAR.md).
+Empezá por la "Primera pregunta de mañana" de RETOMAR.md (frontend, backend, localhost:8000
+y APP_URL), con un ejemplo práctico en la PC porque ayer no la entendí.
+Después seguimos con el ejercicio de las relaciones (Manual §11): yo escribo el código y vos me
+explicás y revisás. Explicame cada concepto antes de usarlo y sumá lo nuevo al Manual.md.
+```
+Mañana
+
+Para empezar una sesión nueva, pegá esto:
+
+Retomo CV Belgrano Web (Laravel). El proyecto está en C:\Users\leo\Herd\cv-belgrano-web.
+Leé RETOMAR.md y Manual.md de esa carpeta, y el plan en
+C:\Users\leo\Desktop\App-de-cv\CV_BELGRANO_WEB_LARAVEL\.
+Primero verificá que MySQL y la web andan (sección 2 de RETOMAR.md).
 Seguimos con el ejercicio de las relaciones (Manual §11): yo escribo el código y vos me explicás
 y revisás. Explicame cada concepto antes de usarlo y sumá lo nuevo al Manual.md.
-```
+
+Para levantar el proyecto (está en la sección 2 de RETOMAR.md):
+1. Get-Service MySQL2610 → tiene que decir Running.
+2. Abrir Herd.
+3. cd C:\Users\leo\Herd\cv-belgrano-web y code .
+4. npm run dev, y dejar esa terminal abierta.
+5. Abrir http://cv-belgrano-web.test
+
+Dónde quedamos: el ejercicio de las relaciones todavía no está escrito. Lo escribís vos:
+- En Cv.php: $fillable y el método user().
+- En User.php: el método cvs().
+- Después lo probamos con Tinker.
+
+Buen trabajo hoy: pasaste de no tener nada instalado a tener Laravel + MySQL andando, tu primera tabla con clave foránea, y un diseño de base pensado con criterio propio. ¡Hasta mañana! 👋
