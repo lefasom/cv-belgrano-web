@@ -1,7 +1,7 @@
 # RETOMAR: CV Belgrano Web
 
 > **Para la IA que me ayuda a estudiar:** leé este archivo entero antes de responder. Acá está quién soy, dónde quedé, qué toca hoy y qué reglas seguir.
-> Última actualización: **16/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
+> Última actualización: **17/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
 
 ---
 
@@ -48,16 +48,22 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 
 ---
 
-## 3. Dónde estoy (16/11/2026)
+## 3. Dónde estoy (17/11/2026)
 
 **Hecho:**
 - Entorno, Laravel 13 + Livewire, MySQL conectado, registro y login.
 - Tabla `cvs` (un "CV" = **un perfil de datos**; un usuario tiene muchos; el diseño vive en el código), con `user_id` → `users` en cascada.
-- Relaciones escritas por mí: `Cv::user()` (`belongsTo`) y `User::cvs()` (`hasMany`). `$fillable` sin `user_id`: se crea con `$user->cvs()->create([...])`.
-- Probado en Tinker. Hay 1 usuario y 1 CV de prueba.
-- Entiendo: Artisan, Composer contra npm, `migrate` (pasa la estructura, no los datos), `up()`/`down()`, `APP_URL`, Herd contra `serve`.
+- Relaciones `Cv::user()` (`belongsTo`) y `User::cvs()` (`hasMany`). `$fillable` sin `user_id`: se crea con `$user->cvs()->create([...])`.
+- **Bloque 1 (17/11):** tablas hijas `experiences`, `education` y `skills` (FK `cv_id` con cascada, índice en `skills.name`), sus modelos y factories, y relaciones `hasMany` en `Cv` (`education()`, `experiences()`, `skills()`). `DatabaseSeeder`: 1 usuario, 2 perfiles y 5 filas de cada sección por perfil.
+- **Bloque 2 (17/11):** ruta `/mis-perfiles` con middleware `auth` y componente Livewire de un solo archivo (`resources/views/components/⚡mis-perfiles.blade.php`) que lista los perfiles del usuario. Practiqué en Tinker y comparé las consultas **con y sin `with()`** (el problema N+1).
+- Entiendo: Artisan, Composer contra npm, `migrate`, `up()`/`down()`, `APP_URL`, Herd contra `serve`, factory, seeder, `fake()`, cascada, índices, N+1 y `with()`.
 
-**Lo próximo:** el Bloque 1.
+**Pendiente chico:**
+- El trabajo del 17/11 todavía **no está commiteado**. Hacerlo antes de seguir.
+- El seeder usa un correo real para el usuario de prueba. Como el repo es público, conviene cambiarlo por `demo@cvbelgrano.test`.
+- Revisar que "Mis perfiles" tenga su enlace en el menú del starter kit.
+
+**▶ RETOMAR ACÁ:** el **Bloque 3, CRUD de perfiles CV** (crear, editar y borrar, con validación y `CvPolicy`).
 
 ---
 
@@ -92,6 +98,7 @@ Se trabaja todos los días, sin días libres.
 | 14/11 | Plan y estrategia de la postulación |
 | 15/11 | Entorno, Laravel + Livewire, MySQL, tabla `cvs`, `Manual.md` |
 | 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
+| 17/11 | Bloque 1 (tablas hijas, factories, seeder) y Bloque 2 ("Mis perfiles" con `auth`). Tinker y comparación de consultas con `with()`. Sigue: Bloque 3, CRUD de perfiles |
 
 ---
 
