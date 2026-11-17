@@ -2,7 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Education;
+use App\Models\Experience;
+use App\Models\Skill;
 use App\Models\User;
+use App\Models\Cv;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,9 +21,26 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $user = User::factory()->create([
+            'name' => 'Usuario de prueba',
+            'email' => 'cvbelgranosoporte@gmail.com',
         ]);
+
+        $cvs = $user->cvs()->createMany(
+            Cv::factory()->count(2)->make()->toArray()
+        );
+
+        $cvs->each(function ($cv) {
+            $cv->education()->createMany(
+                Education::factory()->count(5)->make()->toArray()
+            );
+            $cv->experiences()->createMany(
+                Experience::factory()->count(5)->make()->toArray()
+            );
+            $cv->skills()->createMany(
+                Skill::factory()->count(5)->make()->toArray()
+            );
+        });
+
     }
 }

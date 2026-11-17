@@ -18,7 +18,13 @@ class CvFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence(3),
+            'full_name' => $this->faker->name(),
+            'headline' => $this->faker->jobTitle(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber(),
+            'location' => $this->faker->city(),
+            'summary' => $this->faker->paragraph(),
         ];
     }
 }
