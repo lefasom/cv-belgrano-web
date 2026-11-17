@@ -55,15 +55,27 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - Tabla `cvs` (un "CV" = **un perfil de datos**; un usuario tiene muchos; el diseño vive en el código), con `user_id` → `users` en cascada.
 - Relaciones `Cv::user()` (`belongsTo`) y `User::cvs()` (`hasMany`). `$fillable` sin `user_id`: se crea con `$user->cvs()->create([...])`.
 - **Bloque 1 (17/11):** tablas hijas `experiences`, `education` y `skills` (FK `cv_id` con cascada, índice en `skills.name`), sus modelos y factories, y relaciones `hasMany` en `Cv` (`education()`, `experiences()`, `skills()`). `DatabaseSeeder`: 1 usuario, 2 perfiles y 5 filas de cada sección por perfil.
-- **Bloque 2 (17/11):** ruta `/mis-perfiles` con middleware `auth` y componente Livewire de un solo archivo (`resources/views/components/⚡mis-perfiles.blade.php`) que lista los perfiles del usuario. Practiqué en Tinker y comparé las consultas **con y sin `with()`** (el problema N+1).
+- **Bloque 2 (17/11, a medias):** páginas propias `home.blade.php` y `pages/mis-perfiles.blade.php` (componente de un solo archivo de Livewire 4), primer molde `components/layouts/layout.blade.php` con el menú, y repaso de componentes, `x-slot` y Vite. Practiqué en Tinker y comparé las consultas **con y sin `with()`** (el problema N+1). Registro completo del día: `registro/2026-11-17.md`.
 - Entiendo: Artisan, Composer contra npm, `migrate`, `up()`/`down()`, `APP_URL`, Herd contra `serve`, factory, seeder, `fake()`, cascada, índices, N+1 y `with()`.
 
-**Pendiente chico:**
-- El trabajo del 17/11 todavía **no está commiteado**. Hacerlo antes de seguir.
-- El seeder usa un correo real para el usuario de prueba. Como el repo es público, conviene cambiarlo por `demo@cvbelgrano.test`.
-- Revisar que "Mis perfiles" tenga su enlace en el menú del starter kit.
+**Decisión del 17/11 (cambia el plan):** el login **no es obligatorio**. Sin cuenta se arma el CV y se baja el PDF; la cuenta solo hace falta para **guardar**. Se saca el dashboard del kit. Orden de trabajo: páginas → rutas → navegación → componentes → funciones. **Los estilos quedan para más adelante.**
 
-**▶ RETOMAR ACÁ:** el **Bloque 3, CRUD de perfiles CV** (crear, editar y borrar, con validación y `CvPolicy`).
+| Página | Dirección | ¿Pide login? |
+|---|---|---|
+| Inicio | `/` | No |
+| Creador | `/crear` | No (al tocar Guardar sin cuenta: datos a la sesión → login → `redirect()->intended()` → se guardan) |
+| Mis perfiles | `/mis-perfiles` | Sí |
+| Editar un guardado | `/perfiles/{cv}/editar` | Sí, con `CvPolicy` |
+
+**Pendiente (lo que vio Claude el 17/11):**
+- `routes/web.php`: `mis-perfiles` está con `Route::view`; para que Livewire funcione va con `Route::livewire` (`pages::mis-perfiles`). Va adentro de `middleware(['auth'])`; `/` y `/crear` quedan afuera.
+- Al sacar el dashboard: `config/fortify.php` (`home`), `layouts/app/header.blade.php`, `layouts/app/sidebar.blade.php` y `welcome.blade.php` todavía usan `dashboard`; pasarlos a `mis-perfiles`.
+- El molde: sacarle el bloque `new class extends Component` (es Blade simple) y darle `<html>`, `<head>` con `@vite`, el menú, `{{ $header ?? '' }}` y `{{ $slot }}`. Así el contenido de cada página entra en el molde y Vite recarga solo todas las páginas.
+- `home.css` y `mis-perfiles.css` no están en el `input` de `vite.config.js` (fallarían en `npm run build`).
+- El seeder usa un correo real: cambiarlo por `demo@cvbelgrano.test` (repo público).
+- **El trabajo del 17/11 no está commiteado.** Hacerlo antes de seguir.
+
+**▶ RETOMAR ACÁ:** dejar funcionando "Mis perfiles" (ruta Livewire, molde con hueco y navegación). Después, el **Bloque 3** con el cambio de plan: creador público + guardar con login + editar y borrar los guardados con `CvPolicy`.
 
 ---
 
@@ -77,7 +89,7 @@ Ritmo decidido el 16/11: **mañanas para Laravel (3 a 4 h), tardes para la app**
 |---|---|---|---|---|
 | 1 | 17-18/11 | **Datos de prueba + tablas hijas.** `CvFactory` con `fake()`. `DatabaseSeeder` con un usuario demo (`demo@cvbelgrano.test`) y 2 perfiles. Migraciones `experiences`, `education` y `skills` (FK a `cvs` con cascada, `sort_order`, **índice en `skills.name`**), sus modelos, factories y relaciones `hasMany` en `Cv` | Factory, seeder, `fake()`, `has()`/`for()`, índices, cascada | `php artisan migrate:fresh --seed` crea todo sin errores y en Tinker `Cv::first()->experiences` trae datos |
 | 2 | 19-20/11 | **Pantalla "Mis perfiles".** Ruta protegida con `auth`, componente Livewire que lista los perfiles del usuario, enlace en el menú del starter kit. Ver el **N+1** y arreglarlo con `with()`/`withCount()` | `routes/web.php`, middleware, componente Livewire (clase + vista Blade), layout del kit, Flux | Logueado, veo mis perfiles; sin login me manda al login |
-| 3 | 21-22/11 | **Crear, editar y borrar perfil.** Formulario Livewire con **validación** y mensajes en español. **`CvPolicy`**: nadie ve ni toca perfiles ajenos (403) | `wire:model`, validación, Policy, `authorize` | Creo, edito y borro desde el navegador; con otro usuario recibo 403 |
+| 3 | 21-22/11 | **Creador público + guardar con login** (decisión del 17/11, ver §3). **Crear, editar y borrar perfil.** Formulario Livewire con **validación** y mensajes en español. **`CvPolicy`**: nadie ve ni toca perfiles ajenos (403) | `wire:model`, validación, Policy, `authorize` | Creo, edito y borro desde el navegador; con otro usuario recibo 403 |
 | 4 | 23-24/11 | **Secciones del perfil.** Agregar y borrar experiencias, estudios y habilidades dentro del editor (✂️ editar y reordenar con `sort_order`, si sobra tiempo) | Relaciones en formularios, componentes o arreglos en Livewire | El perfil demo se carga completo desde la web |
 | 5 | 25-26/11 | **Plantilla ATS + PDF.** Vista Blade `ats` (sin flexbox, porque dompdf no lo soporta bien), vista previa y botón "Descargar PDF" con `barryvdh/laravel-dompdf` | Vistas Blade, `@foreach`, `@if`, instalar un paquete con Composer, respuestas de descarga | Baja un PDF prolijo con los datos del perfil |
 | 6 | 27-28/11 | **Pruebas + calidad.** Pest: (1) sin login → login, (2) crear perfil guarda en la base, (3) la validación falla sin nombre, (4) **otro usuario recibe 403**, (5) borrar un perfil borra sus secciones, (6) el PDF responde `application/pdf`. Pint. GitHub Actions que corre Pint y los tests | Pest, `actingAs`, `assertDatabaseHas`, `assertForbidden`, CI | `php artisan test` en verde e insignia verde en GitHub |
@@ -98,7 +110,7 @@ Se trabaja todos los días, sin días libres.
 | 14/11 | Plan y estrategia de la postulación |
 | 15/11 | Entorno, Laravel + Livewire, MySQL, tabla `cvs`, `Manual.md` |
 | 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
-| 17/11 | Bloque 1 (tablas hijas, factories, seeder) y Bloque 2 ("Mis perfiles" con `auth`). Tinker y comparación de consultas con `with()`. Sigue: Bloque 3, CRUD de perfiles |
+| 17/11 | Bloque 1 completo (tablas hijas, factories, seeder). Bloque 2 a medias (páginas, molde, Vite). Tinker y `with()`. Decisión: login solo para guardar. Ver `registro/2026-11-17.md` |
 
 ---
 
