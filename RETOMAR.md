@@ -77,7 +77,16 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - Listar los perfiles del usuario en Mis perfiles, con `with()`/`withCount()`.
 - Ojo: las pruebas leen `public/build` (lo que arma `npm run build`), no `npm run dev`. Al agregar un CSS al `input`, correr `npm run build` antes de `php artisan test`.
 
-**▶ RETOMAR ACÁ:** el molde con hueco y listar los perfiles (cierra el Bloque 2). Después, el **Bloque 3**: creador público + guardar con login + editar y borrar los guardados con `CvPolicy`.
+**Decisión del 18/11 (por aprendizaje, manda sobre el plan de bloques):** Mis perfiles queda como está por ahora. Se arma el **creador en el home**, todavía **sin base de datos**:
+1. `home.blade.php` sigue siendo Blade (presentación corta) y adentro va **un** componente Livewire `<livewire:creador />`.
+2. Botones o persianas por sección; cada uno abre **su modal** (`<flux:modal>`).
+3. Cada modal edita un **borrador** (`wire:model="borrador.campo"`). **Guardar** copia el borrador al CV; **Cancelar** lo descarta y queda el dato anterior.
+4. **Vista previa ATS**: componente Blade `<x-cv.ats :cv="$cv" />` que recibe el CV por props (sin flexbox: se reusa para el PDF con dompdf). Filtrar secciones vacías con `#[Computed]`.
+5. **Persistencia sin base de datos con la sesión (PHP, no localStorage):** `session()->put('cv', ...)` al guardar y `session('cv', [...])` en `mount()`. Ver que la sesión vence (`config/session.php`) y es de cada navegador.
+
+Conceptos: componentes Blade, `@props`, `{{ $slot }}`, estado `public`, `mount()`, `wire:model`, `wire:click`, modales de Flux, `#[Computed]`, sesión. JavaScript solo si no se puede con PHP. Los hijos Livewire con `dispatch`/`#[On]` quedan para más adelante.
+
+**▶ RETOMAR ACÁ:** el molde con `{{ $slot }}` y después el creador en el home (pasos 1 a 5). La base de datos, el login para guardar y la `CvPolicy` vuelven después.
 
 ---
 
@@ -113,7 +122,7 @@ Se trabaja todos los días, sin días libres.
 | 15/11 | Entorno, Laravel + Livewire, MySQL, tabla `cvs`, `Manual.md` |
 | 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
 | 17/11 | Bloque 1 completo (tablas hijas, factories, seeder). Bloque 2 a medias (páginas, molde, Vite). Tinker y `with()`. Decisión: login solo para guardar. Ver `registro/2026-11-17.md` |
-| 18/11 | Dashboard reemplazado por Mis perfiles (ruta Livewire con `auth`), pruebas ajustadas (25/25), CSS en Vite. Falta el molde y listar perfiles |
+| 18/11 | Dashboard reemplazado por Mis perfiles (ruta Livewire con `auth`), pruebas ajustadas (25/25), CSS en Vite. Comparé React y Vue con Livewire. Decisión: creador en el home con modales y sesión, sin base de datos todavía |
 
 ---
 
