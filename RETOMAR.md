@@ -70,6 +70,8 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - Vista previa ATS que reciba los datos de las secciones (props), después PDF.
 - Conectar con la base: "Guardar" con login pasa lo de la sesión a `cvs` y sus tablas hijas, con `CvPolicy`.
 
+**Enfoque decidido el 18/11 (manda sobre el plan de bloques):** primero **aprender las herramientas haciendo** cosas propias en la web, a mi ritmo. Lo que pide el aviso (base de datos con `CvPolicy`, PDF, pruebas, JOIN y README) **se integra después**, viendo cómo encaja en lo que ya esté hecho. El plan de bloques del §4 queda como referencia de lo que hay que cubrir, no como calendario. Al 18/11, de los bloques 1 a 7 hay más o menos un 35-40 % (la landing, que era para después, ya está).
+
 **▶ RETOMAR ACÁ:** repasar `registro/2026-11-18.md`, poner el logo en `/crear` y después la **vista previa ATS** en `/crear`.
 
 ---
