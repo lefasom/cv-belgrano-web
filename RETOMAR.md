@@ -1,7 +1,7 @@
 # RETOMAR: CV Belgrano Web
 
 > **Para la IA que me ayuda a estudiar:** leé este archivo entero antes de responder. Acá está quién soy, dónde quedé, qué toca hoy y qué reglas seguir.
-> Última actualización: **17/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
+> Última actualización: **18/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
 
 ---
 
@@ -48,7 +48,7 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 
 ---
 
-## 3. Dónde estoy (17/11/2026)
+## 3. Dónde estoy (18/11/2026)
 
 **Hecho:**
 - Entorno, Laravel 13 + Livewire, MySQL conectado, registro y login.
@@ -67,15 +67,17 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 | Mis perfiles | `/mis-perfiles` | Sí |
 | Editar un guardado | `/perfiles/{cv}/editar` | Sí, con `CvPolicy` |
 
-**Pendiente (lo que vio Claude el 17/11):**
-- `routes/web.php`: `mis-perfiles` está con `Route::view`; para que Livewire funcione va con `Route::livewire` (`pages::mis-perfiles`). Va adentro de `middleware(['auth'])`; `/` y `/crear` quedan afuera.
-- Al sacar el dashboard: `config/fortify.php` (`home`), `layouts/app/header.blade.php`, `layouts/app/sidebar.blade.php` y `welcome.blade.php` todavía usan `dashboard`; pasarlos a `mis-perfiles`.
-- El molde: sacarle el bloque `new class extends Component` (es Blade simple) y darle `<html>`, `<head>` con `@vite`, el menú, `{{ $header ?? '' }}` y `{{ $slot }}`. Así el contenido de cada página entra en el molde y Vite recarga solo todas las páginas.
-- `home.css` y `mis-perfiles.css` no están en el `input` de `vite.config.js` (fallarían en `npm run build`).
-- El seeder usa un correo real: cambiarlo por `demo@cvbelgrano.test` (repo público).
-- **El trabajo del 17/11 no está commiteado.** Hacerlo antes de seguir.
+- **18/11:** se sacó el dashboard del kit (vista, prueba y referencias en `fortify.php`, `header`, `sidebar` y `welcome`). Después del login se va a `/mis-perfiles`, que es `Route::livewire` dentro de `middleware(['auth', 'verified'])`. `home.css` y `mis-perfiles.css` están en el `input` de Vite. Pruebas de Auth ajustadas: **25/25 en verde**. Entendí que el kit trae dos cosas separadas (autenticación de Fortify, que queda, y dashboard de ejemplo, que se borra), que el código que no se usa se borra y Git lo guarda, la diferencia entre `input` y `refresh` en Vite, y que en Livewire la lógica va en PHP (`app.js` está vacío; el JS de Livewire lo pone Livewire).
 
-**▶ RETOMAR ACÁ:** dejar funcionando "Mis perfiles" (ruta Livewire, molde con hueco y navegación). Después, el **Bloque 3** con el cambio de plan: creador público + guardar con login + editar y borrar los guardados con `CvPolicy`.
+**Pendiente:**
+- El molde `components/layouts/layout.blade.php`: sacarle el bloque `new class extends Component` (es Blade simple) y darle `<html>`, `<head>` con `@vite`, el menú, `{{ $header ?? '' }}` y `{{ $slot }}`. La página va **dentro** del molde: `<x-layouts.layout> ... </x-layouts.layout>`.
+- En `routes/web.php` el componente figura como `'pages.mis-perfiles'`; en Livewire 4 las páginas se nombran `'pages::mis-perfiles'`. Comprobar en el navegador que carga y, si no, cambiarlo.
+- `verified` en la ruta: si no se quiere exigir confirmar el correo, dejar solo `auth`.
+- El seeder usa un correo real: cambiarlo por `demo@cvbelgrano.test` (repo público).
+- Listar los perfiles del usuario en Mis perfiles, con `with()`/`withCount()`.
+- Ojo: las pruebas leen `public/build` (lo que arma `npm run build`), no `npm run dev`. Al agregar un CSS al `input`, correr `npm run build` antes de `php artisan test`.
+
+**▶ RETOMAR ACÁ:** el molde con hueco y listar los perfiles (cierra el Bloque 2). Después, el **Bloque 3**: creador público + guardar con login + editar y borrar los guardados con `CvPolicy`.
 
 ---
 
@@ -111,6 +113,7 @@ Se trabaja todos los días, sin días libres.
 | 15/11 | Entorno, Laravel + Livewire, MySQL, tabla `cvs`, `Manual.md` |
 | 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
 | 17/11 | Bloque 1 completo (tablas hijas, factories, seeder). Bloque 2 a medias (páginas, molde, Vite). Tinker y `with()`. Decisión: login solo para guardar. Ver `registro/2026-11-17.md` |
+| 18/11 | Dashboard reemplazado por Mis perfiles (ruta Livewire con `auth`), pruebas ajustadas (25/25), CSS en Vite. Falta el molde y listar perfiles |
 
 ---
 
