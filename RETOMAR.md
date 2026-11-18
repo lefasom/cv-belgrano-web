@@ -1,7 +1,7 @@
 # RETOMAR: CV Belgrano Web
 
 > **Para la IA que me ayuda a estudiar:** leé este archivo entero antes de responder. Acá está quién soy, dónde quedé, qué toca hoy y qué reglas seguir.
-> Última actualización: **18/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
+> Última actualización: **18/11/2026 (cierre)** (la actualiza Claude cuando Leo le cuenta el avance).
 
 ---
 
@@ -48,45 +48,29 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 
 ---
 
-## 3. Dónde estoy (18/11/2026)
+## 3. Dónde estoy (18/11/2026, cierre del día)
 
-**Hecho:**
-- Entorno, Laravel 13 + Livewire, MySQL conectado, registro y login.
-- Tabla `cvs` (un "CV" = **un perfil de datos**; un usuario tiene muchos; el diseño vive en el código), con `user_id` → `users` en cascada.
-- Relaciones `Cv::user()` (`belongsTo`) y `User::cvs()` (`hasMany`). `$fillable` sin `user_id`: se crea con `$user->cvs()->create([...])`.
-- **Bloque 1 (17/11):** tablas hijas `experiences`, `education` y `skills` (FK `cv_id` con cascada, índice en `skills.name`), sus modelos y factories, y relaciones `hasMany` en `Cv` (`education()`, `experiences()`, `skills()`). `DatabaseSeeder`: 1 usuario, 2 perfiles y 5 filas de cada sección por perfil.
-- **Bloque 2 (17/11, a medias):** páginas propias `home.blade.php` y `pages/mis-perfiles.blade.php` (componente de un solo archivo de Livewire 4), primer molde `components/layouts/layout.blade.php` con el menú, y repaso de componentes, `x-slot` y Vite. Practiqué en Tinker y comparé las consultas **con y sin `with()`** (el problema N+1). Registro completo del día: `registro/2026-11-17.md`.
-- Entiendo: Artisan, Composer contra npm, `migrate`, `up()`/`down()`, `APP_URL`, Herd contra `serve`, factory, seeder, `fake()`, cascada, índices, N+1 y `with()`.
+**Hecho hasta el 17/11:** entorno, Laravel 13 + Livewire, MySQL, registro y login. Tablas `cvs`, `experiences`, `education` y `skills` con relaciones, factories y seeder (Bloque 1).
 
-**Decisión del 17/11 (cambia el plan):** el login **no es obligatorio**. Sin cuenta se arma el CV y se baja el PDF; la cuenta solo hace falta para **guardar**. Se saca el dashboard del kit. Orden de trabajo: páginas → rutas → navegación → componentes → funciones. **Los estilos quedan para más adelante.**
-
-| Página | Dirección | ¿Pide login? |
-|---|---|---|
-| Inicio | `/` | No |
-| Creador | `/crear` | No (al tocar Guardar sin cuenta: datos a la sesión → login → `redirect()->intended()` → se guardan) |
-| Mis perfiles | `/mis-perfiles` | Sí |
-| Editar un guardado | `/perfiles/{cv}/editar` | Sí, con `CvPolicy` |
-
-- **18/11:** se sacó el dashboard del kit (vista, prueba y referencias en `fortify.php`, `header`, `sidebar` y `welcome`). Después del login se va a `/mis-perfiles`, que es `Route::livewire` dentro de `middleware(['auth', 'verified'])`. `home.css` y `mis-perfiles.css` están en el `input` de Vite. Pruebas de Auth ajustadas: **25/25 en verde**. Entendí que el kit trae dos cosas separadas (autenticación de Fortify, que queda, y dashboard de ejemplo, que se borra), que el código que no se usa se borra y Git lo guarda, la diferencia entre `input` y `refresh` en Vite, y que en Livewire la lógica va en PHP (`app.js` está vacío; el JS de Livewire lo pone Livewire).
+**Hecho el 18/11** (explicado con ejemplos en `registro/2026-11-18.md`):
+- **Sin Flux ni Tailwind** (desinstalados). Login, registro, logout y recuperar contraseña quedaron en HTML común en `resources/views/auth/`. Se borraron los ajustes del kit y **Mis perfiles**.
+- **Un solo molde:** `layouts/app.blade.php` (`<x-layouts::app>`), con `$slot`, `$head`, `$title` y `:menu="false"` para la home.
+- **Home = la landing de CV Belgrano** pasada de React a componentes Blade (`components/landing/*`), con las imágenes en `public/images/landing` y los textos en **`lang/es`, `lang/en` y `lang/pt`** (`landing.php`). Componente nuevo `probar-online`, que lleva a `/crear`, y botón `volver-arriba` (aparece al bajar, solo con CSS).
+- **Selector de idioma:** componente Livewire `livewire/idioma.blade.php` (estado `$abierto`; `cambiar()` guarda en la sesión). Middleware `ElegirIdioma` (en `bootstrap/app.php`): primero el idioma elegido, después el del navegador.
+- **`/crear` (público):** cuatro componentes Livewire en `livewire/creador/` (datos, experiencia, educación, habilidades). Cada uno tiene modal propio en Livewire puro (`$abierto` + `@if`), borrador, validación con mensajes en español y `#[Session]`. **Sin base de datos todavía.** Después del login se va a `/crear`.
+- **Un CSS por componente** (`resources/css/...`, todos en el `input` de `vite.config.js`), con los colores de la landing.
+- **Sesión en archivos:** `SESSION_DRIVER=file`. `APP_LOCALE=es`.
+- **Convenciones:** componentes Livewire **sin ⚡**, en `resources/views/livewire/`. Los datos fijos (idiomas, URLs) se escriben en el archivo que los usa, sin `config/` propio.
+- Pruebas: 13 en verde.
 
 **Pendiente:**
-- El molde `components/layouts/layout.blade.php`: sacarle el bloque `new class extends Component` (es Blade simple) y darle `<html>`, `<head>` con `@vite`, el menú, `{{ $header ?? '' }}` y `{{ $slot }}`. La página va **dentro** del molde: `<x-layouts.layout> ... </x-layouts.layout>`.
-- En `routes/web.php` el componente figura como `'pages.mis-perfiles'`; en Livewire 4 las páginas se nombran `'pages::mis-perfiles'`. Comprobar en el navegador que carga y, si no, cambiarlo.
-- `verified` en la ruta: si no se quiere exigir confirmar el correo, dejar solo `auth`.
-- El seeder usa un correo real: cambiarlo por `demo@cvbelgrano.test` (repo público).
-- Listar los perfiles del usuario en Mis perfiles, con `with()`/`withCount()`.
-- Ojo: las pruebas leen `public/build` (lo que arma `npm run build`), no `npm run dev`. Al agregar un CSS al `input`, correr `npm run build` antes de `php artisan test`.
+- El logo de CV Belgrano en `/crear` (lo hace Leo).
+- Ejercicios del final de `registro/2026-11-18.md`.
+- `/crear` y las pantallas de cuenta siguen solo en español.
+- Vista previa ATS que reciba los datos de las secciones (props), después PDF.
+- Conectar con la base: "Guardar" con login pasa lo de la sesión a `cvs` y sus tablas hijas, con `CvPolicy`.
 
-**Decisión del 18/11 (por aprendizaje, manda sobre el plan de bloques):** Mis perfiles queda como está por ahora. Se arma el **creador en el home**, todavía **sin base de datos**:
-1. `home.blade.php` sigue siendo Blade (presentación corta) y adentro va **un** componente Livewire `<livewire:creador />`.
-2. Botones o persianas por sección; cada uno abre **su modal** (`<flux:modal>`).
-3. Cada modal edita un **borrador** (`wire:model="borrador.campo"`). **Guardar** copia el borrador al CV; **Cancelar** lo descarta y queda el dato anterior.
-4. **Vista previa ATS**: componente Blade `<x-cv.ats :cv="$cv" />` que recibe el CV por props (sin flexbox: se reusa para el PDF con dompdf). Filtrar secciones vacías con `#[Computed]`.
-5. **Persistencia sin base de datos con la sesión (PHP, no localStorage):** `session()->put('cv', ...)` al guardar y `session('cv', [...])` en `mount()`. Ver que la sesión vence (`config/session.php`) y es de cada navegador.
-
-Conceptos: componentes Blade, `@props`, `{{ $slot }}`, estado `public`, `mount()`, `wire:model`, `wire:click`, modales de Flux, `#[Computed]`, sesión. JavaScript solo si no se puede con PHP. Los hijos Livewire con `dispatch`/`#[On]` quedan para más adelante.
-
-**▶ RETOMAR ACÁ:** el molde con `{{ $slot }}` y después el creador en el home (pasos 1 a 5). La base de datos, el login para guardar y la `CvPolicy` vuelven después.
+**▶ RETOMAR ACÁ:** repasar `registro/2026-11-18.md`, poner el logo en `/crear` y después la **vista previa ATS** en `/crear`.
 
 ---
 
@@ -122,7 +106,7 @@ Se trabaja todos los días, sin días libres.
 | 15/11 | Entorno, Laravel + Livewire, MySQL, tabla `cvs`, `Manual.md` |
 | 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
 | 17/11 | Bloque 1 completo (tablas hijas, factories, seeder). Bloque 2 a medias (páginas, molde, Vite). Tinker y `with()`. Decisión: login solo para guardar. Ver `registro/2026-11-17.md` |
-| 18/11 | Dashboard reemplazado por Mis perfiles (ruta Livewire con `auth`), pruebas ajustadas (25/25), CSS en Vite. Comparé React y Vue con Livewire. Decisión: creador en el home con modales y sesión, sin base de datos todavía |
+| 18/11 | Sin Flux ni Tailwind. Home = landing (es/en/pt, selector Livewire + middleware, volver arriba). `/crear` con 4 modales Livewire y `#[Session]`. CSS por componente. Ver `registro/2026-11-18.md` |
 
 ---
 

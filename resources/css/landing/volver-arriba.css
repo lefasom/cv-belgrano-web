@@ -1,0 +1,68 @@
+/* ==========================================
+   VOLVER ARRIBA (components/landing/volver-arriba.blade.php)
+   Botón redondo fijo abajo a la derecha.
+   ========================================== */
+
+/* Al tocar un enlace #inicio, la página sube despacio en vez de saltar */
+html {
+    scroll-behavior: smooth;
+}
+
+.volver-arriba {
+    position: fixed;
+    right: clamp(16px, 3vw, 32px);
+    bottom: clamp(16px, 3vw, 32px);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #1d5ce0);
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.5);
+    color: white;
+    transition: transform 0.2s;
+}
+
+.volver-arriba:hover {
+    transform: translateY(-3px);
+}
+
+.volver-arriba:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
+.volver-arriba svg {
+    width: 24px;
+    height: 24px;
+}
+
+/*
+ * Aparece recién después de bajar unos 500px.
+ * "animation-timeline: scroll()" ata la animación al desplazamiento de la página
+ * (CSS puro). Los navegadores que no lo entienden muestran el botón siempre.
+ */
+@supports (animation-timeline: scroll()) {
+    .volver-arriba {
+        animation: volver-arriba-aparecer linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 500px;
+    }
+
+    @keyframes volver-arriba-aparecer {
+        from {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+        }
+    }
+}

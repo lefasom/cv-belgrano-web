@@ -1,10 +1,7 @@
-{{--
-    HOME = la landing de CV Belgrano, pasada de React a Blade.
-    Los textos están en lang/es/landing.php; las imágenes, en public/images/landing.
-    Cada pieza que en React era un componente (<Captura>, <Lista>, <Pasos>…) acá es
-    un componente Blade en resources/views/components/landing/.
---}}
+
 @php($t = __('landing'))
+{{-- PEGAR AQUÍ EL ENLACE REAL DE DESCARGA DEL APK (vacío = el botón se ve sin acción) --}}
+@php($urlApk = '')
 
 <x-layouts::app :title="$t['meta']['titulo']" :menu="false">
     <x-slot:head>
@@ -26,7 +23,9 @@
                 @endforeach
             </nav>
             <div class="landing-barra-acciones">
-                <a href="{{ route('crear') }}" class="landing-barra-boton landing-barra-boton-online">Crear CV online</a>
+                {{-- Selector de idioma: componente Livewire con su propio estado --}}
+                <livewire:idioma />
+                <a href="{{ route('crear') }}" class="landing-barra-boton landing-barra-boton-online">{{ $t['web']['crear'] }}</a>
                 <a href="#descargar" class="landing-barra-boton">{{ $t['barra']['descargar'] }}</a>
             </div>
         </header>
@@ -283,7 +282,7 @@
                 <div class="landing-descargas">
                     <x-landing.boton-play />
                     <x-landing.boton
-                        :url="config('cvbelgrano.url_apk')"
+                        :url="$urlApk"
                         :texto="$t['botones']['apk']"
                         :detalle="$t['botones']['apkDetalle']"
                         class="landing-boton-secundario"
@@ -322,6 +321,8 @@
             <x-landing.boton-play claro :texto="$t['cierre']['boton']" />
             <span class="landing-gratuita">{{ $t['cierre']['pie'] }}</span>
         </section>
+
+        <x-landing.volver-arriba />
 
     </div>
 </x-layouts::app>

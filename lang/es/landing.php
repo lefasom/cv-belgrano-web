@@ -1,11 +1,5 @@
 <?php
 
-/*
- * Textos de la landing (home) en español.
- * Copiados de landing-cv-belgrano/src/LandingTextos.js (TEXTOS.es).
- * Se leen con __('landing.hero.titulo') o, el bloque entero, con __('landing.hero').
- */
-
 return [
     'meta' => [
         'titulo' => 'CV Belgrano · Tu CV desde el celular',
@@ -606,5 +600,15 @@ return [
         'texto' => 'Tené tu CV listo y potenciado. Descargá CV Belgrano gratis y armalo en minutos.',
         'boton' => 'Descargar CV Belgrano',
         'pie' => 'CV Belgrano · Uso gratis · Sin registro · Sin publicidad · Android',
+    ],
+    'web' => [
+        'crear' => 'Crear CV online',
+        'etiqueta' => 'SIN INSTALAR NADA',
+        'titulo' => 'Probá crear tu CV ahora,',
+        'resalte' => 'online y gratis.',
+        'texto' => 'Completá tus datos, tu experiencia, tus estudios y tus habilidades desde el navegador. No hace falta crear una cuenta.',
+        'boton' => 'Crear mi CV online',
+        'detalle' => 'Gratis, desde cualquier dispositivo',
+        'arriba' => 'Volver al inicio',
     ],
 ];

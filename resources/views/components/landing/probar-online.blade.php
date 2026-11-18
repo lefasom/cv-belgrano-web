@@ -6,14 +6,11 @@
 
 <section class="probar-online" id="probar" aria-labelledby="probar-online-titulo">
     <div class="probar-online-caja">
-        <span class="landing-etiqueta">SIN INSTALAR NADA</span>
-        <h2 id="probar-online-titulo">Probá crear tu CV ahora, <span>online y gratis.</span></h2>
-        <p>
-            Completá tus datos, tu experiencia, tus estudios y tus habilidades desde el navegador.
-            No hace falta crear una cuenta.
-        </p>
+        <span class="landing-etiqueta">{{ __('landing.web.etiqueta') }}</span>
+        <h2 id="probar-online-titulo">{{ __('landing.web.titulo') }} <span>{{ __('landing.web.resalte') }}</span></h2>
+        <p>{{ __('landing.web.texto') }}</p>
 
-        <x-landing.boton :url="route('crear')" :externo="false" texto="Crear mi CV online" detalle="Gratis, desde cualquier dispositivo">
+        <x-landing.boton :url="route('crear')" :externo="false" :texto="__('landing.web.boton')" :detalle="__('landing.web.detalle')">
             <x-slot:icono><x-landing.icono nombre="lapiz" /></x-slot:icono>
         </x-landing.boton>
     </div>

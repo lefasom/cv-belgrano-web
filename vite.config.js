@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/css/home.css',
                 'resources/css/crear.css',
                 'resources/css/landing/probar-online.css',
+                'resources/css/landing/volver-arriba.css',
                 'resources/css/auth.css',
                 'resources/css/creador/seccion.css',
                 'resources/css/creador/modal.css',

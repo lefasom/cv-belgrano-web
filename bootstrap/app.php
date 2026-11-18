@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Se suma al grupo "web": corre en todas las páginas y elige el idioma.
+        $middleware->web(append: [
+            \App\Http\Middleware\ElegirIdioma::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

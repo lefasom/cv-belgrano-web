@@ -8,8 +8,10 @@
     'texto' => null,
 ])
 
+@php($urlGooglePlay = 'https://play.google.com/store/apps/details?id=com.cvbelgrano.app')
+
 <x-landing.boton
-    :url="config('cvbelgrano.url_google_play')"
+    :url="$urlGooglePlay"
     :texto="$texto ?? __('landing.botones.play')"
     :detalle="__('landing.botones.playDetalle')"
     :class="$claro ? 'landing-boton-claro' : ''"
