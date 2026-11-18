@@ -18,7 +18,7 @@ test('users can authenticate using the login screen', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('mis-perfiles', absolute: false));
+        ->assertRedirect(route('crear', absolute: false));
 
     $this->assertAuthenticated();
 });

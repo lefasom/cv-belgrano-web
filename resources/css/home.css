@@ -1,5 +1,2107 @@
-.titulo{
-    font-size: 2rem;
-    font-weight: bold;
-    color: rgba(194, 46, 46, 0.467);
+/* ==========================================
+   HOME = LANDING DE CV BELGRANO (home.blade.php y components/landing/*)
+   Copiado tal cual de landing-cv-belgrano/src/LandingPage.css.
+   ========================================== */
+
+/* ==========================================
+   CV BELGRANO - SITIO PÚBLICO
+   Tema azul oscuro en toda la página
+   ========================================== */
+
+.landing-page {
+  --fondo: #0b1220;
+  --fondo-alt: #0e1729;
+  --panel: #111c33;
+  --azul: #3b82f6;
+  --azul-claro: #60a5fa;
+  --azul-oscuro: #1746b5;
+  --texto: #f3f6fc;
+  --gris: #a3b0c6;
+  --borde: rgba(148, 163, 184, 0.16);
+
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+.landing-page *,
+.landing-page *::before,
+.landing-page *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   PRESENTACIÓN PRINCIPAL
+   ========================================== */
+
+.landing-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 0.95fr;
+  align-items: center;
+  min-height: 680px;
+  padding: 65px clamp(30px, 6vw, 100px);
+  gap: 35px;
+  background:
+    radial-gradient(ellipse at 88% 42%, rgba(37, 99, 235, 0.32), transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(96, 165, 250, 0.12), transparent 55%),
+    var(--fondo);
+}
+
+.landing-contenido {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+}
+
+.landing-identidad {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 65px;
+}
+
+.landing-logo {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+  border-radius: 17px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.landing-identidad h1 {
+  margin: 0;
+  color: var(--texto);
+  font-size: clamp(27px, 3vw, 38px);
+  font-weight: 850;
+  letter-spacing: -1.5px;
+}
+
+.landing-identidad p {
+  margin: 4px 0 0;
+  color: var(--gris);
+  font-size: 16px;
+}
+
+.landing-etiqueta {
+  display: inline-block;
+  margin-bottom: 17px;
+  color: var(--azul-claro);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.landing-texto h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(36px, 4.6vw, 60px);
+  line-height: 1.08;
+  font-weight: 850;
+  letter-spacing: -2.2px;
+}
+
+.landing-texto h2 span {
+  display: block;
+  color: var(--azul-claro);
+}
+
+.landing-texto > p {
+  max-width: 570px;
+  margin: 23px 0 0;
+  color: var(--gris);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   TELÉFONOS (HERO)
+   ========================================== */
+
+.landing-telefonos {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  min-height: 560px;
+}
+
+.landing-decoracion {
+  position: absolute;
+  z-index: 0;
+  width: min(530px, 92%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(96, 165, 250, 0.55),
+    rgba(37, 99, 235, 0.25) 55%,
+    transparent 72%
+  );
+  filter: blur(6px);
+}
+
+.landing-telefono {
+  position: relative;
+  z-index: 1;
+  width: min(46%, 280px);
+  padding: 8px;
+  overflow: hidden;
+  border: 5px solid #1f2733;
+  border-radius: 32px;
+  background: #05070b;
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    0 0 70px rgba(37, 99, 235, 0.28),
+    inset 0 0 0 1px #697386;
+}
+
+.landing-telefono img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 22px;
+}
+
+.landing-telefono-uno {
+  transform: translate(20px, -12px) rotate(-5deg);
+}
+
+.landing-telefono-dos {
+  transform: translate(-15px, 25px) rotate(5deg);
+}
+
+/* ==========================================
+   FRANJA: BENEFICIOS + DESCARGA
+   ========================================== */
+
+.landing-franja {
+  padding: 56px 40px;
+  background: var(--fondo);
+  border-top: 1px solid var(--borde);
+}
+
+.landing-franja-interior {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 56px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.landing-beneficios {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 32px;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-beneficios li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 600;
+  color: #dbe4f3;
+}
+
+.landing-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--azul-claro);
+  background: rgba(96, 165, 250, 0.16);
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ==========================================
+   BOTÓN DE DESCARGA
+   ========================================== */
+
+.landing-acciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.landing-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-width: 290px;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 16px;
+  color: white;
+  background: linear-gradient(135deg, #3b82f6, #1d5ce0);
+  box-shadow:
+    0 12px 30px rgba(37, 99, 235, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 800;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.landing-boton:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 16px 36px rgba(37, 99, 235, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.landing-boton:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* Flecha gruesa dentro de un círculo */
+.landing-download-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.landing-download-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.landing-boton small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.landing-nota {
+  color: var(--gris);
+  font-size: 13px;
+  text-align: center;
+}
+
+.landing-boton-pendiente {
+  cursor: default;
+}
+
+.landing-boton-pendiente:hover {
+  transform: none;
+}
+
+/* ==========================================
+   MARCO DE CELULAR (secciones inferiores)
+   ========================================== */
+
+.landing-pantalla {
+  --w: 236px;
+  --pad: 9px;
+  flex-shrink: 0;
+  width: calc(var(--w) + var(--pad) * 2);
+  padding: var(--pad);
+  border-radius: calc(var(--w) * 0.049 + var(--pad));
+  background: linear-gradient(145deg, #4a4d55 0%, #1b1d22 35%, #08090b 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 36px 70px -18px rgba(0, 0, 0, 0.75),
+    0 0 90px rgba(37, 99, 235, 0.20);
+}
+
+.landing-pantalla img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--w) * 0.049);
+}
+
+/* Aviso cuando todavía falta subir la imagen */
+.landing-pantalla-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  aspect-ratio: 724 / 1610;
+  padding: 12px;
+  border: 2px dashed rgba(96, 165, 250, 0.5);
+  border-radius: calc(var(--w) * 0.049);
+  background: #0b1220;
+  color: var(--gris);
+  text-align: center;
+  font-size: 12px;
+}
+
+.landing-pantalla-vacia strong {
+  color: var(--azul-claro);
+  font-size: 11px;
+  word-break: break-all;
+}
+
+/* ==========================================
+   TÍTULOS Y TEXTOS COMPARTIDOS
+   ========================================== */
+
+.landing-siempre h2,
+.landing-experiencia h2,
+.landing-formularios h2,
+.landing-accesibilidad h2 {
+  margin: 0 0 18px;
+  color: #ffffff;
+  font-size: clamp(27px, 3vw, 39px);
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.landing-siempre p,
+.landing-experiencia p,
+.landing-formularios p,
+.landing-accesibilidad p {
+  color: var(--gris);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* ==========================================
+   SIEMPRE PREPARADO
+   ========================================== */
+
+.landing-siempre {
+  padding: 90px 40px;
+  background: var(--fondo-alt);
+  border-top: 1px solid var(--borde);
+  border-bottom: 1px solid var(--borde);
+}
+
+.landing-siempre-interior {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.landing-siempre-cabecera {
+  max-width: 760px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.landing-siempre-cabecera p {
+  margin: 0;
+}
+
+.landing-siempre-columnas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.landing-siempre-columnas > div {
+  padding-top: 26px;
+  border-top: 2px solid rgba(96, 165, 250, 0.45);
+}
+
+.landing-siempre-columnas h3 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.landing-siempre-columnas p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   EXPERIENCIA MEJORADA (3 PREGUNTAS)
+   ========================================== */
+
+.landing-experiencia {
+  padding: 100px 40px;
+  background:
+    radial-gradient(800px 380px at 50% 0%, rgba(37, 99, 235, 0.16), transparent 70%),
+    var(--fondo);
+}
+
+.landing-experiencia-interior {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+.landing-experiencia-cabecera {
+  max-width: 720px;
+  margin: 0 auto 64px;
+  text-align: center;
+}
+
+.landing-experiencia-cabecera p {
+  margin: 0;
+}
+
+/*
+  Galería: los teléfonos nunca quedan pegados.
+  Si no entran 3 en una fila pasan a 2 + 1 centrado,
+  y en celular quedan uno debajo del otro.
+*/
+.landing-galeria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 64px 56px;
+}
+
+.landing-galeria-item {
+  --ancho: min(260px, calc(100vw - 110px));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin: 0;
+}
+
+.landing-galeria .landing-pantalla {
+  --w: var(--ancho);
+}
+
+.landing-galeria-item figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: calc(var(--ancho) + 18px);
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--gris);
+}
+
+.landing-galeria-item figcaption strong {
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.landing-galeria-numero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 6px;
+  border: 2px solid rgba(96, 165, 250, 0.5);
+  border-radius: 50%;
+  color: var(--azul-claro);
+  background: rgba(37, 99, 235, 0.14);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.landing-desbloqueo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid var(--borde);
+}
+
+.landing-desbloqueo h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.landing-desbloqueo p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   FORMULARIOS Y PANEL
+   ========================================== */
+
+.landing-formularios {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 70px;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 100px 40px;
+  border-top: 1px solid var(--borde);
+}
+
+.landing-formularios-telefonos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 48px 32px;
+}
+
+.landing-formularios-item {
+  --ancho: min(230px, calc(100vw - 110px));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  margin: 0;
+}
+
+.landing-formularios-item-dos {
+  margin-top: 64px;
+}
+
+.landing-formularios .landing-pantalla {
+  --w: var(--ancho);
+}
+
+.landing-formularios-item figcaption {
+  width: calc(var(--ancho) + 18px);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.landing-formularios-texto {
+  max-width: 540px;
+}
+
+.landing-formularios-texto p {
+  margin: 0 0 8px;
+}
+
+/* ==========================================
+   LISTA CON CHECKS (compartida)
+   ========================================== */
+
+.landing-lista {
+  list-style: none;
+  margin: 28px 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.landing-lista li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.landing-lista-check {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.16);
+  border: 1px solid rgba(96, 165, 250, 0.45);
+}
+
+/* ==========================================================
+   COMUNIDAD Y MODO OSCURO
+   ========================================================== */
+
+.landing-oscuro {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: 56px;
+  width: min(1240px, calc(100% - 48px));
+  margin: 40px auto 90px;
+  padding: 84px 72px;
+  border-radius: 40px;
+  overflow: hidden;
+  color: #e5e7eb;
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  background:
+    radial-gradient(900px 520px at 88% 8%, rgba(37, 99, 235, 0.30), transparent 60%),
+    radial-gradient(700px 420px at 0% 100%, rgba(96, 165, 250, 0.14), transparent 60%),
+    var(--panel);
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.7);
+}
+
+.landing-oscuro .landing-etiqueta {
+  color: #60a5fa;
+}
+
+.landing-oscuro-texto h2 {
+  margin: 14px 0 20px;
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.landing-oscuro-texto p {
+  margin: 0 0 20px;
+  max-width: 520px;
+  font-size: 18px;
+  line-height: 1.65;
+  color: #aab4c5;
+}
+
+.landing-oscuro-texto .landing-oscuro-nota {
+  margin: 0;
+  padding-top: 22px;
+  font-size: 16px;
+  color: #8b97ab;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.landing-oscuro-telefonos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px 28px;
+}
+
+.landing-oscuro-item {
+  --ancho: 236px;
+
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.landing-oscuro-item-dos {
+  margin-top: 64px;
+}
+
+.landing-oscuro .landing-pantalla {
+  --w: var(--ancho);
+}
+
+.landing-oscuro-item figcaption {
+  width: calc(var(--ancho) + 18px);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* ==========================================
+   ACCESIBILIDAD
+   ========================================== */
+
+.landing-accesibilidad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 45px;
+  padding: 90px clamp(30px, 12vw, 180px);
+  background: var(--fondo-alt);
+  border-top: 1px solid var(--borde);
+}
+
+.landing-accesibilidad-icono {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 110px;
+  border-radius: 28px;
+  color: white;
+  background: linear-gradient(145deg, #3b82f6, #1d4fd1);
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.4);
+}
+
+.landing-accesibilidad-icono svg {
+  width: 62px;
+  height: 62px;
+}
+
+.landing-accesibilidad-texto {
+  max-width: 750px;
+}
+
+/* ==========================================
+   CIERRE (mismo azul oscuro del resto)
+   ========================================== */
+
+.landing-cierre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 90px 25px 70px;
+  text-align: center;
+  color: white;
+  border-top: 1px solid var(--borde);
+  background:
+    radial-gradient(700px 320px at 50% 0%, rgba(37, 99, 235, 0.30), transparent 70%),
+    var(--fondo);
+}
+
+.landing-cierre h2 {
+  margin: 0;
+  font-size: clamp(35px, 5vw, 48px);
+  font-weight: 850;
+  color: #ffffff;
+}
+
+.landing-cierre > p {
+  max-width: 500px;
+  margin: 15px 0 28px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gris);
+}
+
+.landing-boton-claro {
+  color: var(--azul-oscuro);
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.landing-boton-claro .landing-download-icon {
+  color: var(--azul-oscuro);
+  border-color: rgba(23, 70, 181, 0.55);
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.landing-boton-claro:hover {
+  box-shadow: 0 16px 36px rgba(96, 165, 250, 0.35);
+}
+
+.landing-gratuita {
+  margin-top: 35px;
+  font-size: 12px;
+  color: #7f8da6;
+}
+
+/* ==========================================
+   RESPONSIVE - PANTALLAS MEDIANAS
+   ========================================== */
+
+@media (max-width: 1100px) {
+  .landing-formularios {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 50px;
+    padding: 80px 28px;
+  }
+
+  .landing-formularios-texto {
+    order: -1;
+    max-width: 620px;
+    text-align: center;
+  }
+
+  .landing-formularios-item-dos {
+    margin-top: 0;
+  }
+
+  .landing-formularios .landing-lista {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+}
+
+/* ==========================================
+   RESPONSIVE - TABLETS
+   ========================================== */
+
+@media (max-width: 1000px) {
+  .landing-hero {
+    grid-template-columns: 1fr 0.85fr;
+    padding: 55px 35px;
+  }
+
+  .landing-telefono {
+    width: 48%;
+  }
+
+  .landing-identidad {
+    margin-bottom: 45px;
+  }
+
+  .landing-franja {
+    padding: 48px 28px;
+  }
+
+  .landing-franja-interior {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .landing-beneficios {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .landing-siempre {
+    padding: 75px 28px;
+  }
+
+  .landing-siempre-columnas {
+    gap: 28px;
+  }
+
+  .landing-experiencia {
+    padding: 80px 28px;
+  }
+
+  .landing-desbloqueo {
+    gap: 28px;
+  }
+
+  .landing-oscuro {
+    grid-template-columns: 1fr;
+    gap: 44px;
+    margin: 30px auto 60px;
+    padding: 56px 32px;
+    border-radius: 32px;
+  }
+
+  .landing-oscuro-texto {
+    text-align: center;
+  }
+
+  .landing-oscuro-texto p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .landing-oscuro .landing-lista {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .landing-oscuro-item {
+    --ancho: 210px;
+  }
+}
+
+/* ==========================================
+   RESPONSIVE - MÓVILES (todo centrado)
+   ========================================== */
+
+@media (max-width: 700px) {
+  .landing-hero {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    min-height: 0;
+    padding: 40px 23px 55px;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .landing-contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .landing-identidad {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 38px;
+  }
+
+  .landing-logo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .landing-identidad h1 {
+    font-size: 28px;
+  }
+
+  .landing-identidad p {
+    font-size: 14px;
+  }
+
+  .landing-texto h2 {
+    font-size: clamp(34px, 9.5vw, 48px);
+    letter-spacing: -1.6px;
+  }
+
+  .landing-texto > p {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16px;
+  }
+
+  .landing-telefonos {
+    width: 100%;
+    min-height: 420px;
+    margin-top: 20px;
+  }
+
+  .landing-telefono {
+    width: min(43%, 205px);
+    border-radius: 25px;
+    padding: 5px;
+    border-width: 4px;
+  }
+
+  .landing-telefono img {
+    border-radius: 18px;
+  }
+
+  /* Franja de beneficios y descarga */
+  .landing-franja {
+    padding: 44px 23px 52px;
+  }
+
+  .landing-beneficios {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    text-align: left;
+  }
+
+  .landing-acciones {
+    width: 100%;
+  }
+
+  .landing-boton {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .landing-siempre {
+    padding: 65px 25px;
+  }
+
+  .landing-siempre-cabecera {
+    margin-bottom: 40px;
+  }
+
+  .landing-siempre-columnas {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .landing-siempre-columnas p {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .landing-siempre h2,
+  .landing-experiencia h2,
+  .landing-formularios h2,
+  .landing-accesibilidad h2 {
+    font-size: 28px;
+  }
+
+  .landing-experiencia {
+    padding: 70px 22px;
+  }
+
+  .landing-experiencia-cabecera {
+    margin-bottom: 48px;
+  }
+
+  /* Un teléfono debajo del otro, más grandes */
+  .landing-galeria {
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+  }
+
+  .landing-desbloqueo {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 64px;
+    text-align: center;
+  }
+
+  .landing-desbloqueo p {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .landing-formularios {
+    padding: 65px 22px;
+  }
+
+  .landing-formularios-telefonos {
+    flex-direction: column;
+    align-items: center;
+    gap: 52px;
+  }
+
+  .landing-formularios .landing-lista li,
+  .landing-oscuro .landing-lista li {
+    font-size: 15px;
+  }
+
+  .landing-accesibilidad {
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    padding: 65px 25px;
+    text-align: center;
+  }
+
+  .landing-accesibilidad-icono {
+    width: 84px;
+    height: 84px;
+    border-radius: 22px;
+  }
+
+  .landing-accesibilidad-icono svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .landing-oscuro-texto .landing-oscuro-nota {
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing-oscuro {
+    width: calc(100% - 24px);
+    padding: 44px 20px;
+    border-radius: 28px;
+  }
+
+  .landing-oscuro-texto p {
+    font-size: 16px;
+  }
+
+  /* Comunidad y modo oscuro: uno debajo del otro, más grandes */
+  .landing-oscuro-telefonos {
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .landing-oscuro-item {
+    --ancho: min(240px, calc(100vw - 110px));
+  }
+
+  .landing-oscuro-item-dos {
+    margin-top: 0;
+  }
+}
+
+/* ==========================================
+   RESPONSIVE - MÓVILES PEQUEÑOS
+   ========================================== */
+
+@media (max-width: 380px) {
+  .landing-hero {
+    padding-right: 17px;
+    padding-left: 17px;
+  }
+
+  .landing-texto h2 {
+    font-size: 32px;
+  }
+
+  .landing-telefonos {
+    min-height: 340px;
+  }
+
+  .landing-beneficios li {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-boton {
+    transition: none;
+  }
+
+  .landing-boton:hover {
+    transform: none;
+  }
+}
+/* ==========================================
+   AGREGADOS: landing de venta (12/11/2026)
+   ========================================== */
+
+/* En el hero el marco lo pone .landing-telefono: la captura va sin marco */
+.landing-telefono .landing-pantalla {
+  width: 100%;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 22px;
+  overflow: hidden;
+}
+.landing-telefono .landing-pantalla img,
+.landing-telefono .landing-captura {
+  border-radius: 22px;
+}
+
+/* Recuadro de captura pendiente: dice qué pantalla va y qué PNG falta */
+.landing-captura {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  aspect-ratio: 724 / 1610;
+  padding: 18px 14px;
+  border: 2px dashed rgba(96, 165, 250, 0.55);
+  border-radius: calc(var(--w, 236px) * 0.049);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.22), transparent 60%),
+    #0b1220;
+  color: var(--gris);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.landing-captura strong {
+  color: var(--texto);
+  font-size: 16px;
+  line-height: 1.3;
+}
+.landing-captura code {
+  margin-top: 6px;
+  color: var(--azul-claro);
+  font-size: 10.5px;
+  word-break: break-all;
+}
+.landing-captura-tag {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--azul-claro);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+/* CTA y chips del hero */
+.landing-hero-cta {
+  margin-top: 28px;
+}
+.landing-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.landing-chips li {
+  padding: 6px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--texto);
+  font-size: 13px;
+  font-weight: 700;
+}
+.landing-chips li::before {
+  content: "✓ ";
+  color: var(--azul-claro);
+}
+
+/* Números de la franja */
+.landing-numeros {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+.landing-numeros strong {
+  display: block;
+  color: var(--texto);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 900;
+  line-height: 1;
+}
+.landing-numeros span {
+  display: block;
+  margin-top: 6px;
+  color: var(--gris);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Pasos numerados (cómo funciona e instalación) */
+.landing-instalar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.landing-pasos {
+  grid-template-columns: repeat(4, 1fr);
+}
+.landing-instalar li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 22px;
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  background: var(--panel);
+}
+.landing-instalar h3 {
+  margin: 2px 0 6px;
+  color: var(--texto);
+  font-size: 17px;
+}
+.landing-instalar p {
+  margin: 0;
+  color: var(--gris);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.landing-instalar .landing-galeria-numero {
+  flex-shrink: 0;
+}
+
+.landing-centro {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+/* Preguntas frecuentes */
+.landing-faq {
+  display: grid;
+  gap: 12px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.landing-faq details {
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--panel);
+}
+.landing-faq summary {
+  cursor: pointer;
+  padding: 18px 20px;
+  color: var(--texto);
+  font-size: 16px;
+  font-weight: 800;
+  list-style: none;
+}
+.landing-faq summary::-webkit-details-marker {
+  display: none;
+}
+.landing-faq summary::after {
+  content: "+";
+  float: right;
+  color: var(--azul-claro);
+  font-weight: 900;
+}
+.landing-faq details[open] summary::after {
+  content: "–";
+}
+.landing-faq details p {
+  margin: 0;
+  padding: 0 20px 18px;
+  color: var(--gris);
+  line-height: 1.6;
+}
+
+@media (max-width: 1000px) {
+  .landing-pasos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .landing-numeros {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .landing-instalar,
+  .landing-pasos {
+    grid-template-columns: 1fr;
+  }
+  .landing-hero-cta .landing-boton {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Accesibilidad: texto arriba y tres capturas del modo accesible abajo */
+.landing-accesibilidad {
+  flex-wrap: wrap;
+}
+.landing-accesibilidad .landing-lista {
+  margin-top: 18px;
+}
+.landing-accesibilidad-capturas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  margin-top: 30px;
+}
+.landing-accesibilidad-capturas .landing-oscuro-item {
+  margin: 0;
+  transform: none;
+}
+
+/* ==========================================
+   AGREGADOS: monetización, IA y celular (13/11/2026)
+   ========================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.landing-page) {
+    scroll-behavior: smooth;
+  }
+}
+
+.landing-page section[id] {
+  scroll-margin-top: 76px;
+}
+
+/* ---------- Barra superior fija ---------- */
+.landing-barra {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px clamp(16px, 5vw, 64px);
+  background: rgba(11, 18, 32, 0.86);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
+}
+
+.landing-barra-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--texto);
+  font-size: 17px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.landing-barra-marca img {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  object-fit: contain;
+}
+
+.landing-barra-enlaces {
+  display: flex;
+  gap: 26px;
+}
+
+.landing-barra-enlaces a {
+  color: var(--gris);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.landing-barra-enlaces a:hover,
+.landing-barra-enlaces a:focus-visible {
+  color: var(--texto);
+}
+
+.landing-barra-boton {
+  flex-shrink: 0;
+  padding: 9px 18px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6, #1d5ce0);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+.landing-barra a:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ---------- Botón secundario (APK) y grupo de descargas ---------- */
+.landing-boton-secundario {
+  background: transparent;
+  border: 2px solid rgba(96, 165, 250, 0.55);
+  box-shadow: none;
+}
+
+.landing-boton-secundario:hover {
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.25);
+}
+
+.landing-descargas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 56px;
+}
+
+.landing-subtitulo {
+  margin: 0 0 24px;
+  color: var(--texto);
+  font-size: 19px;
+  text-align: center;
+}
+
+/* ---------- Columnas de a cuatro ---------- */
+.landing-siempre-columnas.landing-columnas-cuatro {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+/* ---------- Analizador + IA ---------- */
+.landing-ia {
+  background:
+    radial-gradient(900px 520px at 88% 8%, rgba(245, 190, 70, 0.14), transparent 60%),
+    radial-gradient(700px 420px at 0% 100%, rgba(96, 165, 250, 0.16), transparent 60%),
+    var(--panel);
+}
+
+.landing-oscuro .landing-etiqueta-dorada {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #f5c451;
+}
+
+.landing-etiqueta-icono svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.landing-ia-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 8px 0 26px;
+}
+
+.landing-ia-tarjeta {
+  padding: 22px 20px;
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  border-radius: 20px;
+  background: rgba(11, 18, 32, 0.55);
+}
+
+.landing-ia-tarjeta-dorada {
+  border-color: rgba(245, 196, 81, 0.45);
+  background:
+    radial-gradient(260px 160px at 100% 0%, rgba(245, 196, 81, 0.14), transparent 70%),
+    rgba(11, 18, 32, 0.55);
+}
+
+.landing-ia-tarjeta h3 {
+  margin: 10px 0 0;
+  color: #ffffff;
+  font-size: 19px;
+}
+
+.landing-ia-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.18);
+  color: var(--azul-claro);
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.landing-ia-tarjeta-dorada .landing-ia-tag {
+  background: rgba(245, 196, 81, 0.16);
+  color: #f5c451;
+}
+
+.landing-ia-tarjeta-dorada .landing-lista-check {
+  color: #f5c451;
+  background: rgba(245, 196, 81, 0.14);
+  border-color: rgba(245, 196, 81, 0.45);
+}
+
+.landing-lista.landing-lista-chica {
+  gap: 10px;
+  margin: 16px 0 0;
+}
+
+.landing-lista.landing-lista-chica li {
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  font-weight: 600;
+  color: #dbe4f3;
+}
+
+.landing-lista.landing-lista-chica .landing-lista-check {
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+}
+
+/* ---------- Planes ---------- */
+.landing-planes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.landing-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 24px 28px;
+  border: 1px solid var(--borde);
+  border-radius: 24px;
+  background: var(--panel);
+}
+
+.landing-plan h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.landing-plan-corona {
+  display: inline-flex;
+  color: #f5c451;
+}
+
+.landing-plan-corona svg {
+  width: 22px;
+  height: 22px;
+}
+
+.landing-planes .landing-plan-precio {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 6px;
+}
+
+.landing-plan-precio strong {
+  color: #ffffff;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.landing-plan-precio span {
+  color: var(--gris);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.landing-planes .landing-plan-resumen {
+  margin: 0;
+  color: var(--gris);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.landing-plan-destacado {
+  border: 2px solid var(--azul);
+  background:
+    radial-gradient(320px 200px at 50% 0%, rgba(59, 130, 246, 0.28), transparent 70%),
+    var(--panel);
+  box-shadow: 0 24px 60px -20px rgba(37, 99, 235, 0.6);
+}
+
+.landing-plan-cinta {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3b82f6, #1d5ce0);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.landing-plan-futuro {
+  border-style: dashed;
+}
+
+.landing-plan-futuro .landing-plan-precio strong {
+  font-size: 24px;
+  color: var(--azul-claro);
+}
+
+.landing-garantias {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.landing-garantias li {
+  padding: 8px 16px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--texto);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.landing-garantias li::before {
+  content: "✓ ";
+  color: var(--azul-claro);
+}
+
+.landing-planes-seccion .landing-planes-nota {
+  max-width: 720px;
+  margin: 22px auto 0;
+  color: #8b97ab;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ---------- Pantallas medianas ---------- */
+@media (max-width: 1100px) {
+  .landing-planes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 20px;
+  }
+
+  .landing-siempre-columnas.landing-columnas-cuatro {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .landing-ia-tarjetas {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+}
+
+@media (max-width: 820px) {
+  .landing-barra-enlaces {
+    display: none;
+  }
+}
+
+/* ---------- Celular: todo centrado ---------- */
+@media (max-width: 700px) {
+  .landing-barra {
+    padding: 10px 16px;
+  }
+
+  .landing-barra-marca {
+    font-size: 16px;
+  }
+
+  .landing-barra-marca img {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Hero: chips y botón centrados */
+  .landing-texto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .landing-hero-cta {
+    width: 100%;
+  }
+
+  .landing-chips {
+    justify-content: center;
+  }
+
+  /* Botones a todo el ancho */
+  .landing-boton {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 18px;
+    font-size: 16.5px;
+    text-align: left;
+  }
+
+  .landing-descargas {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 420px;
+    margin: 0 auto 48px;
+  }
+
+  .landing-cierre .landing-boton {
+    max-width: 420px;
+  }
+
+  /* Pasos: número arriba y texto centrado */
+  .landing-instalar li {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 22px 18px;
+  }
+
+  .landing-instalar .landing-galeria-numero {
+    margin-bottom: 0;
+  }
+
+  .landing-siempre-columnas.landing-columnas-cuatro {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  /* Listas con checks: bloque centrado, renglones alineados */
+  .landing-lista {
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .landing-lista li {
+    font-size: 15px;
+    align-items: flex-start;
+  }
+
+  .landing-lista.landing-lista-chica {
+    margin: 18px auto 0;
+  }
+
+  .landing-accesibilidad-texto {
+    width: 100%;
+  }
+
+  .landing-accesibilidad-texto p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* IA: tarjetas una debajo de la otra, centradas */
+  .landing-ia-tarjetas {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+  }
+
+  .landing-ia-tarjeta {
+    text-align: center;
+  }
+
+  /* Planes: uno por fila, centrados */
+  .landing-planes {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+    gap: 30px;
+  }
+
+  .landing-plan {
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px 26px;
+  }
+
+  .landing-plan h3,
+  .landing-planes .landing-plan-precio {
+    justify-content: center;
+  }
+
+  .landing-subtitulo {
+    font-size: 17px;
+  }
+
+  /* FAQ: pregunta y signo alineados */
+  .landing-faq summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 15px;
+  }
+
+  .landing-faq summary::after {
+    float: none;
+  }
+
+  .landing-gratuita {
+    max-width: 300px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 380px) {
+  .landing-barra-boton {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .landing-boton {
+    gap: 12px;
+    font-size: 15.5px;
+  }
+
+  .landing-download-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .landing-download-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ---------- Todo lo que es gratis ---------- */
+.landing-gratis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.landing-gratis li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  background: var(--panel);
+}
+
+.landing-gratis h3 {
+  margin: 1px 0 6px;
+  color: var(--texto);
+  font-size: 16.5px;
+}
+
+.landing-siempre .landing-gratis p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+@media (max-width: 1000px) {
+  .landing-gratis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .landing-gratis {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .landing-gratis li {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* ---------- Selector de idioma (barra superior) ---------- */
+.landing-barra-acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.landing-idioma {
+  position: relative;
+}
+
+.landing-idioma-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--texto);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.landing-idioma-boton:hover,
+.landing-idioma-boton[aria-expanded="true"] {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(96, 165, 250, 0.7);
+}
+
+.landing-idioma-boton:focus-visible,
+.landing-idioma-menu button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.landing-idioma-boton svg {
+  width: 17px;
+  height: 17px;
+  color: var(--azul-claro);
+}
+
+.landing-idioma-flecha {
+  color: var(--gris);
+  font-size: 11px;
+}
+
+.landing-idioma-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  min-width: 170px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
+}
+
+.landing-idioma-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.landing-idioma-menu button:hover {
+  background: rgba(59, 130, 246, 0.14);
+}
+
+.landing-idioma-menu button.activo {
+  background: rgba(59, 130, 246, 0.24);
+  color: #ffffff;
+}
+
+.landing-idioma-codigo {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(96, 165, 250, 0.16);
+  color: var(--azul-claro);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 700px) {
+  .landing-barra-acciones {
+    gap: 8px;
+  }
+
+  .landing-idioma-boton {
+    height: 36px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .landing-barra-marca span {
+    display: none;
+  }
+}
+
+/* ==========================================
+   AGREGADO EN LA WEB: botón "Crear CV online" de la barra
+   ========================================== */
+
+.landing-barra-boton-online {
+  background: transparent;
+  border: 1px solid rgba(96, 165, 250, 0.55);
+  box-shadow: none;
 }

@@ -1,0 +1,40 @@
+/* ==========================================
+   EDUCACIÓN (livewire/creador/educacion.blade.php)
+   Lista de estudios con una etiqueta de estado.
+   ========================================== */
+
+.educacion-lista {
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.educacion-lista li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borde);
+}
+
+.educacion-lista li:last-child {
+    border-bottom: none;
+}
+
+.educacion-lista strong {
+    display: block;
+    color: white;
+}
+
+.educacion-lista span {
+    color: var(--gris);
+    font-size: 14px;
+}
+
+.educacion-lista .educacion-estado {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--azul-claro);
+    font-size: 12px;
+    font-weight: 700;
+}

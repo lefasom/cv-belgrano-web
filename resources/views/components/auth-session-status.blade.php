@@ -1,9 +1,8 @@
+{{-- Muestra un aviso de Fortify (por ejemplo "te mandamos el enlace") si hay uno en la sesión --}}
 @props([
     'status',
 ])
 
 @if ($status)
-    <div {{ $attributes->merge(['class' => 'font-medium text-sm text-green-600']) }}>
-        {{ $status }}
-    </div>
+    <p class="aviso">{{ $status }}</p>
 @endif

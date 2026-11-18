@@ -21,7 +21,7 @@ test('new users can register', function () {
     ]);
 
     $response->assertSessionHasNoErrors()
-        ->assertRedirect(route('mis-perfiles', absolute: false));
+        ->assertRedirect(route('crear', absolute: false));
 
     $this->assertAuthenticated();
 });

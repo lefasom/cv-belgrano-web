@@ -1,0 +1,23 @@
+/* ==========================================
+   HABILIDADES (livewire/creador/habilidades.blade.php)
+   Cada habilidad es una "pastilla".
+   ========================================== */
+
+.habilidades-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.habilidades-lista li {
+    padding: 6px 14px;
+    border: 1px solid rgba(96, 165, 250, 0.4);
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--azul-claro);
+    font-size: 14px;
+    font-weight: 600;
+}

@@ -2,11 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::livewire('mis-perfiles', 'pages.mis-perfiles')->name('mis-perfiles');
-});
+// Públicas: no piden cuenta.
 Route::view('/', 'home')->name('home');
-
-
-require __DIR__ . '/settings.php';
+Route::view('crear', 'crear')->name('crear');
