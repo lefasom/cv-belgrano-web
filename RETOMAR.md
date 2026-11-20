@@ -67,7 +67,7 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - Ejercicios del final de `registro/2026-11-18.md`.
 - Los modales de `/crear` y las pantallas de cuenta siguen solo en español.
 - Conectar con la base: "Guardar" con login pasa lo de la sesión a `cvs` y sus tablas hijas, con `CvPolicy`.
-- ~~GitHub Actions en rojo~~ **Resuelto el 20/11:** `composer ci:check` pasa (Pint, PHPStan nivel 7 con 0 errores y 13 pruebas). Se arregló la causa real: tipos de los arrays en `app/Cv`, genéricos en las relaciones (`HasMany<Experience, $this>`) y `Cv $cv` en el seeder. Sin `@phpstan-ignore` ni baseline. En PowerShell, PHPStan puede necesitar `--memory-limit=1G`.
+- ~~GitHub Actions en rojo~~ **Resuelto el 20/11:** `composer ci:check` pasa (Pint, PHPStan nivel 7 con 0 errores y 13 pruebas). Se arregló la causa real: tipos de los arrays en `app/Cv`, genéricos en las relaciones (`HasMany<Experience, $this>`) y `Cv $cv` en el seeder. Sin `@phpstan-ignore` ni baseline. En PowerShell, PHPStan puede necesitar `--memory-limit=1G`. Después se corrió `migrate:fresh --seed` sin errores: la base quedó solo con los datos de prueba (1 usuario `cvbelgranosoporte@gmail.com`, 2 CVs con 5 experiencias, 5 estudios y 5 habilidades cada uno).
 
 **Enfoque decidido el 18/11 (manda sobre el plan de bloques):** primero **aprender las herramientas haciendo** cosas propias en la web, a mi ritmo. Lo que pide el aviso (base de datos con `CvPolicy`, PDF, pruebas, JOIN y README) **se integra después**, viendo cómo encaja en lo que ya esté hecho. El plan de bloques del §4 queda como referencia de lo que hay que cubrir, no como calendario. Al 18/11, de los bloques 1 a 7 hay más o menos un 35-40 % (la landing, que era para después, ya está).
 

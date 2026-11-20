@@ -52,7 +52,7 @@
 | 17/11 | `a321ddb` … `cb84aff` | Tablas hijas (`experiences`, `education`, `skills`), factories y seeder. Ver `registro/2026-11-17.md` |
 | 18/11 | `2530fdf` … `5bd41b7` | Sin Flux ni Tailwind. Home = landing en 3 idiomas. `/crear` con 4 modales Livewire y `#[Session]`. Ver `registro/2026-11-18.md` |
 | 20/11 | `e76e048` y los dos siguientes | Ver el detalle abajo. Después: títulos estándar en la ATS y esta documentación |
-| 20/11 (tarde) | Landing: `3d123c5` … `c3e2c3a` | El creador pasado a JavaScript en la landing de lanzamiento (otro repo). Ver abajo |
+| 20/11 (tarde) | Landing: `3d123c5` … `c3e2c3a` | El creador pasado a JavaScript en la landing de lanzamiento (otro repo). Ver abajo. En esta web: `053fb11` (CI en verde) |
 
 ### 20/11/2026 — Vista previa, plantillas y herramientas
 
@@ -108,7 +108,7 @@
 
 **Cómo se probó.** Con Chrome sin ventana, controlado por un script: 32 controles en verde (validaciones, cargar, editar y eliminar, edición sobre el CV, letra, zoom, foto, plantilla, idioma, PDF con una página por hoja, recarga y celular), sin errores en la consola. El pellizco **no se probó en un celular real**.
 
-**GitHub Actions de esta web:** se explicaron Pint, PHPStan y los genéricos de las relaciones, y **quedó arreglado**: Pint formateó 14 archivos; PHPStan (nivel 7) pasó de 32 errores a 0 con tipos de arrays en `app/Cv` (alias `@phpstan-type`), controles de `false` en GD y `preg_split`, genéricos en las 8 relaciones y `Cv $cv` en el seeder. Sin `@phpstan-ignore` ni baseline.
+**GitHub Actions de esta web:** se explicaron Pint, PHPStan y los genéricos de las relaciones, y **quedó arreglado**: Pint formateó 14 archivos; PHPStan (nivel 7) pasó de 32 errores a 0 con tipos de arrays en `app/Cv` (alias `@phpstan-type`), controles de `false` en GD y `preg_split`, genéricos en las 8 relaciones y `Cv $cv` en el seeder. Sin `@phpstan-ignore` ni baseline. GitHub Actions volvió a verde con el commit `053fb11`. Para probar el seeder se corrió `migrate:fresh --seed` (se borraron 6 usuarios y 15 CVs de prueba); quedaron 1 usuario, 2 CVs y 10 filas en cada tabla hija.
 
 ---
 
