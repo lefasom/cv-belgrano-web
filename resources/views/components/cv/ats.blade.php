@@ -65,7 +65,7 @@
     {{-- ============ PERFIL PROFESIONAL ============ --}}
     @if ($cv['resumen'])
         <section class="cv-ats-seccion" data-cv-seccion>
-            <h2 class="cv-ats-titulo">{{ __('cv.secciones.perfil') }}</h2>
+            <h2 class="cv-ats-titulo">{{ __('cv.ats.perfil') }}</h2>
             <p class="cv-ats-parrafo" {{ $editable('datos.summary') }}>{{ $cv['resumen'] }}</p>
         </section>
     @endif
@@ -73,7 +73,7 @@
     {{-- ============ EXPERIENCIA LABORAL ============ --}}
     @if ($cv['experiencias'])
         <section class="cv-ats-seccion cv-ats-seccion-experiencia" data-cv-seccion>
-            <h2 class="cv-ats-titulo">{{ __('cv.secciones.experiencia') }}</h2>
+            <h2 class="cv-ats-titulo">{{ __('cv.ats.experiencia') }}</h2>
 
             @foreach ($cv['experiencias'] as $e)
                 <article class="cv-ats-item">
@@ -98,7 +98,7 @@
     {{-- ============ EDUCACIÓN ============ --}}
     @if ($cv['estudios'])
         <section class="cv-ats-seccion cv-ats-seccion-lista" data-cv-seccion>
-            <h2 class="cv-ats-titulo">{{ __('cv.secciones.educacion') }}</h2>
+            <h2 class="cv-ats-titulo">{{ __('cv.ats.educacion') }}</h2>
 
             @foreach ($cv['estudios'] as $e)
                 <p class="cv-ats-linea cv-ats-item">
@@ -115,7 +115,7 @@
     {{-- ============ HABILIDADES ============ --}}
     @if ($cv['habilidades'])
         <section class="cv-ats-seccion" data-cv-seccion>
-            <h2 class="cv-ats-titulo">{{ __('cv.secciones.habilidades') }}</h2>
+            <h2 class="cv-ats-titulo">{{ __('cv.ats.habilidades') }}</h2>
             <p class="cv-ats-linea cv-ats-habilidades">
                 {{-- En una sola línea: si no, el salto de línea agrega un espacio entre ítems --}}
                 @foreach ($cv['habilidades'] as $h)@if (! $loop->first)<span class="cv-ats-sep">&nbsp;&middot;&nbsp;</span>@endif<span {{ $editable("habilidades.{$h['i']}.name") }}>{{ $h['nombre'] }}</span>@endforeach

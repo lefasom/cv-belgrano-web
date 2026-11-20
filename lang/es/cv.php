@@ -2,7 +2,7 @@
 
 /*
     Textos del CV y del creador (/crear).
-    - secciones / estado: lo que se imprime en el CV (las plantillas).
+    - secciones / ats / estado: lo que se imprime en el CV (secciones = Personalizada, ats = ATS).
     - creador: los botones, las herramientas y la vista previa de la página.
     El idioma lo elige el sitio: CV y página van siempre en el mismo idioma.
 */
@@ -16,6 +16,15 @@ return [
         'contacto' => 'Contacto',
     ],
 
+
+    // Títulos de la plantilla ATS (traductorTemplateATS de la app): estándar y sin "&",
+    // para que un sistema ATS reconozca cada sección sin dudas.
+    'ats' => [
+        'perfil' => 'Resumen Profesional',
+        'experiencia' => 'Experiencia',
+        'educacion' => 'Educación',
+        'habilidades' => 'Habilidades',
+    ],
 
     // En la base el estado se guarda en inglés; acá se traduce para el CV.
     'estado' => [
