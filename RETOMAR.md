@@ -81,7 +81,7 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - **Documentación nueva** en `documentacion/` (bitácora, cómo funciona cada parte, auditoría del 422) y **`documentacion/GUIA_DE_ESTUDIO.md`**.
 - Pruebas: 13 en verde (el creador nuevo todavía no tiene pruebas). El logo de `/crear` ya no hace falta: la marca está en el header.
 
-**Hecho el 20/11 (tarde), en otro repo:** el creador pasó a la **landing de lanzamiento** (`landingpage-cvbelgrano`, Vite + React) **todo en JavaScript**, sin PHP, sin base de datos y sin login. El CV se guarda en el `localStorage`, la foto se achica con `<canvas>` y los modales quedaron en es/en/pt. La landing suma "Crear CV online", "Probá crear tu CV ahora" y volver arriba. Ya está subido. Detalle en la bitácora y en el README de ese repo. Falta probarlo en un celular real.
+**Hecho el 20/11 (tarde), en otro repo:** el creador pasó a la **landing de lanzamiento** (`landingpage-cvbelgrano`, Vite + React) **todo en JavaScript**, sin PHP, sin base de datos y sin login. El CV se guarda en el `localStorage`, la foto se achica con `<canvas>` y los modales quedaron en es/en/pt. La landing suma "Crear CV online", "Probá crear tu CV ahora" y volver arriba. Ya está subido. Detalle en la bitácora y en el README de ese repo. Leo lo probó en un celular real y anda bien.
 
 **▶ RETOMAR ACÁ:** estudiar el código del 20/11 siguiendo `documentacion/GUIA_DE_ESTUDIO.md` (5 etapas, una por mañana), haciendo los ejercicios. Después: guardar el CV en la base con login y `CvPolicy`.
 
