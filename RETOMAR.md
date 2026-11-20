@@ -1,7 +1,7 @@
 # RETOMAR: CV Belgrano Web
 
 > **Para la IA que me ayuda a estudiar:** leé este archivo entero antes de responder. Acá está quién soy, dónde quedé, qué toca hoy y qué reglas seguir.
-> Última actualización: **18/11/2026 (cierre)** (la actualiza Claude cuando Leo le cuenta el avance).
+> Última actualización: **20/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
 
 ---
 
@@ -48,7 +48,7 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 
 ---
 
-## 3. Dónde estoy (18/11/2026, cierre del día)
+## 3. Dónde estoy (20/11/2026)
 
 **Hecho hasta el 17/11:** entorno, Laravel 13 + Livewire, MySQL, registro y login. Tablas `cvs`, `experiences`, `education` y `skills` con relaciones, factories y seeder (Bloque 1).
 
@@ -64,15 +64,23 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - Pruebas: 13 en verde.
 
 **Pendiente:**
-- El logo de CV Belgrano en `/crear` (lo hace Leo).
 - Ejercicios del final de `registro/2026-11-18.md`.
-- `/crear` y las pantallas de cuenta siguen solo en español.
-- Vista previa ATS que reciba los datos de las secciones (props), después PDF.
+- Los modales de `/crear` y las pantallas de cuenta siguen solo en español.
 - Conectar con la base: "Guardar" con login pasa lo de la sesión a `cvs` y sus tablas hijas, con `CvPolicy`.
 
 **Enfoque decidido el 18/11 (manda sobre el plan de bloques):** primero **aprender las herramientas haciendo** cosas propias en la web, a mi ritmo. Lo que pide el aviso (base de datos con `CvPolicy`, PDF, pruebas, JOIN y README) **se integra después**, viendo cómo encaja en lo que ya esté hecho. El plan de bloques del §4 queda como referencia de lo que hay que cubrir, no como calendario. Al 18/11, de los bloques 1 a 7 hay más o menos un 35-40 % (la landing, que era para después, ya está).
 
-**▶ RETOMAR ACÁ:** repasar `registro/2026-11-18.md`, poner el logo en `/crear` y después la **vista previa ATS** en `/crear`.
+**Hecho el 20/11:**
+- **Header único** en el molde (landing y app), con `header.css` y `lang/*/layout.php`.
+- **`/crear` nuevo:** botones de los modales + Herramientas (foto, letra, zoom y desplazar) a la izquierda; pestañas **ATS / Personalizada** y **vista previa en hojas A4** a la derecha; **Descargar PDF** con la impresión del navegador.
+- **El CV vive en la sesión** a través de `App\Cv\BorradorCv` (se dejó `#[Session]` por componente). Edición del texto sobre el CV.
+- **Plantillas en Blade:** ATS (de `TemplateATS.ts`, con los títulos de `traductorTemplateATS`) y Personalizada (de `Template3.ts`).
+- **Foto** achicada con GD, sin guardarse. `AppServiceProvider` le pasa `TEMP`/`TMP` a `artisan serve` (si no, la subida da 422 en Windows).
+- Modales: elegir Experiencia/Educación 1, 2, 3… para editar o eliminar; Habilidades con lista y ✕.
+- **Documentación nueva** en `documentacion/` (bitácora, cómo funciona cada parte, auditoría del 422) y **`documentacion/GUIA_DE_ESTUDIO.md`**.
+- Pruebas: 13 en verde (el creador nuevo todavía no tiene pruebas). El logo de `/crear` ya no hace falta: la marca está en el header.
+
+**▶ RETOMAR ACÁ:** estudiar el código del 20/11 siguiendo `documentacion/GUIA_DE_ESTUDIO.md` (5 etapas, una por mañana), haciendo los ejercicios. Después: guardar el CV en la base con login y `CvPolicy`.
 
 ---
 
@@ -109,6 +117,7 @@ Se trabaja todos los días, sin días libres.
 | 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
 | 17/11 | Bloque 1 completo (tablas hijas, factories, seeder). Bloque 2 a medias (páginas, molde, Vite). Tinker y `with()`. Decisión: login solo para guardar. Ver `registro/2026-11-17.md` |
 | 18/11 | Sin Flux ni Tailwind. Home = landing (es/en/pt, selector Livewire + middleware, volver arriba). `/crear` con 4 modales Livewire y `#[Session]`. CSS por componente. Ver `registro/2026-11-18.md` |
+| 20/11 | Header único, vista previa A4 con plantillas ATS y Personalizada, edición sobre el CV, zoom/desplazar, foto, PDF por impresión. CV en la sesión con `BorradorCv`. Documentación y guía de estudio en `documentacion/` |
 
 ---
 
