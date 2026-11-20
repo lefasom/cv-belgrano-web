@@ -4,7 +4,7 @@
 
 **Versión:** 1.0
 
-**Última actualización:** 20/11/2026
+**Última actualización:** 20/11/2026 (tarde)
 
 > **Qué es esta carpeta:** la documentación técnica de la web, con el mismo formato que `App-de-cv/documentacion`. Acá se explica **cómo funciona** cada parte y **por qué** se decidió así. Lo que aprendo día a día está en `registro/`, el plan y las reglas en `RETOMAR.md`, y los conceptos generales en `Manual.md`. Los problemas concretos que ya pasaron van en `../AUDITORIAS/`. Para estudiar el código, empezar por `../GUIA_DE_ESTUDIO.md`.
 
@@ -52,6 +52,7 @@
 | 17/11 | `a321ddb` … `cb84aff` | Tablas hijas (`experiences`, `education`, `skills`), factories y seeder. Ver `registro/2026-11-17.md` |
 | 18/11 | `2530fdf` … `5bd41b7` | Sin Flux ni Tailwind. Home = landing en 3 idiomas. `/crear` con 4 modales Livewire y `#[Session]`. Ver `registro/2026-11-18.md` |
 | 20/11 | `e76e048` y los dos siguientes | Ver el detalle abajo. Después: títulos estándar en la ATS y esta documentación |
+| 20/11 (tarde) | Landing: `3d123c5` … `c3e2c3a` | El creador pasado a JavaScript en la landing de lanzamiento (otro repo). Ver abajo |
 
 ### 20/11/2026 — Vista previa, plantillas y herramientas
 
@@ -86,6 +87,29 @@
 | La foto no se guarda | Lo pidió Leo: nada de base de datos todavía, y la foto tampoco en la sesión |
 | Títulos propios para la ATS | Lo pidió Leo: en un CV ATS los títulos tienen que ser estándar ("Educación", no "Educación & cursos") |
 
+### 20/11/2026 (tarde) — El creador en la landing de lanzamiento (otro repo)
+
+> Repo `landingpage-cvbelgrano` (`C:\Users\leo\Desktop\landing-cv-belgrano`, Vite + React). Commits `3d123c5`, `1edf78b` y `c3e2c3a`, ya subidos. El detalle está en el README de ese repo.
+
+**Qué se hizo.** El `/crear` de esta web se pasó a JavaScript para la landing de lanzamiento: **sin PHP, sin base de datos y sin login**. Es una segunda página (`crear/index.html`) con los cuatro modales, las plantillas ATS y Personalizada en React, la vista previa A4 (`vistaPrevia.js`, adaptado de `cv-paginado.js`), la edición sobre el CV, la letra, el zoom, la foto (achicada con `<canvas>` en vez de GD) y el PDF por impresión. La landing suma el botón "Crear CV online", la sección "Probá crear tu CV ahora" y el botón volver arriba, igual que aquí.
+
+**Equivalencias con esta web:**
+
+| Laravel (esta web) | Landing (JavaScript) |
+| ------------------ | -------------------- |
+| `App\Cv\BorradorCv` + la sesión | `borradorCv.js` + `localStorage` (`cv_borrador`) |
+| `App\Cv\DatosPlantilla` | `datosPlantilla.js` |
+| `App\Cv\FotoCv` (GD) | `fotoCv.js` (`<canvas>`) |
+| Componentes Livewire de los modales | `ModalDatos.jsx`, `ModalLista.jsx` (Experiencia y Educación), `ModalHabilidades.jsx` |
+| `components/cv/*.blade.php` | `plantillas/Ats.jsx` y `plantillas/Ejecutivo.jsx` |
+| `lang/*/cv.php` | `src/crear/textos.js` (con los modales también traducidos) |
+
+**Agregado allá:** el botón "Empezar de cero", porque el `localStorage` no vence como la sesión.
+
+**Cómo se probó.** Con Chrome sin ventana, controlado por un script: 32 controles en verde (validaciones, cargar, editar y eliminar, edición sobre el CV, letra, zoom, foto, plantilla, idioma, PDF con una página por hoja, recarga y celular), sin errores en la consola. El pellizco **no se probó en un celular real**.
+
+**GitHub Actions de esta web:** se explicaron Pint, PHPStan y los genéricos de las relaciones. El arreglo quedó **en revisión** (ver §4).
+
 ---
 
 ## 4. Pendientes
@@ -98,6 +122,7 @@
 | Editar el estado de un estudio desde el CV | Hoy solo desde el modal (es una opción, no texto libre) |
 | PDF en el servidor | `spatie/laravel-pdf` (Chrome) cuando haya VPS |
 | Probar el pellizco en un celular | Solo se probó con toques simulados |
+| **En revisión:** GitHub Actions en rojo desde el 15/11 | `composer ci:check` falla: Pint (14 archivos) y PHPStan (32 errores en `app/Cv/*`, `app/Models/*` y `DatabaseSeeder`). Las 13 pruebas pasan. Ver el pendiente en `RETOMAR.md` §3 |
 
 ---
 
@@ -106,3 +131,4 @@
 | Fecha | Versión | Cambio |
 | ----- | ------- | ------ |
 | 20/11/2026 | 1.0 | Creación de la carpeta `documentacion` y de esta bitácora |
+| 20/11/2026 | 1.1 | El creador pasado a la landing en JavaScript; GitHub Actions en revisión |

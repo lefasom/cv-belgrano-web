@@ -1,7 +1,7 @@
 # RETOMAR: CV Belgrano Web
 
 > **Para la IA que me ayuda a estudiar:** leé este archivo entero antes de responder. Acá está quién soy, dónde quedé, qué toca hoy y qué reglas seguir.
-> Última actualización: **20/11/2026** (la actualiza Claude cuando Leo le cuenta el avance).
+> Última actualización: **20/11/2026 (tarde)** (la actualiza Claude cuando Leo le cuenta el avance).
 
 ---
 
@@ -67,6 +67,7 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - Ejercicios del final de `registro/2026-11-18.md`.
 - Los modales de `/crear` y las pantallas de cuenta siguen solo en español.
 - Conectar con la base: "Guardar" con login pasa lo de la sesión a `cvs` y sus tablas hijas, con `CvPolicy`.
+- **En revisión: GitHub Actions en rojo desde el 15/11** (`composer ci:check`). Pint: 14 archivos (se arregla con `vendor\bin\pint`). PHPStan: 32 errores (`vendor\bin\phpstan analyse --memory-limit=1G`); los de `app/Cv/*` los arregla Claude y los de `app/Models/*` y el seeder (genéricos `HasMany<Experience, $this>`) los hago yo, guiado. Sin `@phpstan-ignore` ni baseline. Explicación de Pint, PHPStan y genéricos ya vista el 20/11.
 
 **Enfoque decidido el 18/11 (manda sobre el plan de bloques):** primero **aprender las herramientas haciendo** cosas propias en la web, a mi ritmo. Lo que pide el aviso (base de datos con `CvPolicy`, PDF, pruebas, JOIN y README) **se integra después**, viendo cómo encaja en lo que ya esté hecho. El plan de bloques del §4 queda como referencia de lo que hay que cubrir, no como calendario. Al 18/11, de los bloques 1 a 7 hay más o menos un 35-40 % (la landing, que era para después, ya está).
 
@@ -80,7 +81,9 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - **Documentación nueva** en `documentacion/` (bitácora, cómo funciona cada parte, auditoría del 422) y **`documentacion/GUIA_DE_ESTUDIO.md`**.
 - Pruebas: 13 en verde (el creador nuevo todavía no tiene pruebas). El logo de `/crear` ya no hace falta: la marca está en el header.
 
-**▶ RETOMAR ACÁ:** estudiar el código del 20/11 siguiendo `documentacion/GUIA_DE_ESTUDIO.md` (5 etapas, una por mañana), haciendo los ejercicios. Después: guardar el CV en la base con login y `CvPolicy`.
+**Hecho el 20/11 (tarde), en otro repo:** el creador pasó a la **landing de lanzamiento** (`landingpage-cvbelgrano`, Vite + React) **todo en JavaScript**, sin PHP, sin base de datos y sin login. El CV se guarda en el `localStorage`, la foto se achica con `<canvas>` y los modales quedaron en es/en/pt. La landing suma "Crear CV online", "Probá crear tu CV ahora" y volver arriba. Ya está subido. Detalle en la bitácora y en el README de ese repo. Falta probarlo en un celular real.
+
+**▶ RETOMAR ACÁ:** estudiar el código del 20/11 siguiendo `documentacion/GUIA_DE_ESTUDIO.md` (5 etapas, una por mañana), haciendo los ejercicios. Después: arreglar GitHub Actions (en revisión, ver "Pendiente") y guardar el CV en la base con login y `CvPolicy`.
 
 ---
 
@@ -117,7 +120,7 @@ Se trabaja todos los días, sin días libres.
 | 16/11 | Relaciones User ↔ Cv, Tinker, `$fillable`, `comandos.tinker.md`. Entendí Artisan, `APP_URL` y `migrate` |
 | 17/11 | Bloque 1 completo (tablas hijas, factories, seeder). Bloque 2 a medias (páginas, molde, Vite). Tinker y `with()`. Decisión: login solo para guardar. Ver `registro/2026-11-17.md` |
 | 18/11 | Sin Flux ni Tailwind. Home = landing (es/en/pt, selector Livewire + middleware, volver arriba). `/crear` con 4 modales Livewire y `#[Session]`. CSS por componente. Ver `registro/2026-11-18.md` |
-| 20/11 | Header único, vista previa A4 con plantillas ATS y Personalizada, edición sobre el CV, zoom/desplazar, foto, PDF por impresión. CV en la sesión con `BorradorCv`. Documentación y guía de estudio en `documentacion/` |
+| 20/11 | Header único, vista previa A4 con plantillas ATS y Personalizada, edición sobre el CV, zoom/desplazar, foto, PDF por impresión. CV en la sesión con `BorradorCv`. Documentación y guía de estudio en `documentacion/`. Tarde: el creador pasado a JavaScript en la landing de lanzamiento (otro repo). GitHub Actions en revisión |
 
 ---
 
