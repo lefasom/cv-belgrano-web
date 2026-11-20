@@ -12,6 +12,14 @@ namespace App\Cv;
  *   cv.experiencias => [ [position, company_name, period, description], ... ]
  *   cv.estudios     => [ [title_obtained, institution, period, status], ... ]
  *   cv.habilidades  => [ [name], ... ]
+ *
+ * TIPOS PARA PHPSTAN (son comentarios: PHP no los usa, PHPStan sí).
+ * Es como un "type" de TypeScript: se define una vez y se usa en los @param y @return.
+ *   Item = un registro: columna => texto (ej.: ['position' => 'Dev', ...])
+ *   Cv   = el CV entero, con la forma exacta de cada clave
+ *
+ * @phpstan-type Item array<string, string>
+ * @phpstan-type Cv array{datos: Item, experiencias: list<Item>, estudios: list<Item>, habilidades: list<Item>}
  */
 class BorradorCv
 {
@@ -52,7 +60,11 @@ class BorradorCv
         ],
     ];
 
-    /** Todo el CV de una vez (para la vista previa). */
+    /**
+     * Todo el CV de una vez (para la vista previa).
+     *
+     * @return Cv
+     */
     public static function todo(): array
     {
         return [
@@ -63,29 +75,72 @@ class BorradorCv
         ];
     }
 
+    /** @return Item */
     public static function datos(): array
     {
-        return array_merge(self::DATOS_VACIOS, session('cv.datos', []));
+        return array_merge(self::DATOS_VACIOS, self::soloTextos(session('cv.datos')));
     }
 
+    /** @param  Item  $datos */
     public static function guardarDatos(array $datos): void
     {
         session()->put('cv.datos', array_merge(self::DATOS_VACIOS, array_intersect_key($datos, self::DATOS_VACIOS)));
     }
 
-    /** experiencias, estudios o habilidades. */
+    /**
+     * experiencias, estudios o habilidades.
+     *
+     * @return list<Item>
+     */
     public static function lista(string $nombre): array
     {
-        return array_values(session("cv.$nombre", []));
+        $guardado = session("cv.$nombre");
+
+        if (! is_array($guardado)) {
+            return [];
+        }
+
+        return array_values(array_map(self::soloTextos(...), $guardado));
     }
 
-    /** Agrega un ítem al final de una lista. */
+    /**
+     * La sesión puede devolver cualquier cosa (mixed): de un registro se quedan
+     * solo las columnas que son texto. Si no es un array, queda vacío.
+     *
+     * @return Item
+     */
+    private static function soloTextos(mixed $valor): array
+    {
+        if (! is_array($valor)) {
+            return [];
+        }
+
+        $textos = [];
+
+        foreach ($valor as $columna => $texto) {
+            if (is_string($columna) && is_string($texto)) {
+                $textos[$columna] = $texto;
+            }
+        }
+
+        return $textos;
+    }
+
+    /**
+     * Agrega un ítem al final de una lista.
+     *
+     * @param  Item  $item
+     */
     public static function agregar(string $nombre, array $item): void
     {
         session()->push("cv.$nombre", $item);
     }
 
-    /** Reemplaza el ítem número $indice de una lista (editar una experiencia o un estudio). */
+    /**
+     * Reemplaza el ítem número $indice de una lista (editar una experiencia o un estudio).
+     *
+     * @param  Item  $item
+     */
     public static function reemplazar(string $nombre, int $indice, array $item): void
     {
         $lista = self::lista($nombre);
@@ -117,7 +172,8 @@ class BorradorCv
     public static function editar(string $campo, string $texto): bool
     {
         $partes = explode('.', $campo);
-        $seccion = $partes[0] ?? '';
+        // explode() siempre devuelve al menos un elemento: $partes[0] existe siempre.
+        $seccion = $partes[0];
 
         // Un solo renglón, sin espacios de más (el resumen también: el CV lo muestra en un párrafo).
         $texto = trim(preg_replace('/\s+/u', ' ', $texto));
@@ -167,14 +223,22 @@ class BorradorCv
     /**
      * Los renglones de una descripción, tal como los muestra el CV:
      * sin renglones vacíos y sin el guion o la viñeta del principio.
+     *
+     * @return list<string>
      */
     public static function renglones(?string $descripcion): array
     {
-        return collect(preg_split('/\R/u', (string) $descripcion))
+        // preg_split() devuelve false si falla (por ejemplo, con UTF-8 roto): entonces no hay renglones.
+        $lineas = preg_split('/\R/u', $descripcion ?? '');
+
+        if ($lineas === false) {
+            return [];
+        }
+
+        return array_values(collect($lineas)
             ->map(fn ($renglon) => trim(ltrim(trim($renglon), '-•*')))
             ->filter()
-            ->values()
-            ->all();
+            ->all());
     }
 
     private static function editarRenglon(int $indice, int $renglon, string $texto): bool

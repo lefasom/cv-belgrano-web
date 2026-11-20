@@ -16,7 +16,6 @@ return [
         'contacto' => 'Contact',
     ],
 
-
     // Títulos de la plantilla ATS (traductorTemplateATS de la app): estándar y sin "&",
     // para que un sistema ATS reconozca cada sección sin dudas.
     'ats' => [

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\EducationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Education extends Model
 {
-    /** @use HasFactory<\Database\Factories\EducationFactory> */
+    /** @use HasFactory<EducationFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -19,10 +20,9 @@ class Education extends Model
         'sort_order',
     ];
 
+    /** @return BelongsTo<Cv, $this> */
     public function cv(): BelongsTo
     {
         return $this->belongsTo(Cv::class);
     }
-
-
 }

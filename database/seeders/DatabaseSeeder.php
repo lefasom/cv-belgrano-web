@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cv;
 use App\Models\Education;
 use App\Models\Experience;
 use App\Models\Skill;
 use App\Models\User;
-use App\Models\Cv;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             Cv::factory()->count(2)->make()->toArray()
         );
 
-        $cvs->each(function ($cv) {
+        $cvs->each(function (Cv $cv) {
             $cv->education()->createMany(
                 Education::factory()->count(5)->make()->toArray()
             );

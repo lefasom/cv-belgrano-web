@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ElegirIdioma;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Se suma al grupo "web": corre en todas las páginas y elige el idioma.
         $middleware->web(append: [
-            \App\Http\Middleware\ElegirIdioma::class,
+            ElegirIdioma::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

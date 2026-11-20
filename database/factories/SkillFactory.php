@@ -18,8 +18,8 @@ class SkillFactory extends Factory
     public function definition(): array
     {
         return [
-            "name" => $this->faker->word(),
-            "sort_order" => $this->faker->numberBetween(0, 100),
+            'name' => $this->faker->word(),
+            'sort_order' => $this->faker->numberBetween(0, 100),
         ];
     }
 }

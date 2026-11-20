@@ -108,7 +108,7 @@
 
 **Cómo se probó.** Con Chrome sin ventana, controlado por un script: 32 controles en verde (validaciones, cargar, editar y eliminar, edición sobre el CV, letra, zoom, foto, plantilla, idioma, PDF con una página por hoja, recarga y celular), sin errores en la consola. El pellizco **no se probó en un celular real**.
 
-**GitHub Actions de esta web:** se explicaron Pint, PHPStan y los genéricos de las relaciones. El arreglo quedó **en revisión** (ver §4).
+**GitHub Actions de esta web:** se explicaron Pint, PHPStan y los genéricos de las relaciones, y **quedó arreglado**: Pint formateó 14 archivos; PHPStan (nivel 7) pasó de 32 errores a 0 con tipos de arrays en `app/Cv` (alias `@phpstan-type`), controles de `false` en GD y `preg_split`, genéricos en las 8 relaciones y `Cv $cv` en el seeder. Sin `@phpstan-ignore` ni baseline.
 
 ---
 
@@ -122,7 +122,6 @@
 | Editar el estado de un estudio desde el CV | Hoy solo desde el modal (es una opción, no texto libre) |
 | PDF en el servidor | `spatie/laravel-pdf` (Chrome) cuando haya VPS |
 | Probar el pellizco en un celular | Solo se probó con toques simulados |
-| **En revisión:** GitHub Actions en rojo desde el 15/11 | `composer ci:check` falla: Pint (14 archivos) y PHPStan (32 errores en `app/Cv/*`, `app/Models/*` y `DatabaseSeeder`). Las 13 pruebas pasan. Ver el pendiente en `RETOMAR.md` §3 |
 
 ---
 
@@ -131,4 +130,4 @@
 | Fecha | Versión | Cambio |
 | ----- | ------- | ------ |
 | 20/11/2026 | 1.0 | Creación de la carpeta `documentacion` y de esta bitácora |
-| 20/11/2026 | 1.1 | El creador pasado a la landing en JavaScript; GitHub Actions en revisión |
+| 20/11/2026 | 1.1 | El creador pasado a la landing en JavaScript; GitHub Actions arreglado |

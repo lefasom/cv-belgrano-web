@@ -18,11 +18,11 @@ class ExperienceFactory extends Factory
     public function definition(): array
     {
         return [
-            "company_name" => $this->faker->company(),
-            "position" => $this->faker->jobTitle(),
-            "period" => $this->faker->numberBetween(2010, 2023) . ' - ' . $this->faker->numberBetween(2024, 2026),
-            "description" => $this->faker->paragraph(),
-            "sort_order" => $this->faker->numberBetween(0, 100),
+            'company_name' => $this->faker->company(),
+            'position' => $this->faker->jobTitle(),
+            'period' => $this->faker->numberBetween(2010, 2023).' - '.$this->faker->numberBetween(2024, 2026),
+            'description' => $this->faker->paragraph(),
+            'sort_order' => $this->faker->numberBetween(0, 100),
         ];
     }
 }

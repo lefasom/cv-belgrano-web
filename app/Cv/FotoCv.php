@@ -32,7 +32,14 @@ class FotoCv
             return null;
         }
 
-        $original = @imagecreatefromstring(file_get_contents($ruta));
+        // file_get_contents() devuelve false si no puede leer el archivo.
+        $contenido = file_get_contents($ruta);
+
+        if ($contenido === false) {
+            return null;
+        }
+
+        $original = @imagecreatefromstring($contenido);
 
         if (! $original) {
             return null;
@@ -50,7 +57,14 @@ class FotoCv
 
         $foto = imagecreatetruecolor($final, $final);
         // Fondo blanco por si el PNG tiene partes transparentes (el JPEG no las soporta).
-        imagefill($foto, 0, 0, imagecolorallocate($foto, 255, 255, 255));
+        // imagecolorallocate() devuelve false si no puede crear el color: sin fondo no se sigue.
+        $blanco = imagecolorallocate($foto, 255, 255, 255);
+
+        if ($blanco === false) {
+            return null;
+        }
+
+        imagefill($foto, 0, 0, $blanco);
         imagecopyresampled($foto, $original, 0, 0, $x, $y, $final, $final, $lado, $lado);
 
         ob_start();
@@ -79,6 +93,11 @@ class FotoCv
             default => 0,
         };
 
-        return $grados ? imagerotate($imagen, $grados, 0) : $imagen;
+        if ($grados === 0) {
+            return $imagen;
+        }
+
+        // imagerotate() devuelve false si falla: entonces queda la foto como vino.
+        return imagerotate($imagen, $grados, 0) ?: $imagen;
     }
 }
