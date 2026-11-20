@@ -10,26 +10,6 @@
 
     <div class="landing-page">
 
-        {{-- ============ BARRA SUPERIOR ============ --}}
-
-        <header class="landing-barra">
-            <a href="#inicio" class="landing-barra-marca">
-                <img src="{{ asset('images/landing/cvbelgrano.png') }}" alt="" width="36" height="36">
-                <span>{{ $t['hero']['nombre'] }}</span>
-            </a>
-            <nav class="landing-barra-enlaces" aria-label="{{ $t['barra']['enlacesAria'] }}">
-                @foreach ($t['barra']['enlaces'] as $enlace)
-                    <a href="{{ $enlace['href'] }}">{{ $enlace['texto'] }}</a>
-                @endforeach
-            </nav>
-            <div class="landing-barra-acciones">
-                {{-- Selector de idioma: componente Livewire con su propio estado --}}
-                <livewire:idioma />
-                <a href="{{ route('crear') }}" class="landing-barra-boton landing-barra-boton-online">{{ $t['web']['crear'] }}</a>
-                <a href="#descargar" class="landing-barra-boton">{{ $t['barra']['descargar'] }}</a>
-            </div>
-        </header>
-
         {{-- ============ HERO ============ --}}
 
         <section class="landing-hero" id="inicio">

@@ -1,22 +1,48 @@
 /* ==========================================
-   SECCIÓN DEL CREADOR (la tarjeta de cada componente)
-   La comparten datos, experiencia, educación y habilidades.
+   BOTÓN DE SECCIÓN DEL CREADOR
+   Lo comparten datos, experiencia, educación y habilidades.
+   Cada botón abre el modal con el formulario de su sección.
    ========================================== */
 
-.seccion {
-    padding: 24px;
-    border: 1px solid var(--borde);
-    border-radius: 20px;
-    background: var(--panel);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.seccion > .boton {
+.creador-boton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     width: 100%;
+    padding: 16px 20px;
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    background: var(--panel);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    color: var(--texto);
+    font: inherit;
+    font-weight: 800;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.15s;
 }
 
-.seccion-vacia {
-    margin: 14px 0 0;
-    color: var(--gris);
-    font-size: 14px;
+.creador-boton:hover {
+    border-color: var(--azul-claro);
+    transform: translateY(-1px);
+}
+
+.creador-boton:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
+/* Cuántos ítems hay cargados (o ✓ en datos personales) */
+.creador-boton-cuenta {
+    display: inline-grid;
+    place-items: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.18);
+    color: var(--azul-claro);
+    font-size: 13px;
+    font-weight: 800;
 }

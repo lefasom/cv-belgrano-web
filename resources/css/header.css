@@ -1,0 +1,281 @@
+/* ==========================================
+   BARRA SUPERIOR (header de layouts/app.blade.php)
+   La comparten todas las páginas:
+   - .landing-barra            = barra de la landing (home)
+   - .landing-barra-app        = barra de la app (/crear, login, registro…)
+   Las variables de color (--texto, --gris, --borde…) vienen de layout.css.
+   ========================================== */
+
+.landing-barra {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px clamp(16px, 5vw, 64px);
+  background: rgba(11, 18, 32, 0.86);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
+}
+
+/* ---------- Marca (logo + nombre) ---------- */
+.landing-barra-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--texto);
+  font-size: 17px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.landing-barra-marca img {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  object-fit: contain;
+}
+
+/* ---------- Navegación ---------- */
+.landing-barra-enlaces {
+  display: flex;
+  gap: 26px;
+}
+
+.landing-barra-enlaces a,
+.landing-barra-link {
+  color: var(--gris);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.landing-barra-enlaces a:hover,
+.landing-barra-enlaces a:focus-visible,
+.landing-barra-link:hover,
+.landing-barra-link:focus-visible {
+  color: var(--texto);
+}
+
+/* ---------- Acciones (idioma, cuenta, botones) ---------- */
+.landing-barra-acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.landing-barra-boton {
+  flex-shrink: 0;
+  padding: 9px 18px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6, #1d5ce0);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+/* Botón "Crear CV online": la misma forma, pero sin relleno */
+.landing-barra-boton-online {
+  background: transparent;
+  border: 1px solid rgba(96, 165, 250, 0.55);
+  box-shadow: none;
+}
+
+.landing-barra a:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ---------- Cuenta: saludo y cerrar sesión ---------- */
+.landing-barra-usuario {
+  color: var(--gris);
+  font-size: 14px;
+}
+
+.landing-barra-salir {
+  margin: 0;
+}
+
+.landing-barra-salir button {
+  padding: 7px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: none;
+  color: var(--gris);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.landing-barra-salir button:hover {
+  color: var(--texto);
+  border-color: var(--azul);
+}
+
+.landing-barra-salir button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ---------- Selector de idioma (livewire/idioma.blade.php) ---------- */
+.landing-idioma {
+  position: relative;
+}
+
+.landing-idioma-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--texto);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.landing-idioma-boton:hover,
+.landing-idioma-boton[aria-expanded="true"] {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(96, 165, 250, 0.7);
+}
+
+.landing-idioma-boton:focus-visible,
+.landing-idioma-menu button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.landing-idioma-boton svg {
+  width: 17px;
+  height: 17px;
+  color: var(--azul-claro);
+}
+
+.landing-idioma-flecha {
+  color: var(--gris);
+  font-size: 11px;
+}
+
+.landing-idioma-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  min-width: 170px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
+}
+
+.landing-idioma-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.landing-idioma-menu button:hover {
+  background: rgba(59, 130, 246, 0.14);
+}
+
+.landing-idioma-menu button.activo {
+  background: rgba(59, 130, 246, 0.24);
+  color: #ffffff;
+}
+
+.landing-idioma-codigo {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(96, 165, 250, 0.16);
+  color: var(--azul-claro);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================
+   PANTALLAS CHICAS
+   ========================================== */
+
+/* En la landing los links de secciones se esconden (no entran) */
+@media (max-width: 820px) {
+  .landing-barra:not(.landing-barra-app) .landing-barra-enlaces {
+    display: none;
+  }
+
+  /* En la app el saludo se esconde para dejar lugar */
+  .landing-barra-usuario {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .landing-barra {
+    padding: 10px 16px;
+  }
+
+  .landing-barra-marca {
+    font-size: 16px;
+  }
+
+  .landing-barra-marca img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .landing-barra-acciones {
+    gap: 8px;
+  }
+
+  .landing-idioma-boton {
+    height: 36px;
+    padding: 0 10px;
+  }
+
+  /* En la app, si no entra todo, las acciones bajan a otra fila */
+  .landing-barra-app {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .landing-barra-boton {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .landing-barra-marca span {
+    display: none;
+  }
+}

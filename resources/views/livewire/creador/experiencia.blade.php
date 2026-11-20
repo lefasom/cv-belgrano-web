@@ -1,34 +1,34 @@
 <?php
 
-use Livewire\Attributes\Session;
+use App\Cv\BorradorCv;
 use Livewire\Component;
 
 new class extends Component
 {
-    /**
-     * Lista de experiencias guardadas (sobrevive en la sesión).
-     * Cada una tiene las columnas de la tabla `experiences`.
+    /*
+     * EXPERIENCIA: arriba del modal están "Experiencia 1, 2, 3… + Nueva".
+     * Tocar una la carga en el formulario para editarla (o eliminarla).
+     * "+ Nueva" deja el formulario vacío para agregar otra.
      */
-    #[Session]
-    public array $experiencias = [];
+    private const VACIA = [
+        'company_name' => '',
+        'position' => '',
+        'period' => '',
+        'description' => '',
+    ];
 
-    /** El borrador de la experiencia que se está cargando en el modal. */
+    /** Lo que se edita en el modal (como un useState local). */
     public array $borrador = [];
+
+    /** Qué experiencia se está editando: su número en la lista, o null si es una nueva. */
+    public ?int $elegida = null;
 
     public bool $abierto = false;
 
-    public string $mensaje = '';
-
+    /** Al abrir empieza en "+ Nueva". */
     public function abrir(): void
     {
-        $this->borrador = [
-            'company_name' => '',
-            'position' => '',
-            'period' => '',
-            'description' => '',
-        ];
-        $this->resetValidation();
-        $this->mensaje = '';
+        $this->elegir(null);
         $this->abierto = true;
     }
 
@@ -37,7 +37,21 @@ new class extends Component
         $this->abierto = false;
     }
 
-    /** Guardar: valida y agrega la experiencia al final de la lista. */
+    /** Carga en el formulario la experiencia $indice (null = una nueva, vacía). */
+    public function elegir(?int $indice): void
+    {
+        $lista = BorradorCv::lista('experiencias');
+
+        if ($indice !== null && ! isset($lista[$indice])) {
+            $indice = null;
+        }
+
+        $this->elegida = $indice;
+        $this->borrador = $indice === null ? self::VACIA : array_merge(self::VACIA, $lista[$indice]);
+        $this->resetValidation();
+    }
+
+    /** Guardar: valida y agrega la nueva, o reemplaza la que se estaba editando. */
     public function guardar(): void
     {
         $this->validate([
@@ -50,35 +64,43 @@ new class extends Component
             '*.max' => 'Es demasiado largo.',
         ]);
 
-        $this->experiencias[] = $this->borrador;
+        $experiencia = array_intersect_key($this->borrador, self::VACIA);
+
+        if ($this->elegida === null) {
+            BorradorCv::agregar('experiencias', $experiencia);
+        } else {
+            BorradorCv::reemplazar('experiencias', $this->elegida, $experiencia);
+        }
+
         $this->abierto = false;
-        $this->mensaje = 'Experiencia guardada.';
+        $this->dispatch('cv-actualizado');
+    }
+
+    /** Eliminar la experiencia elegida. El modal queda abierto, en "+ Nueva". */
+    public function eliminar(): void
+    {
+        if ($this->elegida !== null) {
+            BorradorCv::quitar('experiencias', $this->elegida);
+            $this->dispatch('cv-actualizado');
+        }
+
+        $this->elegir(null);
     }
 };
 ?>
 
-<div class="seccion seccion-experiencia">
-    {{-- El CSS de este componente: la tarjeta, el modal y lo propio de experiencia --}}
-    @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css', 'resources/css/creador/experiencia.css'])
+<div class="creador-seccion">
+    {{-- El CSS del botón y del modal (lo comparten las cuatro secciones) --}}
+    @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css'])
 
-    <button type="button" class="boton" wire:click="abrir">Experiencia</button>
+    @php($cantidad = count(App\Cv\BorradorCv::lista('experiencias')))
 
-    @if ($mensaje)
-        <p class="aviso">{{ $mensaje }}</p>
-    @endif
-
-    <ul class="experiencia-lista">
-        @foreach ($experiencias as $i => $experiencia)
-            <li wire:key="experiencia-{{ $i }}">
-                <strong>{{ $experiencia['position'] }}</strong>
-                <span>{{ $experiencia['company_name'] }} · {{ $experiencia['period'] }}</span>
-            </li>
-        @endforeach
-    </ul>
-
-    @if (count($experiencias) === 0)
-        <p class="seccion-vacia">Todavía no agregaste experiencias.</p>
-    @endif
+    <button type="button" class="creador-boton" wire:click="abrir">
+        <span>{{ __('cv.creador.experiencia') }}</span>
+        @if ($cantidad)
+            <span class="creador-boton-cuenta">{{ $cantidad }}</span>
+        @endif
+    </button>
 
     @if ($abierto)
         <div class="modal-fondo" wire:click="cerrar"></div>
@@ -87,7 +109,11 @@ new class extends Component
             <button type="button" class="modal-x" wire:click="cerrar" aria-label="Cerrar">×</button>
 
             <form wire:submit="guardar">
-                <h2>Agregar experiencia</h2>
+                <h2>{{ $elegida === null ? 'Agregar experiencia' : 'Editar experiencia '.($elegida + 1) }}</h2>
+
+                @if ($cantidad)
+                    <x-creador.selector :cantidad="$cantidad" :elegido="$elegida" :etiqueta="__('cv.creador.experiencia')" />
+                @endif
 
                 <label for="exp-position">Puesto</label>
                 <input id="exp-position" type="text" wire:model="borrador.position" placeholder="Ej.: Desarrollador React Native">
@@ -101,11 +127,15 @@ new class extends Component
                 <input id="exp-period" type="text" wire:model="borrador.period" placeholder="Ej.: 2023 - actualidad">
                 @error('borrador.period') <p class="error">{{ $message }}</p> @enderror
 
-                <label for="exp-description">Qué hiciste</label>
-                <textarea id="exp-description" wire:model="borrador.description" rows="3" placeholder="Tareas y logros principales."></textarea>
+                <label for="exp-description">Qué hiciste <span class="modal-ayuda">(cada renglón es una viñeta)</span></label>
+                <textarea id="exp-description" wire:model="borrador.description" rows="4" placeholder="Tareas y logros principales."></textarea>
                 @error('borrador.description') <p class="error">{{ $message }}</p> @enderror
 
                 <div class="modal-botones">
+                    @if ($elegida !== null)
+                        {{-- wire:confirm pregunta antes de llamar a eliminar() --}}
+                        <button type="button" class="modal-eliminar" wire:click="eliminar" wire:confirm="¿Eliminar la experiencia {{ $elegida + 1 }}?">{{ __('cv.creador.eliminar') }}</button>
+                    @endif
                     <button type="button" class="boton-secundario" wire:click="cerrar">Cancelar</button>
                     <button type="submit" class="boton" wire:loading.attr="disabled" wire:target="guardar">
                         <span wire:loading.remove wire:target="guardar">Guardar</span>

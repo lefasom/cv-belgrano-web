@@ -1,0 +1,65 @@
+/* ==========================================
+   HOJAS A4 (lo comparten todas las plantillas)
+   Las arma resources/js/cv-paginado.js copiando el molde [data-cv-hoja].
+   --tamano-letra escala TODA la letra del CV (1 = normal), como en la app.
+   ========================================== */
+
+.cv-paginas {
+  --tamano-letra: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 210mm;
+  transform-origin: top left;
+}
+
+.cv-hoja {
+  /* position: relative para que cv-paginado.js mida (offsetTop) desde el borde de la hoja.
+     Adentro, las columnas NO tienen position, si no las medidas cambian de referencia. */
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  text-align: left;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cv-hoja * {
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.cv-hoja p,
+.cv-hoja h1,
+.cv-hoja h2,
+.cv-hoja h3,
+.cv-hoja ul {
+  margin: 0;
+}
+
+.cv-vacio {
+  color: #6b7280;
+  font-size: calc(12px * var(--tamano-letra));
+}
+
+/* ---------- Edición desde el CV ---------- */
+.cv-hoja [data-cv-campo] {
+  border-radius: 2px;
+  cursor: text;
+}
+
+.cv-hoja [data-cv-campo]:hover {
+  outline: 1px dashed rgba(59, 130, 246, 0.6);
+  outline-offset: 2px;
+}
+
+.cv-hoja [data-cv-campo]:focus {
+  outline: 1.5px dashed #3b82f6;
+  outline-offset: 2px;
+  background: rgba(59, 130, 246, 0.08);
+}

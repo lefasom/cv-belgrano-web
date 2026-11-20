@@ -1,0 +1,217 @@
+/* ==========================================
+   PLANTILLA PERSONALIZADA "EJECUTIVO" (components/cv/ejecutivo.blade.php)
+   Mismo diseño que App-de-cv/templates/administration/Template3.ts (3.png):
+   azul marino #1a365d + dorado #c5a059, lateral gris claro,
+   Georgia (nombre, perfil, experiencia) y Arial (títulos y datos).
+   ========================================== */
+
+.cv-eje {
+  --ink: #1a365d;
+  --text: #2c3e50;
+  --dim: #64748b;
+  --line: #cbd5e1;
+  --panel: #f8fafc;
+  --accent: #c5a059;
+
+  display: flex;
+  color: var(--text);
+  font-family: Georgia, serif;
+  font-size: calc(16px * var(--tamano-letra));
+}
+
+/* ---------- Columnas (sin position: ver hojas.css) ---------- */
+.cv-eje-lateral {
+  display: flex;
+  flex: 0 0 220px;
+  flex-direction: column;
+  gap: 25px;
+  width: 220px;
+  height: 100%;
+  padding: 40px 30px;
+  border-right: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.cv-eje-principal {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: 25px;
+  min-width: 0;
+  height: 100%;
+  padding: 50px 60px;
+}
+
+/* ---------- Encabezado: nombre a la izquierda, foto a la derecha ---------- */
+.cv-eje-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 6px;
+  padding-bottom: 24px;
+  border-bottom: 4px solid var(--ink);
+}
+
+.cv-eje-nombre-bloque {
+  min-width: 0;
+}
+
+.cv-eje-nombre {
+  color: var(--ink);
+  font-size: calc(32px * var(--tamano-letra) + 6px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.cv-eje-profesion {
+  margin-top: 5px;
+  color: var(--dim);
+  font-size: calc(12.5px * var(--tamano-letra) + 4px);
+  font-style: italic;
+}
+
+.cv-eje-foto {
+  flex-shrink: 0;
+  width: 110px;
+  height: 110px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+}
+
+.cv-eje-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Títulos de sección ---------- */
+/* Columna principal: banda azul marino con letra blanca */
+.cv-eje-titulo {
+  margin-bottom: 20px !important;
+  padding: 8px 15px;
+  background: var(--ink);
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: calc(15px * var(--tamano-letra) - 1px);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Columna lateral: azul con subrayado dorado */
+.cv-eje-titulo-lateral {
+  margin-bottom: 15px !important;
+  padding-bottom: 5px;
+  border-bottom: 2px solid var(--accent);
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+  font-size: calc(12.5px * var(--tamano-letra) - 1.5px);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+/* ---------- Contacto (lateral) ---------- */
+.cv-eje-contacto {
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  font-size: calc(11px * var(--tamano-letra) + 1px);
+  line-height: 1.6;
+}
+
+.cv-eje-contacto + .cv-eje-contacto {
+  margin-top: 10px;
+}
+
+/* ---------- Educación (lateral) ---------- */
+.cv-eje-estudio + .cv-eje-estudio {
+  margin-top: 15px;
+}
+
+.cv-eje-estudio-titulo {
+  color: var(--dim);
+  font-family: Arial, sans-serif;
+  font-size: calc(12.5px * var(--tamano-letra) - 1px);
+  font-weight: 700;
+}
+
+.cv-eje-estudio-datos {
+  margin-top: 3px;
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  font-size: calc(11px * var(--tamano-letra) - 1px);
+  line-height: 1.5;
+}
+
+/* ---------- Perfil ---------- */
+.cv-eje-perfil {
+  color: var(--text);
+  font-size: calc(11px * var(--tamano-letra) + 2px);
+  line-height: 1.8;
+}
+
+/* ---------- Experiencia ---------- */
+.cv-eje-item + .cv-eje-item {
+  margin-top: 25px;
+}
+
+.cv-eje-empresa {
+  color: var(--ink);
+  font-size: calc(12.5px * var(--tamano-letra) + 1px);
+  font-weight: 700;
+}
+
+.cv-eje-fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.cv-eje-periodo {
+  flex-shrink: 0;
+  color: var(--dim);
+  font-family: Arial, sans-serif;
+  font-size: calc(8px * var(--tamano-letra) + 4px);
+  white-space: nowrap;
+}
+
+.cv-eje-puesto {
+  color: var(--text);
+  font-size: calc(12.5px * var(--tamano-letra) + 1px);
+  font-style: italic;
+  text-align: right;
+}
+
+.cv-eje-tareas {
+  color: var(--text);
+  font-size: calc(11px * var(--tamano-letra) + 2px);
+  line-height: 1.6;
+}
+
+.cv-eje-tarea + .cv-eje-tarea {
+  margin-top: 4px;
+}
+
+/* ---------- Habilidades: chips grises ---------- */
+.cv-eje-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cv-eje-chip {
+  max-width: 100%;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+  font-size: calc(11px * var(--tamano-letra) + 1px);
+}

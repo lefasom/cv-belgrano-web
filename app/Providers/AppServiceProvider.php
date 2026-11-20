@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Foundation\Console\ServeCommand;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +25,20 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureServe();
+    }
+
+    /**
+     * `php artisan serve` arranca el servidor de PHP pasándole solo algunas variables
+     * de entorno. En Windows faltan TEMP y TMP, y sin ellas PHP no tiene dónde guardar
+     * un archivo subido: la foto del CV fallaba con un 422 ("failed to upload").
+     */
+    protected function configureServe(): void
+    {
+        if ($this->app->runningInConsole()) {
+            ServeCommand::$passthroughVariables[] = 'TEMP';
+            ServeCommand::$passthroughVariables[] = 'TMP';
+        }
     }
 
     /**

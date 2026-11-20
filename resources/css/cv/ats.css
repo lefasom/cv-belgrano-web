@@ -1,0 +1,119 @@
+/* ==========================================
+   PLANTILLA ATS (components/cv/ats.blade.php)
+   Mismo diseño que App-de-cv/templates/TemplateATS.ts:
+   Arial, #111111 y #6b7280, una sola columna, títulos en mayúscula con línea abajo.
+   ========================================== */
+
+.cv-ats {
+  --cv-texto: #111111;
+  --cv-gris: #6b7280;
+  --cv-linea: #d9d9d9;
+
+  color: var(--cv-texto);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: calc(16px * var(--tamano-letra));
+}
+
+/* La única columna: ocupa toda la hoja */
+.cv-ats-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  padding: 30px 34px 34px;
+}
+
+/* ---------- Encabezado ---------- */
+.cv-ats-encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--cv-linea);
+}
+
+.cv-ats-nombre {
+  font-size: calc(23px * var(--tamano-letra));
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.cv-ats-profesion {
+  font-size: calc(13px * var(--tamano-letra));
+}
+
+.cv-ats-contacto {
+  margin-top: 4px !important;
+  color: var(--cv-gris);
+  font-size: calc(11px * var(--tamano-letra));
+}
+
+/* ---------- Secciones ---------- */
+.cv-ats-titulo {
+  margin-bottom: 8px !important;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--cv-linea);
+  font-size: calc(13px * var(--tamano-letra));
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.cv-ats-parrafo {
+  font-size: calc(11px * var(--tamano-letra));
+  line-height: 1.6;
+}
+
+.cv-ats-linea {
+  font-size: calc(11px * var(--tamano-letra));
+  line-height: 1.5;
+}
+
+.cv-ats-sep,
+.cv-ats-gris {
+  color: var(--cv-gris);
+}
+
+/* Separación entre ítems: 15px en experiencia, 6px en listas (como en la app) */
+.cv-ats-seccion-experiencia .cv-ats-item + .cv-ats-item {
+  margin-top: 15px;
+}
+
+.cv-ats-seccion-lista .cv-ats-item + .cv-ats-item {
+  margin-top: 6px;
+}
+
+/* ---------- Experiencia ---------- */
+.cv-ats-puesto {
+  font-size: calc(12.5px * var(--tamano-letra));
+}
+
+.cv-ats-tareas {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 3px !important;
+  padding-left: 13px;
+  list-style: none;
+}
+
+.cv-ats-tareas li {
+  position: relative;
+  padding-left: 14px;
+  font-size: calc(10.5px * var(--tamano-letra));
+  line-height: 1.5;
+}
+
+.cv-ats-tareas li::before {
+  content: "\2022"; /* • (escrito como código para no depender de la codificación) */
+  position: absolute;
+  left: 0;
+  color: var(--cv-gris);
+  font-size: calc(9px * var(--tamano-letra));
+  line-height: 1.75;
+}
+
+/* ---------- Habilidades ---------- */
+.cv-ats-habilidades {
+  line-height: 1.7;
+}

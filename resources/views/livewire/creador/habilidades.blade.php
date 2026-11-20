@@ -1,29 +1,26 @@
 <?php
 
-use Livewire\Attributes\Session;
+use App\Cv\BorradorCv;
 use Livewire\Component;
 
 new class extends Component
 {
-    /**
-     * Lista de habilidades guardadas (sobrevive en la sesión).
-     * Cada una tiene la columna `name` de la tabla `skills`.
+    /*
+     * HABILIDADES: como SeccionHabilidadesVista.tsx de la app.
+     * El modal muestra TODAS las habilidades, cada una con una ✕ para eliminarla,
+     * y abajo un campo para agregar otra. No se editan: se eliminan y se agregan.
+     * Agregar no cierra el modal, así se pueden cargar varias seguidas.
      */
-    #[Session]
-    public array $habilidades = [];
 
-    /** El borrador de la habilidad que se está cargando en el modal. */
-    public array $borrador = [];
+    /** La habilidad que se está escribiendo. */
+    public string $nueva = '';
 
     public bool $abierto = false;
 
-    public string $mensaje = '';
-
     public function abrir(): void
     {
-        $this->borrador = ['name' => ''];
+        $this->nueva = '';
         $this->resetValidation();
-        $this->mensaje = '';
         $this->abierto = true;
     }
 
@@ -32,42 +29,40 @@ new class extends Component
         $this->abierto = false;
     }
 
-    /** Guardar: valida y agrega la habilidad al final de la lista. */
-    public function guardar(): void
+    public function agregar(): void
     {
-        $this->validate([
-            'borrador.name' => 'required|string|max:100',
-        ], [
-            'borrador.name.required' => 'Escribí una habilidad.',
-            'borrador.name.max' => 'Es demasiado largo.',
-        ]);
+        $this->nueva = trim($this->nueva);
 
-        $this->habilidades[] = $this->borrador;
-        $this->abierto = false;
-        $this->mensaje = 'Habilidad guardada.';
+        $this->validate(
+            ['nueva' => 'required|string|max:100'],
+            ['nueva.required' => 'Escribí una habilidad.', 'nueva.max' => 'Es demasiado largo.'],
+        );
+
+        BorradorCv::agregar('habilidades', ['name' => $this->nueva]);
+        $this->nueva = '';
+        $this->dispatch('cv-actualizado');
+    }
+
+    public function eliminar(int $indice): void
+    {
+        BorradorCv::quitar('habilidades', $indice);
+        $this->dispatch('cv-actualizado');
     }
 };
 ?>
 
-<div class="seccion seccion-habilidades">
-    {{-- El CSS de este componente: la tarjeta, el modal y lo propio de habilidades --}}
-    @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css', 'resources/css/creador/habilidades.css'])
+<div class="creador-seccion">
+    {{-- El CSS del botón y del modal (lo comparten las cuatro secciones) --}}
+    @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css'])
 
-    <button type="button" class="boton" wire:click="abrir">Habilidades</button>
+    @php($habilidades = App\Cv\BorradorCv::lista('habilidades'))
 
-    @if ($mensaje)
-        <p class="aviso">{{ $mensaje }}</p>
-    @endif
-
-    <ul class="habilidades-lista">
-        @foreach ($habilidades as $i => $habilidad)
-            <li wire:key="habilidad-{{ $i }}">{{ $habilidad['name'] }}</li>
-        @endforeach
-    </ul>
-
-    @if (count($habilidades) === 0)
-        <p class="seccion-vacia">Todavía no agregaste habilidades.</p>
-    @endif
+    <button type="button" class="creador-boton" wire:click="abrir">
+        <span>{{ __('cv.creador.habilidades') }}</span>
+        @if (count($habilidades))
+            <span class="creador-boton-cuenta">{{ count($habilidades) }}</span>
+        @endif
+    </button>
 
     @if ($abierto)
         <div class="modal-fondo" wire:click="cerrar"></div>
@@ -75,21 +70,40 @@ new class extends Component
         <div class="modal">
             <button type="button" class="modal-x" wire:click="cerrar" aria-label="Cerrar">×</button>
 
-            <form wire:submit="guardar">
-                <h2>Agregar habilidad</h2>
+            <h2>{{ __('cv.creador.habilidades') }}</h2>
 
-                <label for="hab-name">Habilidad</label>
-                <input id="hab-name" type="text" wire:model="borrador.name" placeholder="Ej.: Laravel">
-                @error('borrador.name') <p class="error">{{ $message }}</p> @enderror
+            {{-- Todas las habilidades, cada una con su ✕ --}}
+            @if (count($habilidades))
+                <ul class="modal-lista">
+                    @foreach ($habilidades as $i => $habilidad)
+                        <li wire:key="habilidad-{{ $i }}-{{ md5($habilidad['name'] ?? '') }}">
+                            <span>{{ $habilidad['name'] ?? '' }}</span>
+                            <button
+                                type="button"
+                                class="modal-lista-quitar"
+                                wire:click="eliminar({{ $i }})"
+                                aria-label="{{ __('cv.creador.eliminar') }}: {{ $habilidad['name'] ?? '' }}"
+                            >×</button>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="modal-vacio">Todavía no agregaste habilidades.</p>
+            @endif
 
-                <div class="modal-botones">
-                    <button type="button" class="boton-secundario" wire:click="cerrar">Cancelar</button>
-                    <button type="submit" class="boton" wire:loading.attr="disabled" wire:target="guardar">
-                        <span wire:loading.remove wire:target="guardar">Guardar</span>
-                        <span wire:loading wire:target="guardar">Guardando…</span>
-                    </button>
+            {{-- Agregar otra (Enter también agrega) --}}
+            <form class="modal-agregar" wire:submit="agregar">
+                <label for="hab-nueva">Nueva habilidad</label>
+                <div class="modal-agregar-fila">
+                    <input id="hab-nueva" type="text" wire:model="nueva" placeholder="Ej.: Laravel" autocomplete="off">
+                    <button type="submit" class="boton" wire:loading.attr="disabled" wire:target="agregar">{{ __('cv.creador.agregar') }}</button>
                 </div>
+                @error('nueva') <p class="error">{{ $message }}</p> @enderror
             </form>
+
+            <div class="modal-botones">
+                <button type="button" class="boton" wire:click="cerrar">{{ __('cv.creador.listo') }}</button>
+            </div>
         </div>
     @endif
 </div>

@@ -1,40 +1,21 @@
 <?php
 
-use Livewire\Attributes\Session;
+use App\Cv\BorradorCv;
 use Livewire\Component;
 
 new class extends Component
 {
-    /**
-     * Lo guardado. Con #[Session] Livewire lo guarda en la sesión cada vez que cambia
-     * y lo recupera al volver a la página: sobrevive al recargar y al navegar.
-     * Las claves son las mismas columnas de la tabla `cvs`.
-     */
-    #[Session]
-    public array $datos = [
-        'full_name' => '',
-        'headline' => '',
-        'email' => '',
-        'phone' => '',
-        'location' => '',
-        'summary' => '',
-    ];
-
     /** El borrador: lo que se edita dentro del modal (como un useState local). */
     public array $borrador = [];
 
     /** ¿El modal está abierto? El modal se muestra con un @if en la vista. */
     public bool $abierto = false;
 
-    /** Mensaje que aparece después de guardar. */
-    public string $mensaje = '';
-
-    /** Al abrir: copia lo guardado al borrador. Así Cancelar o la X no cambian nada. */
+    /** Al abrir: copia lo guardado (en la sesión) al borrador. Así Cancelar o la X no cambian nada. */
     public function abrir(): void
     {
-        $this->borrador = $this->datos;
+        $this->borrador = BorradorCv::datos();
         $this->resetValidation();
-        $this->mensaje = '';
         $this->abierto = true;
     }
 
@@ -44,7 +25,7 @@ new class extends Component
         $this->abierto = false;
     }
 
-    /** Guardar: valida, pasa el borrador a lo guardado, cierra el modal y avisa. */
+    /** Guardar: valida, guarda en la sesión, cierra el modal y avisa a la vista previa. */
     public function guardar(): void
     {
         $this->validate([
@@ -61,34 +42,23 @@ new class extends Component
             '*.max' => 'Es demasiado largo.',
         ]);
 
-        $this->datos = $this->borrador;
+        BorradorCv::guardarDatos($this->borrador);
         $this->abierto = false;
-        $this->mensaje = 'Datos guardados.';
+        $this->dispatch('cv-actualizado');
     }
 };
 ?>
 
-<div class="seccion seccion-datos">
-    {{-- El CSS de este componente: la tarjeta, el modal y lo propio de datos --}}
-    @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css', 'resources/css/creador/datos.css'])
+<div class="creador-seccion">
+    {{-- El CSS del botón y del modal (lo comparten las cuatro secciones) --}}
+    @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css'])
 
-    <button type="button" class="boton" wire:click="abrir">Datos personales</button>
-
-    @if ($mensaje)
-        <p class="aviso">{{ $mensaje }}</p>
-    @endif
-
-    @if (filled($datos['full_name']))
-        <div class="datos-resumen">
-            <strong>{{ $datos['full_name'] }}</strong>
-            @if (filled($datos['headline']))
-                <span class="datos-profesion">{{ $datos['headline'] }}</span>
-            @endif
-            <span>{{ $datos['email'] }}</span>
-        </div>
-    @else
-        <p class="seccion-vacia">Todavía no cargaste tus datos.</p>
-    @endif
+    <button type="button" class="creador-boton" wire:click="abrir">
+        <span>{{ __('cv.creador.datos') }}</span>
+        @if (filled(App\Cv\BorradorCv::datos()['full_name']))
+            <span class="creador-boton-cuenta" aria-hidden="true">✓</span>
+        @endif
+    </button>
 
     @if ($abierto)
         {{-- Fondo oscuro: tocarlo también cierra sin guardar --}}

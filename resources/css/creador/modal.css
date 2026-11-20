@@ -61,3 +61,134 @@
     gap: 10px;
     margin-top: 24px;
 }
+
+/* ---------- Selector: "Experiencia 1, 2, 3… + Nueva" (components/creador/selector) ---------- */
+.modal-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 6px;
+}
+
+.modal-selector-item {
+    padding: 7px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    background: var(--fondo-alt);
+    color: var(--gris);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.modal-selector-item:hover {
+    border-color: var(--azul-claro);
+    color: var(--texto);
+}
+
+.modal-selector-nueva {
+    border-style: dashed;
+}
+
+.modal-selector-item.activo {
+    border-color: var(--azul-claro);
+    background: rgba(59, 130, 246, 0.24);
+    color: white;
+}
+
+.modal-selector-item:focus-visible,
+.modal-lista-quitar:focus-visible,
+.modal-eliminar:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 2px;
+}
+
+.modal-ayuda {
+    color: var(--gris);
+    font-weight: 400;
+}
+
+/* Eliminar: a la izquierda, separado de Cancelar y Guardar */
+.modal-eliminar {
+    margin-right: auto;
+    padding: 12px 18px;
+    border: 1px solid rgba(248, 113, 113, 0.45);
+    border-radius: 14px;
+    background: transparent;
+    color: var(--rojo);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.modal-eliminar:hover {
+    background: rgba(248, 113, 113, 0.12);
+}
+
+/* ---------- Lista de habilidades con su ✕ (como la app) ---------- */
+.modal-lista {
+    max-height: 40vh;
+    margin: 16px 0 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.modal-lista li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--borde);
+    color: var(--texto);
+}
+
+.modal-lista li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--azul-claro);
+}
+
+.modal-lista li span {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.modal-lista-quitar {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--borde);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--gris);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal-lista-quitar:hover {
+    border-color: var(--rojo);
+    color: var(--rojo);
+}
+
+.modal-vacio {
+    margin: 14px 0 0;
+    color: var(--gris);
+    font-size: 14px;
+}
+
+.modal-agregar-fila {
+    display: flex;
+    gap: 10px;
+}
+
+.modal-agregar-fila input {
+    flex: 1;
+    min-width: 0;
+}
