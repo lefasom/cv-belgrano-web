@@ -60,7 +60,7 @@ El `.env` tiene `APP_URL=http://localhost:8000` porque trabajo con `php artisan 
 - **`/crear` (público):** cuatro componentes Livewire en `livewire/creador/` (datos, experiencia, educación, habilidades). Cada uno tiene modal propio en Livewire puro (`$abierto` + `@if`), borrador, validación con mensajes en español y `#[Session]`. **Sin base de datos todavía.** Después del login se va a `/crear`.
 - **Un CSS por componente** (`resources/css/...`, todos en el `input` de `vite.config.js`), con los colores de la landing.
 - **Sesión en archivos:** `SESSION_DRIVER=file`. `APP_LOCALE=es`.
-- **Convenciones:** componentes Livewire **sin ⚡**, en `resources/views/livewire/`. Los datos fijos (idiomas, URLs) se escriben en el archivo que los usa, sin `config/` propio.
+- **Convenciones:** componentes Livewire **sin ⚡**, en `resources/views/livewire/`. Los datos fijos (idiomas, URLs) se escriben en el archivo que los usa, sin `config/` propio. **Textos traducidos como array** (desde el 21/11): `@php($t = __('cv'))` y `$t['creador']['foto']` en todas las vistas. Lo normal es `__('cv.creador.foto')` porque no rompe la página si falta una clave; acá se eligió el array y la condición es agregar cada clave en es, en y pt a la vez y correr `php herramientas/verificar_traducciones.php` antes del commit (también va dentro de `composer ci:check`, así que GitHub Actions lo revisa). Reglas en `documentacion/CENTRO_DE_MANDO/06_HEADER_LAYOUT_E_IDIOMAS.md` §3.
 - Pruebas: 13 en verde.
 
 **Pendiente:**

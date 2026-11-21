@@ -63,10 +63,14 @@
         ],
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
+            "@translations:check",
             "@test"
         ],
         "types:check": [
             "phpstan analyse"
+        ],
+        "translations:check": [
+            "@php herramientas/verificar_traducciones.php"
         ],
         "test": [
             "@php artisan config:clear --ansi",
