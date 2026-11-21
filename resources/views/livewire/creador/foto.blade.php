@@ -30,9 +30,9 @@ new class extends Component
         $this->validate(
             ['archivo' => 'image|mimes:jpg,jpeg,png,webp|max:10240'],
             [
-                'archivo.image' => __('cv.creador.fotoNoImagen'),
-                'archivo.mimes' => __('cv.creador.fotoNoImagen'),
-                'archivo.max' => __('cv.creador.fotoPesada'),
+                'archivo.image' => __('cv')['creador']['fotoNoImagen'],
+                'archivo.mimes' => __('cv')['creador']['fotoNoImagen'],
+                'archivo.max' => __('cv')['creador']['fotoPesada'],
             ],
         );
 
@@ -43,7 +43,7 @@ new class extends Component
         $this->reset('archivo');
 
         if (! $foto) {
-            $this->addError('archivo', __('cv.creador.fotoNoImagen'));
+            $this->addError('archivo', __('cv')['creador']['fotoNoImagen']);
 
             return;
         }
@@ -60,19 +60,21 @@ new class extends Component
 };
 ?>
 
+@php($t = __('cv'))
+
 <div class="creador-foto">
     {{-- El <label> abre el selector de archivos: el input queda escondido --}}
     <label class="creador-herramienta-boton" for="creador-foto-archivo">
         <span wire:loading.remove wire:target="archivo">
-            {{ $hayFoto ? __('cv.creador.fotoCambiar') : __('cv.creador.fotoAgregar') }}
+            {{ $hayFoto ? $t['creador']['fotoCambiar'] : $t['creador']['fotoAgregar'] }}
         </span>
-        <span wire:loading wire:target="archivo">{{ __('cv.creador.fotoSubiendo') }}</span>
+        <span wire:loading wire:target="archivo">{{ $t['creador']['fotoSubiendo'] }}</span>
     </label>
     <input id="creador-foto-archivo" type="file" accept="image/jpeg,image/png,image/webp" wire:model="archivo" hidden>
 
     @if ($hayFoto)
         <button type="button" class="creador-herramienta-boton creador-herramienta-secundario" wire:click="quitar">
-            {{ __('cv.creador.fotoQuitar') }}
+            {{ $t['creador']['fotoQuitar'] }}
         </button>
     @endif
 

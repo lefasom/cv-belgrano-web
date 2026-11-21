@@ -43,6 +43,8 @@ new class extends Component
 };
 ?>
 
+@php($t = __('landing'))
+
 @php($actual = $idiomas[app()->getLocale()])
 
 <div class="landing-idioma">
@@ -51,7 +53,7 @@ new class extends Component
         class="landing-idioma-boton"
         aria-haspopup="true"
         aria-expanded="{{ $abierto ? 'true' : 'false' }}"
-        aria-label="{{ __('landing.barra.idiomaAria') }}: {{ $actual['nombre'] }}"
+        aria-label="{{ $t['barra']['idiomaAria'] }}: {{ $actual['nombre'] }}"
         wire:click="alternar"
     >
         <x-landing.icono nombre="globo" />

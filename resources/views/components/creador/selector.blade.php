@@ -6,6 +6,8 @@
 --}}
 @props(['cantidad', 'elegido', 'etiqueta'])
 
+@php($t = __('cv'))
+
 <div class="modal-selector" role="tablist" aria-label="{{ $etiqueta }}">
     @for ($i = 0; $i < $cantidad; $i++)
         <button
@@ -24,5 +26,5 @@
         aria-selected="{{ $elegido === null ? 'true' : 'false' }}"
         @class(['modal-selector-item', 'modal-selector-nueva', 'activo' => $elegido === null])
         wire:click="elegir(null)"
-    >+ {{ __('cv.creador.nueva') }}</button>
+    >+ {{ $t['creador']['nueva'] }}</button>
 </div>

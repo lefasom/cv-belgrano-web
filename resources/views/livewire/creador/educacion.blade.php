@@ -90,6 +90,8 @@ new class extends Component
 };
 ?>
 
+@php($t = __('cv'))
+
 <div class="creador-seccion">
     {{-- El CSS del botón y del modal (lo comparten las cuatro secciones) --}}
     @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css'])
@@ -97,7 +99,7 @@ new class extends Component
     @php($cantidad = count(App\Cv\BorradorCv::lista('estudios')))
 
     <button type="button" class="creador-boton" wire:click="abrir">
-        <span>{{ __('cv.creador.educacion') }}</span>
+        <span>{{ $t['creador']['educacion'] }}</span>
         @if ($cantidad)
             <span class="creador-boton-cuenta">{{ $cantidad }}</span>
         @endif
@@ -113,7 +115,7 @@ new class extends Component
                 <h2>{{ $elegido === null ? 'Agregar estudio' : 'Editar educación '.($elegido + 1) }}</h2>
 
                 @if ($cantidad)
-                    <x-creador.selector :cantidad="$cantidad" :elegido="$elegido" :etiqueta="__('cv.creador.educacion')" />
+                    <x-creador.selector :cantidad="$cantidad" :elegido="$elegido" :etiqueta="$t['creador']['educacion']" />
                 @endif
 
                 <label for="edu-title_obtained">Título</label>
@@ -139,7 +141,7 @@ new class extends Component
                 <div class="modal-botones">
                     @if ($elegido !== null)
                         {{-- wire:confirm pregunta antes de llamar a eliminar() --}}
-                        <button type="button" class="modal-eliminar" wire:click="eliminar" wire:confirm="¿Eliminar la educación {{ $elegido + 1 }}?">{{ __('cv.creador.eliminar') }}</button>
+                        <button type="button" class="modal-eliminar" wire:click="eliminar" wire:confirm="¿Eliminar la educación {{ $elegido + 1 }}?">{{ $t['creador']['eliminar'] }}</button>
                     @endif
                     <button type="button" class="boton-secundario" wire:click="cerrar">Cancelar</button>
                     <button type="submit" class="boton" wire:loading.attr="disabled" wire:target="guardar">

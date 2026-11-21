@@ -49,12 +49,14 @@ new class extends Component
 };
 ?>
 
+@php($t = __('cv'))
+
 <div class="creador-seccion">
     {{-- El CSS del botón y del modal (lo comparten las cuatro secciones) --}}
     @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css'])
 
     <button type="button" class="creador-boton" wire:click="abrir">
-        <span>{{ __('cv.creador.datos') }}</span>
+        <span>{{ $t['creador']['datos'] }}</span>
         @if (filled(App\Cv\BorradorCv::datos()['full_name']))
             <span class="creador-boton-cuenta" aria-hidden="true">✓</span>
         @endif

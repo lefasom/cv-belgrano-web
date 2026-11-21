@@ -70,12 +70,14 @@ new class extends Component
 };
 ?>
 
+@php($t = __('cv'))
+
 <div class="creador-vista" data-cv-vista>
     @vite(['resources/css/cv/hojas.css', 'resources/css/cv/ats.css', 'resources/css/cv/ejecutivo.css', 'resources/js/cv-paginado.js'])
 
     {{-- ============ PESTAÑAS: qué plantilla usar ============ --}}
-    <div class="creador-plantillas" role="tablist" aria-label="{{ __('cv.creador.plantillasAria') }}">
-        @foreach (['ats' => __('cv.creador.plantillaAts'), 'personalizada' => __('cv.creador.plantillaPersonalizada')] as $clave => $nombre)
+    <div class="creador-plantillas" role="tablist" aria-label="{{ $t['creador']['plantillasAria'] }}">
+        @foreach (['ats' => $t['creador']['plantillaAts'], 'personalizada' => $t['creador']['plantillaPersonalizada']] as $clave => $nombre)
             <button
                 type="button"
                 role="tab"
@@ -97,14 +99,14 @@ new class extends Component
 
     {{-- Ventana de 90vh con scroll (y zoom); adentro, las hojas.
          wire:ignore: Livewire no las toca, las maneja el JavaScript --}}
-    <div class="creador-hojas" data-cv-ventana aria-label="{{ __('cv.creador.vistaAria') }}">
+    <div class="creador-hojas" data-cv-ventana aria-label="{{ $t['creador']['vistaAria'] }}">
         <div class="cv-marco" data-cv-marco wire:ignore>
             <div class="cv-paginas" data-cv-paginas></div>
         </div>
     </div>
 
     <div class="creador-pie">
-        <p class="creador-ayuda">{{ __('cv.creador.editarAyuda') }}</p>
-        <button type="button" class="boton" data-cv-accion="descargar">{{ __('cv.creador.descargar') }}</button>
+        <p class="creador-ayuda">{{ $t['creador']['editarAyuda'] }}</p>
+        <button type="button" class="boton" data-cv-accion="descargar">{{ $t['creador']['descargar'] }}</button>
     </div>
 </div>

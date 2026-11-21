@@ -68,7 +68,7 @@ App\Cv\BorradorCv::renglones("- uno\n\n• dos");                // ['uno', 'dos
 2. En experiencia, ¿qué significa `$elegida === null`?
 3. ¿Para qué sirve `wire:key` en la lista de habilidades?
 
-**Ejercicio:** pasá los textos del modal de habilidades ("Nueva habilidad", "Todavía no agregaste habilidades.") a `lang/*/cv.php` y usalos con `__()`.
+**Ejercicio:** pasá los textos del modal de habilidades ("Nueva habilidad", "Todavía no agregaste habilidades.") a `lang/*/cv.php` (en los tres idiomas) y usalos con el `$t` del archivo: `$t['creador']['...']`.
 
 ---
 

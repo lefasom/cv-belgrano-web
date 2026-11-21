@@ -17,7 +17,7 @@
 ])
 {{-- $t = textos de la landing (lang/*/landing.php), $l = textos del menú de la app (lang/*/layout.php) --}}
 @php($t = __('landing'))
-@php($l = __('layout.menu'))
+@php($l = __('layout'))
 
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
@@ -50,17 +50,17 @@
             <div class="landing-barra-acciones">
                 @if ($menu)
                     @auth
-                        {{-- :nombre en el texto se reemplaza por el nombre del usuario --}}
-                        <span class="landing-barra-usuario">{{ __('layout.menu.hola', ['nombre' => auth()->user()->name]) }}</span>
+                        {{-- :nombre en el texto se reemplaza a mano por el nombre del usuario (con el array, __() no lo hace) --}}
+                        <span class="landing-barra-usuario">{{ str_replace(':nombre', auth()->user()->name, $l['menu']['hola']) }}</span>
 
                         {{-- Cerrar sesión es un POST (la ruta "logout" la trae Fortify) --}}
                         <form method="POST" action="{{ route('logout') }}" class="landing-barra-salir">
                             @csrf
-                            <button type="submit">{{ $l['salir'] }}</button>
+                            <button type="submit">{{ $l['menu']['salir'] }}</button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="landing-barra-link">{{ $l['entrar'] }}</a>
-                        <a href="{{ route('register') }}" class="landing-barra-boton">{{ $l['registrarse'] }}</a>
+                        <a href="{{ route('login') }}" class="landing-barra-link">{{ $l['menu']['entrar'] }}</a>
+                        <a href="{{ route('register') }}" class="landing-barra-boton">{{ $l['menu']['registrarse'] }}</a>
                     @endauth
                 @else
                     {{-- Selector de idioma: componente Livewire con su propio estado --}}

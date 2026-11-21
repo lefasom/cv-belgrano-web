@@ -17,6 +17,10 @@
 @props(['cv'])
 
 @php
+    // Textos del CV (lang/*/cv.php). Va dentro de este bloque: si se pone aparte como
+    // @php(...), Blade lo junta con este bloque y $t queda sin definir.
+    $t = __('cv');
+
     $editable = fn (string $campo) => new Illuminate\Support\HtmlString(
         'contenteditable="true" spellcheck="false" data-cv-campo="'.e($campo).'"'
     );
@@ -40,7 +44,7 @@
 <div data-cv-columna="lateral">
     @if ($contacto)
         <section class="cv-eje-bloque" data-cv-seccion>
-            <h3 class="cv-eje-titulo-lateral">{{ __('cv.secciones.contacto') }}</h3>
+            <h3 class="cv-eje-titulo-lateral">{{ $t['secciones']['contacto'] }}</h3>
 
             @foreach ($contacto as $campo => $dato)
                 <div class="cv-eje-contacto" {{ $editable($campo) }}>{{ $dato }}</div>
@@ -50,7 +54,7 @@
 
     @if ($cv['estudios'])
         <section class="cv-eje-bloque" data-cv-seccion>
-            <h3 class="cv-eje-titulo-lateral">{{ __('cv.secciones.educacion') }}</h3>
+            <h3 class="cv-eje-titulo-lateral">{{ $t['secciones']['educacion'] }}</h3>
 
             @foreach ($cv['estudios'] as $e)
                 <div class="cv-eje-estudio">
@@ -77,7 +81,7 @@
 {{-- ============ COLUMNA PRINCIPAL (blanca) ============ --}}
 <div data-cv-columna="principal">
     @if ($cv['vacio'])
-        <p class="cv-vacio">{{ __('cv.creador.vacio') }}</p>
+        <p class="cv-vacio">{{ $t['creador']['vacio'] }}</p>
     @endif
 
     {{-- Encabezado: nombre y profesión a la izquierda, foto a la derecha --}}
@@ -103,14 +107,14 @@
 
     @if ($cv['resumen'])
         <section class="cv-eje-bloque" data-cv-seccion>
-            <h2 class="cv-eje-titulo">{{ __('cv.secciones.perfil') }}</h2>
+            <h2 class="cv-eje-titulo">{{ $t['secciones']['perfil'] }}</h2>
             <p class="cv-eje-perfil" {{ $editable('datos.summary') }}>{{ $cv['resumen'] }}</p>
         </section>
     @endif
 
     @if ($cv['experiencias'])
         <section class="cv-eje-bloque" data-cv-seccion>
-            <h2 class="cv-eje-titulo">{{ __('cv.secciones.experiencia') }}</h2>
+            <h2 class="cv-eje-titulo">{{ $t['secciones']['experiencia'] }}</h2>
 
             {{-- Como en el 3.png: empresa arriba; abajo, período a la izquierda y puesto a la derecha --}}
             @foreach ($cv['experiencias'] as $e)
@@ -144,7 +148,7 @@
 
     @if ($cv['habilidades'])
         <section class="cv-eje-bloque" data-cv-seccion>
-            <h2 class="cv-eje-titulo">{{ __('cv.secciones.habilidades') }}</h2>
+            <h2 class="cv-eje-titulo">{{ $t['secciones']['habilidades'] }}</h2>
 
             <div class="cv-eje-chips">
                 @foreach ($cv['habilidades'] as $h)

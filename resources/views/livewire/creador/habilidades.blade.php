@@ -51,6 +51,8 @@ new class extends Component
 };
 ?>
 
+@php($t = __('cv'))
+
 <div class="creador-seccion">
     {{-- El CSS del botón y del modal (lo comparten las cuatro secciones) --}}
     @vite(['resources/css/creador/seccion.css', 'resources/css/creador/modal.css'])
@@ -58,7 +60,7 @@ new class extends Component
     @php($habilidades = App\Cv\BorradorCv::lista('habilidades'))
 
     <button type="button" class="creador-boton" wire:click="abrir">
-        <span>{{ __('cv.creador.habilidades') }}</span>
+        <span>{{ $t['creador']['habilidades'] }}</span>
         @if (count($habilidades))
             <span class="creador-boton-cuenta">{{ count($habilidades) }}</span>
         @endif
@@ -70,7 +72,7 @@ new class extends Component
         <div class="modal">
             <button type="button" class="modal-x" wire:click="cerrar" aria-label="Cerrar">×</button>
 
-            <h2>{{ __('cv.creador.habilidades') }}</h2>
+            <h2>{{ $t['creador']['habilidades'] }}</h2>
 
             {{-- Todas las habilidades, cada una con su ✕ --}}
             @if (count($habilidades))
@@ -82,7 +84,7 @@ new class extends Component
                                 type="button"
                                 class="modal-lista-quitar"
                                 wire:click="eliminar({{ $i }})"
-                                aria-label="{{ __('cv.creador.eliminar') }}: {{ $habilidad['name'] ?? '' }}"
+                                aria-label="{{ $t['creador']['eliminar'] }}: {{ $habilidad['name'] ?? '' }}"
                             >×</button>
                         </li>
                     @endforeach
@@ -96,13 +98,13 @@ new class extends Component
                 <label for="hab-nueva">Nueva habilidad</label>
                 <div class="modal-agregar-fila">
                     <input id="hab-nueva" type="text" wire:model="nueva" placeholder="Ej.: Laravel" autocomplete="off">
-                    <button type="submit" class="boton" wire:loading.attr="disabled" wire:target="agregar">{{ __('cv.creador.agregar') }}</button>
+                    <button type="submit" class="boton" wire:loading.attr="disabled" wire:target="agregar">{{ $t['creador']['agregar'] }}</button>
                 </div>
                 @error('nueva') <p class="error">{{ $message }}</p> @enderror
             </form>
 
             <div class="modal-botones">
-                <button type="button" class="boton" wire:click="cerrar">{{ __('cv.creador.listo') }}</button>
+                <button type="button" class="boton" wire:click="cerrar">{{ $t['creador']['listo'] }}</button>
             </div>
         </div>
     @endif
